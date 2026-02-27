@@ -1,0 +1,54 @@
+---
+layout: default
+title: USER POLICY
+---
+
+<!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+# VectorVue User Policy
+
+This file is a repository-level quick access copy for policy visibility.
+
+Canonical policy document:
+- `docs/manuals/USER_POLICY.md`
+
+## Authorized Use
+
+1. VectorVue may only be used under explicit written authorization and signed Rules of Engagement.
+2. Unauthorized access, surveillance, persistence, or exploitation outside agreed scope is prohibited.
+
+## Operator Obligations
+
+1. Verify legal basis and contractual scope before execution.
+2. Preserve evidence integrity and audit trail continuity.
+3. Do not tamper with immutable records, audit logs, or retention controls.
+
+## Data Handling
+
+1. Handle credentials, secrets, and sensitive client data using least privilege.
+2. Store and transfer reports and artifacts only through approved secure channels.
+3. Escalate suspected data exposure immediately.
+
+## Platform Safety
+
+1. Respect RBAC boundaries and approval workflows.
+2. Do not disable encryption, logging, or security controls.
+3. Policy violations require immediate session termination and review.
+
+## Acknowledgment
+
+By using VectorVue, you acknowledge this policy and agree to operate only in authorized and compliant contexts.
