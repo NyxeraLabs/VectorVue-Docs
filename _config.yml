@@ -1,0 +1,6 @@
+title: VectorVue Documentation
+markdown: kramdown
+theme: null
+plugins: []
+exclude:
+  - README.md
