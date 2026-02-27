@@ -3,8 +3,11 @@ layout: default
 title: Architecture
 ---
 
-# Architecture Documentation
+# Architecture and Security Controls
 
-- [ARCHITECTURE_SPEC.md](./ARCHITECTURE_SPEC.html)
-- [SECURITY_POLICY.md](./SECURITY_POLICY.html)
-- [ROADMAP.md](./ROADMAP.html)
+Architecture, policy, and roadmap material for production-grade assurance operations.
+
+- [Architecture Specification](./ARCHITECTURE_SPEC.html)
+- [Security Policy](./SECURITY_POLICY.html)
+- [Roadmap](./ROADMAP.html)
+- [Security Track: Secure Telemetry Gateway](../library/security/phase-1-sprint-1.1-secure-telemetry-gateway.html)
