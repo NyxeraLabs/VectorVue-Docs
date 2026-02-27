@@ -3,6 +3,8 @@ layout: default
 title: Whitepaper
 ---
 
-# Whitepaper
+# Whitepaper and Expansion Materials
 
-- [Expansion_Appendix.md](./Expansion_Appendix.html)
+- [Expansion Appendix](./Expansion_Appendix.html)
+- [Auditor Guide](../library/AUDITOR_GUIDE.html)
+- [Compliance API Specification](../library/COMPLIANCE_API_SPEC.html)

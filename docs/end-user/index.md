@@ -1,8 +1,12 @@
 ---
 layout: default
-title: End User
+title: Platform Guide
 ---
 
-# End User Documentation
+# Platform Guide
 
-- [END_USER_GUIDE.md](./END_USER_GUIDE.html)
+Operational and product usage references for platform teams and assurance stakeholders.
+
+- [End User Guide](./END_USER_GUIDE.html)
+- [Manual: VectorVue User Guide](../library/manuals/VECTORVUE_USER_GUIDE.html)
+- [Manual: Getting Started](../library/manuals/GETTING_STARTED.html)

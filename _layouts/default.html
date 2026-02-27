@@ -30,13 +30,12 @@
       <img src="{{ '/assets/img/product-logo.png' | relative_url }}" alt="VectorVue logo" class="product-logo" />
       <div>
         <h1>VectorVue Documentation</h1>
-        <p>Enterprise-grade technical documentation and whitepapers</p>
+        <p>Integration, platform operations, architecture, and assurance references</p>
       </div>
     </div>
     <nav class="nav">
-      <a href="{{ '/' | relative_url }}">Home</a>
-      <a href="{{ '/docs/end-user/' | relative_url }}">End User</a>
-      <a href="{{ '/docs/sdk/' | relative_url }}">SDK</a>
+      <a href="{{ '/' | relative_url }}">Overview</a>
+      <a href="{{ '/docs/end-user/' | relative_url }}">Platform Guide</a>
       <a href="{{ '/docs/integration/' | relative_url }}">Integration</a>
       <a href="{{ '/docs/architecture/' | relative_url }}">Architecture</a>
       <a href="{{ '/docs/whitepaper/' | relative_url }}">Whitepaper</a>
@@ -50,6 +49,10 @@
 
   <footer class="footer">
     <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+    <div style="margin-top:6px; font-size:.86rem;">
+      <a href="https://vectorvue.nyxera.cloud" style="color:#a9b6e6; text-decoration:none; margin-right:12px;">Product Site</a>
+      <a href="https://github.com/NyxeraLabs/VectorVue" style="color:#a9b6e6; text-decoration:none;">GitHub Repository</a>
+    </div>
   </footer>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>

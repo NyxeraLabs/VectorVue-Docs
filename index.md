@@ -5,17 +5,16 @@ title: Home
 
 # VectorVue Documentation Portal
 
-This static portal publishes the official VectorVue technical documentation set for assurance teams, API consumers, integrators, and enterprise decision makers.
+This static documentation portal provides implementation and assurance guidance for secure telemetry ingestion, tenant isolation, and production integration with SpectraStrike.
 
-## Documentation Tracks
+## Recommended Reading Paths
 
-- [End User]({{ '/docs/end-user/' | relative_url }})
-- [SDK]({{ '/docs/sdk/' | relative_url }})
-- [Integration]({{ '/docs/integration/' | relative_url }})
-- [Architecture]({{ '/docs/architecture/' | relative_url }})
-- [Whitepaper]({{ '/docs/whitepaper/' | relative_url }})
-- [Full Documentation Library]({{ '/docs/library/' | relative_url }})
+1. [Platform Guide]({{ '/docs/end-user/' | relative_url }})
+2. [Secure Integration Manual]({{ '/docs/integration/' | relative_url }})
+3. [Architecture & Security Controls]({{ '/docs/architecture/' | relative_url }})
+4. [Whitepaper & Expansion References]({{ '/docs/whitepaper/' | relative_url }})
+5. [Complete Documentation Library]({{ '/docs/library/' | relative_url }})
 
-## Coverage
+## Scope
 
-The Full Library includes all available source docs from the VectorVue repository, including manuals, architecture phases, security tracks, roadmap phases, and integration references.
+This site includes all published docs from the VectorVue repository, with preserved Markdown and Mermaid rendering for architecture and flow diagrams.
