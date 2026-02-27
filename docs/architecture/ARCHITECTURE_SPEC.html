@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ARCHITECTURE SPEC | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/pages/NyxeraLabs/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => { if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' }); });</script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Static docs and whitepaper portal</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/">Home</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-architecture-specification">VectorVue Architecture Specification</h1>
+
+<p>This document defines the production architecture of VectorVue as a multi-tenant security validation and assurance platform.</p>
+
+<h2 id="1-system-overview">1. System Overview</h2>
+
+<p>Primary components:</p>
+
+<ul>
+  <li>API service: FastAPI (<code class="language-plaintext highlighter-rouge">vv_client_api.py</code>)</li>
+  <li>Runtime service: campaign and workflow execution support</li>
+  <li>ML worker: async model training and inference queues</li>
+  <li>Compliance workers: observation derivation and daily compliance evaluation</li>
+  <li>Portal: Next.js tenant-facing interface</li>
+  <li>Data stores: PostgreSQL and Redis</li>
+  <li>Edge: nginx TLS termination and reverse proxy</li>
+</ul>
+
+<h2 id="2-core-architecture-principles">2. Core Architecture Principles</h2>
+
+<ul>
+  <li>Tenant isolation is mandatory across all data and APIs.</li>
+  <li>Evidence integrity is enforced through append-only and hash-chain models where required.</li>
+  <li>Background processing is queue-driven; long-running jobs do not block API request paths.</li>
+  <li>Client-facing analytics and compliance outputs are explainable and version-aware.</li>
+</ul>
+
+<h2 id="3-data-domains">3. Data Domains</h2>
+
+<p>Operational domain:</p>
+
+<ul>
+  <li>campaigns, findings, remediation, reports, activity traces</li>
+</ul>
+
+<p>Analytics domain:</p>
+
+<ul>
+  <li>events, feature sets, model registry, predictions, health metrics</li>
+</ul>
+
+<p>Compliance domain:</p>
+
+<ul>
+  <li>frameworks, controls, mappings, observations, control state history, compliance events, scores, snapshots</li>
+</ul>
+
+<h2 id="4-service-interaction-model">4. Service Interaction Model</h2>
+
+<ol>
+  <li>Operational workflows create tenant-scoped events.</li>
+  <li>Observation worker derives control observations from telemetry.</li>
+  <li>Control evaluator computes effectiveness states.</li>
+  <li>Evidence engine records immutable compliance events with hash links.</li>
+  <li>Compliance scoring computes framework-level posture snapshots.</li>
+  <li>Client and auditor APIs expose signed, tenant-scoped outputs.</li>
+</ol>
+
+<h2 id="5-security-controls">5. Security Controls</h2>
+
+<ul>
+  <li>JWT tenant claim enforcement</li>
+  <li>role-based access controls</li>
+  <li>signed compliance response envelopes</li>
+  <li>immutable compliance event chain</li>
+  <li>restricted telemetry scope (security workflow behavior only)</li>
+</ul>
+
+<h2 id="6-deployment-topology-default">6. Deployment Topology (Default)</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_app</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_runtime</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_ml_worker</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_compliance_observation_worker</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_compliance_daily_worker</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_portal</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_nginx</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_postgres</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_redis</code></li>
+</ul>
+
+<h2 id="7-auditor-verifiability-contract">7. Auditor Verifiability Contract</h2>
+
+<p>Auditors can:</p>
+
+<ol>
+  <li>select a time window</li>
+  <li>retrieve signed dataset package</li>
+  <li>verify checksums and hash-chain integrity</li>
+  <li>recompute control effectiveness</li>
+  <li>validate framework-level compliance state</li>
+</ol>
+
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

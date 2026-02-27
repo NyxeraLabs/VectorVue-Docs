@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>END USER GUIDE | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/pages/NyxeraLabs/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => { if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' }); });</script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Static docs and whitepaper portal</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/">Home</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: Jose Maria Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-22 -> Apache-2.0
+-->
+
+<h1 id="vectorvue--spectrastrike-end-user-guide">VectorVue + SpectraStrike End User Guide</h1>
+
+<h2 id="1-installation-linuxmacos">1) Installation (Linux/macOS)</h2>
+
+<ol>
+  <li>Install <code class="language-plaintext highlighter-rouge">git</code>, <code class="language-plaintext highlighter-rouge">make</code>, Docker Engine, and Docker Compose.</li>
+  <li>Clone <code class="language-plaintext highlighter-rouge">VectorVue</code> and <code class="language-plaintext highlighter-rouge">SpectraStrike</code> into the same parent directory.</li>
+  <li>Install Python dependencies in both projects.</li>
+</ol>
+
+<h2 id="2-docker-requirements">2) Docker Requirements</h2>
+
+<ul>
+  <li>Docker Engine 24+</li>
+  <li>Docker Compose v2+</li>
+  <li>8 GB RAM minimum</li>
+</ul>
+
+<h2 id="3-how-to-generate-certs">3) How To Generate Certs</h2>
+
+<p>Use the certificate/key material under <code class="language-plaintext highlighter-rouge">deploy/certs</code>:</p>
+
+<ul>
+  <li>mTLS: <code class="language-plaintext highlighter-rouge">ca.crt</code>, <code class="language-plaintext highlighter-rouge">server.crt</code>, <code class="language-plaintext highlighter-rouge">server.key</code>, <code class="language-plaintext highlighter-rouge">client.crt</code>, <code class="language-plaintext highlighter-rouge">client.key</code></li>
+  <li>Ed25519: <code class="language-plaintext highlighter-rouge">spectrastrike_ed25519.key</code>, <code class="language-plaintext highlighter-rouge">vectorvue_feedback_ed25519.key</code></li>
+</ul>
+
+<h2 id="4-how-to-start-both-platforms">4) How To Start Both Platforms</h2>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">cd VectorVue</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make local-federation-up</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cd ../SpectraStrike</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make local-federation-up</code></li>
+</ol>
+
+<h2 id="5-how-to-run-first-execution-nmap-example">5) How To Run First Execution (nmap example)</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>SpectraStrike
+<span class="nv">PYTHONPATH</span><span class="o">=</span>src .venv/bin/python <span class="nt">-m</span> pkg.integration.host_integration_smoke <span class="se">\</span>
+  <span class="nt">--tenant-id</span> 10000000-0000-0000-0000-000000000001 <span class="se">\</span>
+  <span class="nt">--check-vectorvue</span>
+</code></pre></div></div>
+
+<h2 id="6-how-to-verify-federation-is-active">6) How To Verify Federation Is Active</h2>
+
+<ul>
+  <li>Gateway accepts only mTLS + Ed25519 signed requests.</li>
+  <li>Smoke output should show <code class="language-plaintext highlighter-rouge">vectorvue_event_status=accepted</code>.</li>
+  <li>Audit logs should include accepted cognitive graph/feedback events.</li>
+</ul>
+
+<h2 id="7-how-to-view-findings-in-vectorvue">7) How To View Findings In VectorVue</h2>
+
+<ol>
+  <li>Open VectorVue UI.</li>
+  <li>Authenticate as tenant user.</li>
+  <li>Open findings and risk panels.</li>
+  <li>Confirm latest ingestion artifacts.</li>
+</ol>
+
+<h2 id="8-how-feedback-loop-works">8) How Feedback Loop Works</h2>
+
+<ol>
+  <li>VectorVue stores execution graph metadata.</li>
+  <li>Feedback endpoint computes adjustments from trusted graph records.</li>
+  <li>Response is Ed25519-signed with active feedback <code class="language-plaintext highlighter-rouge">kid</code>.</li>
+  <li>SpectraStrike verifies signature and applies policy adjustments.</li>
+</ol>
+
+<h2 id="9-troubleshooting">9) Troubleshooting</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Unknown service identity</code>: check <code class="language-plaintext highlighter-rouge">VV_TG_ALLOWED_SERVICE_IDENTITIES_JSON</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">Invalid telemetry signature</code>: check trusted SpectraStrike public key.</li>
+  <li><code class="language-plaintext highlighter-rouge">Operator tenant mapping violation</code>: fix <code class="language-plaintext highlighter-rouge">VV_TG_OPERATOR_TENANT_MAP</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">Execution graph schema not allowed</code>: send <code class="language-plaintext highlighter-rouge">execution.graph.v1</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">Replay detected</code>: regenerate nonce.</li>
+</ul>
+
+<h2 id="10-security-explanation-plain-english">10) Security Explanation (Plain English)</h2>
+
+<p>VectorVue only accepts telemetry that proves source identity and payload integrity. It rejects anything with invalid signatures, stale/replayed nonces, wrong tenant mapping, or wrong schema version.</p>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

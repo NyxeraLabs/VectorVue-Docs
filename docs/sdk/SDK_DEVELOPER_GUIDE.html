@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SDK DEVELOPER GUIDE | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/pages/NyxeraLabs/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => { if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' }); });</script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Static docs and whitepaper portal</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/">Home</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: Jose Maria Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-22 -> Apache-2.0
+-->
+
+<h1 id="vectorvue-sdk-developer-guide">VectorVue SDK Developer Guide</h1>
+
+<h2 id="architecture-overview">Architecture Overview</h2>
+
+<ul>
+  <li>Telemetry Gateway validates federation transport and signatures.</li>
+  <li>Processing layer validates canonical telemetry schema.</li>
+  <li>Analytics/finding layers enrich and expose assurance results.</li>
+  <li>Cognitive endpoints return signed feedback adjustments.</li>
+</ul>
+
+<h2 id="how-federation-signing-works">How Federation Signing Works</h2>
+
+<ul>
+  <li>Inbound telemetry from SpectraStrike: Ed25519 verify on canonical signed input.</li>
+  <li>Outbound feedback to SpectraStrike: Ed25519 sign with active <code class="language-plaintext highlighter-rouge">kid</code> private key.</li>
+</ul>
+
+<h2 id="canonical-telemetry-schema-definition">Canonical Telemetry Schema Definition</h2>
+
+<p>Key required fields:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">event_id</code>, <code class="language-plaintext highlighter-rouge">event_type</code>, <code class="language-plaintext highlighter-rouge">source_system</code>, <code class="language-plaintext highlighter-rouge">severity</code></li>
+  <li><code class="language-plaintext highlighter-rouge">mitre_techniques</code>, <code class="language-plaintext highlighter-rouge">mitre_tactics</code>, <code class="language-plaintext highlighter-rouge">description</code></li>
+  <li><code class="language-plaintext highlighter-rouge">attributes.schema_version</code></li>
+  <li><code class="language-plaintext highlighter-rouge">attributes.attestation_measurement_hash</code> (64-char hex)</li>
+</ul>
+
+<h2 id="how-to-extend-tool-wrappers-metasploit-sliver-mythic">How To Extend Tool Wrappers (Metasploit, Sliver, Mythic)</h2>
+
+<p>Wrappers are implemented in SpectraStrike. VectorVue expects normalized canonical payloads and does not accept tool-specific raw shapes at ingress.</p>
+
+<h2 id="how-to-emit-signed-telemetry">How To Emit Signed Telemetry</h2>
+
+<p>Producer-side (SpectraStrike):</p>
+
+<ol>
+  <li>Canonicalize payload.</li>
+  <li>Sign <code class="language-plaintext highlighter-rouge">timestamp.nonce.payload</code> with Ed25519 private key.</li>
+  <li>Send with required federation headers and mTLS cert.</li>
+</ol>
+
+<h2 id="how-to-validate-feedback-signatures">How To Validate Feedback Signatures</h2>
+
+<p>Consumer-side (SpectraStrike):</p>
+
+<ol>
+  <li>Read <code class="language-plaintext highlighter-rouge">kid</code>, <code class="language-plaintext highlighter-rouge">signature</code>, <code class="language-plaintext highlighter-rouge">signed_at</code>, <code class="language-plaintext highlighter-rouge">nonce</code>, <code class="language-plaintext highlighter-rouge">schema_version</code>.</li>
+  <li>Build canonical tuple.</li>
+  <li>Resolve public verify key by <code class="language-plaintext highlighter-rouge">kid</code>.</li>
+  <li>Verify Ed25519 signature and nonce freshness.</li>
+</ol>
+
+<h2 id="test-strategy">Test Strategy</h2>
+
+<ul>
+  <li>Gateway unit tests for signature, replay, tenant mapping, schema.</li>
+  <li>Red-team tests for tampering and forged signatures.</li>
+  <li>End-to-end smoke tests through SpectraStrike wrappers.</li>
+</ul>
+
+<h2 id="key-rotation-strategy">Key Rotation Strategy</h2>
+
+<ul>
+  <li>Keep <code class="language-plaintext highlighter-rouge">VV_TG_FEEDBACK_ED25519_KEYS_JSON</code> with current and next keys.</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">VV_TG_FEEDBACK_ACTIVE_KID</code> to current signing key.</li>
+  <li>Rotate by updating active <code class="language-plaintext highlighter-rouge">kid</code> after verifiers trust the new key.</li>
+  <li>Retire old key after overlap window and validation pass.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

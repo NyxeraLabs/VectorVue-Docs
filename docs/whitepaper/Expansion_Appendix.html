@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Expansion Appendix | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/pages/NyxeraLabs/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => { if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' }); });</script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Static docs and whitepaper portal</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/">Home</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="vectorvue-security-expansion-appendix">VectorVue Security Expansion Appendix</h1>
+<h2 id="military-grade-hardening--secure-federation-roadmap">Military-Grade Hardening &amp; Secure Federation Roadmap</h2>
+<p>Author: José María Micoli
+Classification: Internal / Strategic
+Status: Expansion Post-SpectraStrike Integration</p>
+
+<hr />
+
+<h1 id="phase-0--critical-remediation-decoupling--risk-removal">PHASE 0 — CRITICAL REMEDIATION (DECOUPLING &amp; RISK REMOVAL)</h1>
+
+<h2 id="sprint-01--telemetry-capability-removal-from-client-api">Sprint 0.1 — Telemetry Capability Removal from Client API</h2>
+
+<h3 id="vv-011-identify-insecure-telemetry-endpoints">VV-0.1.1 Identify Insecure Telemetry Endpoints</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Audit all API routes under <code class="language-plaintext highlighter-rouge">/api/telemetry</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Trace middleware handling ingestion logic</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Identify shared secrets between SpectraStrike and VectorVue</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">audit(api): locate telemetry ingestion endpoints</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-012-remove-telemetry-routes">VV-0.1.2 Remove Telemetry Routes</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Delete ingestion controllers</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remove payload validators</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remove telemetry DTO models</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">refactor(api): remove telemetry ingestion routes</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-013-remove-shared-authentication-paths">VV-0.1.3 Remove Shared Authentication Paths</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remove operator tokens from auth service</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Invalidate active API keys</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Rotate secrets in secret manager</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">security(auth): revoke shared operator credentials</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-014-database-cleanup">VV-0.1.4 Database Cleanup</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remove ingestion staging tables</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remove foreign keys tied to ingestion pipeline</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">db(cleanup): drop telemetry staging tables</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-015-security-validation">VV-0.1.5 Security Validation</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Confirm no public endpoint accepts POST telemetry</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Run attack surface scan</li>
+  <li class="task-list-item">Gate:
+    <ul>
+      <li>Security review required</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="phase-1--secure-telemetry-gateway-new-service">PHASE 1 — SECURE TELEMETRY GATEWAY (NEW SERVICE)</h1>
+
+<h2 id="sprint-11--service-bootstrapping">Sprint 1.1 — Service Bootstrapping</h2>
+
+<h3 id="vv-111-create-new-microservice-repo">VV-1.1.1 Create New Microservice Repo</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Name: <code class="language-plaintext highlighter-rouge">vectorvue-telemetry-gateway</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Private network only</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">chore(init): bootstrap telemetry gateway service</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-112-implement-mtls-enforcement">VV-1.1.2 Implement mTLS Enforcement</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Generate internal CA</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Enforce client cert validation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Reject unsigned clients</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(security): enforce mTLS client authentication</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-113-certificate-pinning">VV-1.1.3 Certificate Pinning</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Store SpectraStrike public cert fingerprint</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Validate handshake fingerprint</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(security): add certificate pinning</code></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="sprint-12--payload-security-layer">Sprint 1.2 — Payload Security Layer</h2>
+
+<h3 id="vv-121-ed25519-signature-verification">VV-1.2.1 Ed25519 Signature Verification</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Validate payload signature</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Reject unsigned payloads</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(validation): implement payload signature verification</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-122-replay-protection">VV-1.2.2 Replay Protection</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Add nonce store (Redis)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Enforce timestamp window (±30s)</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(security): add replay attack protection</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-123-rate-limiting">VV-1.2.3 Rate Limiting</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Limit per Operator ID</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detect burst anomalies</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(rate-limit): enforce operator rate limiting</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Security Gate:</p>
+<ul>
+  <li>Must reject forged payload</li>
+  <li>Must reject expired timestamp</li>
+  <li>Must reject reused nonce</li>
+</ul>
+
+<hr />
+
+<h1 id="phase-2--message-queue-isolation">PHASE 2 — MESSAGE QUEUE ISOLATION</h1>
+
+<h2 id="sprint-21--queue-layer">Sprint 2.1 — Queue Layer</h2>
+
+<h3 id="vv-211-introduce-secure-queue-kafkanats">VV-2.1.1 Introduce Secure Queue (Kafka/NATS)</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Internal-only network</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />No public exposure</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">infra(queue): deploy secure telemetry queue</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-212-dead-letter-queue">VV-2.1.2 Dead Letter Queue</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Route malformed events</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(queue): add dead letter handling</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-213-integrity-hashing">VV-2.1.3 Integrity Hashing</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Add SHA-256 checksum per message</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(integrity): add message integrity hashing</code></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="phase-3--telemetry-processing-engine">PHASE 3 — TELEMETRY PROCESSING ENGINE</h1>
+
+<h2 id="sprint-31--schema-enforcement">Sprint 3.1 — Schema Enforcement</h2>
+
+<h3 id="vv-311-strict-json-schema-validation">VV-3.1.1 Strict JSON Schema Validation</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Define canonical telemetry schema</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Reject additional properties</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(schema): enforce strict telemetry schema</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-312-mitre-mapping-validation">VV-3.1.2 MITRE Mapping Validation</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Validate TTP codes</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(validation): validate MITRE ATT&amp;CK mappings</code></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="sprint-32--sanitization--isolation">Sprint 3.2 — Sanitization &amp; Isolation</h2>
+
+<h3 id="vv-321-input-sanitization">VV-3.2.1 Input Sanitization</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Escape HTML/JS</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Block injection patterns</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">security(input): sanitize telemetry fields</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-322-tenant-mapping-enforcement">VV-3.2.2 Tenant Mapping Enforcement</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Map event to tenant via signed metadata</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(multitenancy): enforce strict tenant mapping</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Security Gate:</p>
+<ul>
+  <li>Attempt cross-tenant injection</li>
+  <li>Attempt corrupted schema</li>
+  <li>Attempt SQL injection via telemetry</li>
+</ul>
+
+<hr />
+
+<h1 id="phase-4--cryptographic-hardening">PHASE 4 — CRYPTOGRAPHIC HARDENING</h1>
+
+<h2 id="sprint-41--field-level-encryption">Sprint 4.1 — Field-Level Encryption</h2>
+
+<h3 id="vv-411-encrypt-evidence-blobs">VV-4.1.1 Encrypt Evidence Blobs</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Envelope encryption</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Per-tenant keys</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(crypto): implement envelope encryption for evidence</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-412-hsm-integration">VV-4.1.2 HSM Integration</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Store root keys in HSM</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(crypto): integrate HSM key management</code></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="phase-5--zero-trust-internal-architecture">PHASE 5 — ZERO TRUST INTERNAL ARCHITECTURE</h1>
+
+<h2 id="sprint-51--service-identity">Sprint 5.1 — Service Identity</h2>
+
+<h3 id="vv-511-service-to-service-mtls">VV-5.1.1 Service-to-Service mTLS</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Each microservice has identity cert</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">security(zero-trust): enforce service identity authentication</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-512-remove-shared-secrets">VV-5.1.2 Remove Shared Secrets</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Replace env secrets with cert-based trust</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">refactor(security): remove shared service secrets</code></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="phase-6--tamper-evident-logging">PHASE 6 — TAMPER-EVIDENT LOGGING</h1>
+
+<h2 id="sprint-61--immutable-logging">Sprint 6.1 — Immutable Logging</h2>
+
+<h3 id="vv-611-append-only-logs">VV-6.1.1 Append-Only Logs</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Append-only logs enabled</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(logging): implement append-only audit log</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-612-hash-chain-logging">VV-6.1.2 Hash Chain Logging</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Each log references previous hash</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(logging): implement hash chain integrity</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-613-log-sealing">VV-6.1.3 Log Sealing</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Periodic snapshot sealing</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(logging): implement periodic log sealing</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Security Gate:</p>
+<ul>
+  <li>Attempt log tampering</li>
+  <li>Attempt deletion</li>
+</ul>
+
+<hr />
+
+<h1 id="phase-7--federation-protocol-spectrastrike--vectorvue">PHASE 7 — FEDERATION PROTOCOL (SpectraStrike ↔ VectorVue)</h1>
+
+<h2 id="sprint-71--federation-spec-definition">Sprint 7.1 — Federation Spec Definition</h2>
+
+<h3 id="vv-711-define-signed-evidence-bundle-format">VV-7.1.1 Define Signed Evidence Bundle Format</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Fields:
+    <ul class="task-list">
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />operator_id</li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />campaign_id</li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />execution_hash</li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />timestamp</li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />nonce</li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />signature</li>
+    </ul>
+  </li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(federation): define signed evidence bundle schema</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-712-proof-of-origin-verification">VV-7.1.2 Proof-of-Origin Verification</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Proof-of-origin verification implemented</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">feat(federation): implement proof-of-origin verification</code></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="phase-8--security-cicd-enforcement">PHASE 8 — SECURITY CI/CD ENFORCEMENT</h1>
+
+<h2 id="sprint-81--security-gates-in-pipeline">Sprint 8.1 — Security Gates in Pipeline</h2>
+
+<h3 id="vv-811-static-code-analysis">VV-8.1.1 Static Code Analysis</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Add dedicated security workflow stage for static analysis</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ci(security): add SAST pipeline stage</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-812-dependency-scanning">VV-8.1.2 Dependency Scanning</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Add dependency vulnerability scanner to security workflow</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ci(security): add dependency vulnerability scanning</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="vv-813-security-regression-tests">VV-8.1.3 Security Regression Tests</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Enforce policy gate and regression test suite in CI</li>
+  <li class="task-list-item">Commit:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ci(security): enforce security regression suite</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Pipeline must fail if:</p>
+<ul>
+  <li>mTLS disabled</li>
+  <li>Signature validation bypassed</li>
+  <li>Tenant boundary test fails</li>
+</ul>
+
+<hr />
+
+<h1 id="phase-9--full-system-red-team-validation">PHASE 9 — FULL SYSTEM RED TEAM VALIDATION</h1>
+
+<h2 id="sprint-91--attack-simulation-against-system">Sprint 9.1 — Attack Simulation Against System</h2>
+
+<p>Simulate:</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Replay attacks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Signature forgery</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />MITM attempt</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Cross-tenant access</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Log tampering</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Queue poisoning</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Rate limit exhaustion</li>
+</ul>
+
+<p>Commit:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">test(redteam): add full-system attack simulation suite</code></li>
+</ul>
+
+<p>Security Gate:</p>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Must pass before production promotion</li>
+</ul>
+
+<hr />
+
+<h1 id="final-state-requirements">FINAL STATE REQUIREMENTS</h1>
+
+<p>VectorVue must:</p>
+
+<ul>
+  <li>Never expose ingestion publicly</li>
+  <li>Enforce cryptographic federation</li>
+  <li>Isolate tenants cryptographically</li>
+  <li>Use zero-trust service model</li>
+  <li>Maintain tamper-evident logs</li>
+  <li>Reject unsigned telemetry</li>
+  <li>Reject replayed telemetry</li>
+  <li>Enforce strict schema</li>
+  <li>Protect evidence via envelope encryption</li>
+  <li>Pass internal red-team validation</li>
+</ul>
+
+<hr />
+
+<h1 id="integration-test-checkpoints">INTEGRATION TEST CHECKPOINTS</h1>
+
+<p>You may test SpectraStrike ↔ VectorVue only after:</p>
+
+<ul>
+  <li>Phase 1 complete (Gateway hardened)</li>
+  <li>Phase 3 complete (Processing isolation)</li>
+  <li>Phase 5 complete (Zero trust enforced)</li>
+</ul>
+
+<p>Full production federation allowed only after:</p>
+<ul>
+  <li>Phase 9 red-team validation passes</li>
+</ul>
+
+<hr />
+
+<p>END OF APPENDIX</p>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

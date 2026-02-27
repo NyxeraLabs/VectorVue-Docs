@@ -1,0 +1,2194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ROADMAP | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/pages/NyxeraLabs/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', () => { if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' }); });</script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Static docs and whitepaper portal</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/">Home</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-product-roadmap-phase-0-9">VectorVue Product Roadmap: Phase 0-9</h1>
+
+<p><strong>Version:</strong> v4.1 Production Ready<br />
+<strong>Last Updated:</strong> February 26, 2026<br />
+<strong>Phases Complete:</strong> 0-9 complete (client API + client portal + telemetry + analytics + compliance assurance + security federation hardening)<br />
+<strong>Total Code Lines:</strong> 30,000+ lines (platform + infra)</p>
+
+<hr />
+
+<h2 id="executive-summary">Executive Summary</h2>
+
+<p>VectorVue has evolved from a single-operator red team notebook into an enterprise-grade security validation and assurance platform. The roadmap spans 9 core delivery phases:</p>
+
+<ul>
+  <li><strong>Phase 0:</strong> Foundation (Campaign mgmt, RBAC, evidence chain)</li>
+  <li><strong>Phase 1:</strong> Operational Intelligence (Execution logging, detection)</li>
+  <li><strong>Phase 2:</strong> Advanced Runtime (Background tasks, webhooks, retention)</li>
+  <li><strong>Phase 3:</strong> Reporting &amp; Export (PDF/HTML reports, compliance docs)</li>
+  <li><strong>Phase 4:</strong> Multi-Team Federation (Team mgmt, cross-team coordination)</li>
+  <li><strong>Phase 5:</strong> Threat Intelligence (Feed ingestion, correlation, enrichment)</li>
+  <li><strong>Phase 5.6:</strong> Federation Trust Closure &amp; Execution Binding (secure SpectraStrike ingestion path, mTLS/signature enforcement, anti-repudiation guarantees)</li>
+  <li><strong>Phase 6:</strong> Deployment &amp; Hardening (systemd, TLS, air-gap, production hardening)</li>
+  <li><strong>Phase 6.5:</strong> Tenant Isolation &amp; Client REST API (tenant guard, JWT tenant claim, read-only API contract)</li>
+  <li><strong>Phase 7:</strong> Client Portal (Web UI, read-only views, remediation tracking)</li>
+  <li><strong>Phase 7.5.0:</strong> Portal Usage Telemetry (defensive-intelligence event capture for Phase 8 model data)</li>
+  <li><strong>Phase 8:</strong> ML/Analytics (Attack prediction, anomaly learning) ✅ Delivered</li>
+  <li><strong>Phase 9:</strong> Compliance &amp; Regulatory Assurance (audit evidence, ISO/SOC2/HIPAA/financial readiness) ✅ Delivered</li>
+</ul>
+
+<h2 id="federation-completion-addendum-february-27-2026">Federation Completion Addendum (February 27, 2026)</h2>
+
+<h3 id="completed">Completed</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Phase 5.6 Federation Setup</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Sprint 30 &amp; Sprint 31 Cognitive Feedback Loop alignment</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Asymmetric Federation Upgrade (Ed25519 inbound and outbound feedback signing)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Attested Execution Embedding (<code class="language-plaintext highlighter-rouge">attestation_measurement_hash</code> bound to canonical payloads, feedback records, and policy input)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Persistent Local Federation Bootstrap (<code class="language-plaintext highlighter-rouge">make local-federation-up</code>, gitignored <code class="language-plaintext highlighter-rouge">local_federation/</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Full Documentation Suite (product README + end user + SDK + integration + audit docs)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />E2E Execution Audit</li>
+</ul>
+
+<h3 id="upcoming">Upcoming</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Ledger anchoring (Merkle root commitments)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Hardware TPM integration for key provenance and attestation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Distributed federation (multi-instance trust and failover)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Multi-tenant key isolation with tenant-scoped feedback signing</li>
+</ul>
+
+<h2 id="epic-legal-enforcement--installation-hardening">Epic: Legal Enforcement &amp; Installation Hardening</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Web UI scroll-gated legal enforcement</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Server-side validation enforcement</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />TUI paginated enforcement</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />TUI legal acceptance unlock/state feedback fix</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />make install legal validation workflow</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Acceptance hash versioning system</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Acceptance persistence layer</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Re-acceptance logic on version change</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Update README.md</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Update INDEX.md</li>
+</ul>
+
+<hr />
+
+<h2 id="phase-0-core-foundation--complete">PHASE 0: Core Foundation ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Status:</strong> Complete</td>
+      <td><strong>Lines Added:</strong> 3,675</td>
+      <td><strong>Tables:</strong> 15</td>
+      <td><strong>Views:</strong> 3</td>
+      <td><strong>Methods:</strong> 80+</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="phase-0-core-foundation--complete-1">PHASE 0: Core Foundation ✅ COMPLETE</h3>
+
+<p>💡 Thoughts: Excellent baseline; RBAC, encryption, evidence chain, and audit logging all implemented. Suggest benchmarking DB performance for future multi-team scaling.</p>
+
+<h3 id="01-campaign-management">0.1 Campaign Management</h3>
+<p>💡 Suggestion: Consider <strong>automatic campaign archiving</strong> and <strong>expiration notifications</strong> for long-term deployments.</p>
+
+<h3 id="02-multi-user-rbac">0.2 Multi-User RBAC</h3>
+<p>💡 Suggestion: Future: finer-grained team-level RBAC may be needed (sub-leads).</p>
+
+<h3 id="03-evidence-chain-of-custody">0.3 Evidence Chain of Custody</h3>
+<p>💡 Thoughts: Strong integrity model; aligns with compliance requirements.</p>
+
+<h3 id="04-approval-workflow">0.4 Approval Workflow</h3>
+<p>💡 Suggestion: Include <strong>automated reminders</strong> for pending approvals in future.</p>
+
+<h3 id="05-activity-timeline--audit">0.5 Activity Timeline &amp; Audit</h3>
+<p>💡 Thoughts: Critical for compliance; consider <strong>audit log archiving strategies</strong> as DB grows.</p>
+
+<h3 id="06-database-foundation">0.6 Database Foundation</h3>
+<p>💡 Suggestion: Plan for <strong>PostgreSQL migration</strong> as multi-team workloads increase.</p>
+
+<h3 id="07-mitre-attck-integration">0.7 MITRE ATT&amp;CK Integration</h3>
+<p>💡 Thoughts: Valuable for reporting and decision-making; could integrate MITRE ATT&amp;CK navigator visuals in Phase 7.</p>
+
+<h3 id="08-ui--theme-system">0.8 UI &amp; Theme System</h3>
+<p>💡 Suggestion: Consider <strong>color-blind friendly themes</strong> and scaling for wide terminals.</p>
+
+<h2 id="phase-56-operational-closure-dockerized-federation-setup--complete">Phase 5.6 Operational Closure (Dockerized Federation Setup) ✅ COMPLETE</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Internal telemetry gateway ingress route enabled for <code class="language-plaintext highlighter-rouge">/internal/v1/telemetry</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Internal cognitive ingress routes enabled for <code class="language-plaintext highlighter-rouge">/internal/v1/cognitive/*</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />mTLS cert chain regenerated with compliant CA/server/client X509 extensions</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />SpectraStrike service identity fingerprint pin updated in gateway allowlist</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Gateway runtime wired with operator-&gt;tenant map and schema enforcement env</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Signed feedback response contract enforced (<code class="language-plaintext highlighter-rouge">signature</code> + <code class="language-plaintext highlighter-rouge">signed_at</code> + <code class="language-plaintext highlighter-rouge">nonce</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Redis + gateway + ingress connectivity validated for nonce/rate-limit checks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Live <code class="language-plaintext highlighter-rouge">nmap -&gt; SpectraStrike -&gt; VectorVue</code> telemetry accepted through gateway</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Live Metasploit telemetry accepted through gateway</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Tamper-evident audit log validated for reject/accept lifecycle evidence</li>
+</ul>
+
+<h3 id="01-campaign-management-1">0.1 Campaign Management</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign CRUD with metadata (client, ROE, objectives, status)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign lifecycle: planning → active → finished → archived</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Multi-campaign switching and isolation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign scope enforcement (every operation bound to campaign)</li>
+</ul>
+
+<h3 id="02-multi-user-rbac-1">0.2 Multi-User RBAC</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />4-level role hierarchy: VIEWER (0) &lt; OPERATOR (1) &lt; LEAD (2) &lt; ADMIN (3)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Role-based permissions on all operations</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session management with secure tokens</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Operator attribution on all database mutations</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Login/register flow with auth enforcement</li>
+</ul>
+
+<h3 id="03-evidence-chain-of-custody-1">0.3 Evidence Chain of Custody</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Immutable evidence_items table (no updates allowed)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />SHA256 integrity verification on all evidence</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Collection timestamps with operator tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Collection method documentation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Evidence approval state machine (pending → approved/rejected)</li>
+</ul>
+
+<h3 id="04-approval-workflow-1">0.4 Approval Workflow</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding approval state machine</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />LEAD+ approval requirement before export</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Rejection with comments/reasons</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Approval history tracking</li>
+</ul>
+
+<h3 id="05-activity-timeline--audit-1">0.5 Activity Timeline &amp; Audit</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detailed activity_log table with timestamps</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Severity classification (low/medium/high/critical)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Event categorization (CREATE_FINDING, APPROVE, REJECT, DELETE, etc.)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Full operator attribution</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Backward compatibility with audit_log</li>
+</ul>
+
+<h3 id="06-database-foundation-1">0.6 Database Foundation</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />SQLite3 with dual-database support (vectorvue.db + adversary.db)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />15 core tables (campaigns, findings, assets, credentials, evidence, activity)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />AES-256 encryption (Fernet) for sensitive fields</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PBKDF2 key derivation (480,000 iterations)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Row-level HMAC signing for integrity</li>
+</ul>
+
+<h3 id="07-mitre-attck-integration-1">0.7 MITRE ATT&amp;CK Integration</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Automated tactic/technique lookup</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Attack path narrative generation (grouped by tactic)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign coverage matrix (tactic/technique counting)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding linkage to MITRE framework</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Visual evidence of attack progression</li>
+</ul>
+
+<h3 id="08-ui--theme-system-1">0.8 UI &amp; Theme System</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Textual-based TUI with hard view switching</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Phosphor cyberpunk theme (22 colors)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />50+ CSS classes for semantic styling</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Vim keybindings (j/k/g/G/enter) on data tables</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />3 main views: LoginView, EditorView, CampaignView</li>
+</ul>
+
+<h3 id="deliverables">Deliverables</h3>
+<ul>
+  <li>vv.py: 956 lines (core TUI)</li>
+  <li>vv_core.py: 1,847 lines (database + crypto)</li>
+  <li>vv_theme.py: 745 lines (semantic theme)</li>
+  <li>vv_fs.py: 127 lines (file I/O)</li>
+  <li>15 database tables</li>
+  <li>Full encryption layer</li>
+</ul>
+
+<hr />
+
+<h2 id="phase-1-operational-intelligence-layer--complete">PHASE 1: Operational Intelligence Layer ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Status:</strong> Complete</td>
+      <td><strong>Lines Added:</strong> 638</td>
+      <td><strong>Tables:</strong> +8 (Total: 23)</td>
+      <td><strong>Views:</strong> 5</td>
+      <td><strong>Methods:</strong> 20+</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts: Session tracking, command logs, persistence, and detection are well implemented. Performance should be monitored under heavy feed ingestion and multi-operator scenarios.</p>
+
+<h3 id="11-command-execution-logging">1.1 Command Execution Logging</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />command_logs table (input, output, operator, timestamp)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Command history per campaign</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Execution result tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />C2 log parsing and ingestion</li>
+</ul>
+
+<h3 id="12-session-lifecycle-management">1.2 Session Lifecycle Management</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />operational_sessions table (open/close/detected states)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session per asset tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />First/last activity timestamps</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session detection recording</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Backup session creation for recovery</li>
+</ul>
+
+<h3 id="13-detection-event-recording">1.3 Detection Event Recording</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />detection_events table with severity/confidence</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Automated alert generation on session detection</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection timeline view</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Severity classification (LOW/MEDIUM/HIGH/CRITICAL)</li>
+</ul>
+
+<h3 id="14-objective-progress-tracking">1.4 Objective Progress Tracking</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />objectives table with completion status</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Objective-to-finding linkage</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Progress percentage calculation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Objective achievement milestones</li>
+</ul>
+
+<h3 id="15-persistence-mechanisms">1.5 Persistence Mechanisms</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />persistence_mechanisms table</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Backdoor type and location tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Verification method documentation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Hash verification for integrity</li>
+</ul>
+
+<h3 id="16-scheduled-task-persistence">1.6 Scheduled Task Persistence</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />scheduled_tasks table</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Task scheduling with frequency</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Execution status tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Persistence verification</li>
+</ul>
+
+<h3 id="17-backup-session-recovery">1.7 Backup Session Recovery</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />backup_sessions table</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session backup creation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session revival mechanism</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Recovery state tracking</li>
+</ul>
+
+<h3 id="18-threat-intelligence-feeds">1.8 Threat Intelligence Feeds</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />threat_intel_items table</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feed source tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feed ingestion capability</li>
+</ul>
+
+<h3 id="deliverables-1">Deliverables</h3>
+<ul>
+  <li>5 new UI views (CommandExecutionLogView, SessionActivityView, DetectionTimelineView, ObjectiveProgressView, PersistenceInventoryView)</li>
+  <li>8 new database tables</li>
+  <li>20+ new Database methods</li>
+  <li>Keybindings: Ctrl+E, Ctrl+J, Ctrl+D, Ctrl+O, Ctrl+P</li>
+</ul>
+
+<hr />
+
+<h2 id="phase-2-advanced-runtime-features-v32-v34--complete">PHASE 2: Advanced Runtime Features (v3.2-v3.4) ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Status:</strong> Complete</td>
+      <td><strong>Lines Added:</strong> 1,678</td>
+      <td><strong>Tables:</strong> +18 (Total: 41)</td>
+      <td><strong>Views:</strong> +6</td>
+      <td><strong>Methods:</strong> 60+</td>
+      <td><strong>Background Tasks:</strong> 5</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts: Background tasks, runtime execution, webhook delivery, retention policies, anomaly detection hooks are mature. Suggest <strong>performance benchmarking</strong> and <strong>resource usage monitoring</strong>.</p>
+
+<h3 id="2a-execution--detection-views-v32">2a: Execution &amp; Detection Views (v3.2)</h3>
+
+<h4 id="2a1-commandexecutionlogview-ctrle">2a.1 CommandExecutionLogView (Ctrl+E)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />VimDataTable display of command_logs</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Command history filtering</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Execution result visualization</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />C2 log ingestion capability</li>
+</ul>
+
+<h4 id="2a2-sessionactivityview-ctrlj">2a.2 SessionActivityView (Ctrl+J)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Active session tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session state visualization (active/detected/revived)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session timeline per asset</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection event display</li>
+</ul>
+
+<h4 id="2a3-detectiontimelineview-ctrld">2a.3 DetectionTimelineView (Ctrl+D)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection events chronologically</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Severity-based highlighting</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection reason documentation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Response action logging</li>
+</ul>
+
+<h4 id="2a4-objectiveprogressview-ctrlo">2a.4 ObjectiveProgressView (Ctrl+O)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Objective completion tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Progress bar visualization</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Linked findings display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Milestone achievement notification</li>
+</ul>
+
+<h4 id="2a5-persistenceinventoryview-ctrlp">2a.5 PersistenceInventoryView (Ctrl+P)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Installed persistence mechanisms</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Verification status display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Persistence type categorization</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Recovery plan documentation</li>
+</ul>
+
+<h3 id="2b-intelligence--analysis-views-v33">2b: Intelligence &amp; Analysis Views (v3.3)</h3>
+
+<h4 id="2b1-situationalawarenessview-ctrl1">2b.1 SituationalAwarenessView (Ctrl+1)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign metrics dashboard</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Assets/credentials/actions summary</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Risk score calculation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection heat map</li>
+</ul>
+
+<h4 id="2b2-postengagementanalysisview-ctrl2">2b.2 PostEngagementAnalysisView (Ctrl+2)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Analysis findings display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Timeline replay capability</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Metric aggregation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Performance analytics</li>
+</ul>
+
+<h4 id="2b3-threatintelligenceview-ctrl3">2b.3 ThreatIntelligenceView (Ctrl+3)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Threat actor profiles</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Intelligence feed aggregation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Correlation to findings</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Risk scoring automation</li>
+</ul>
+
+<h4 id="2b4-remediationtrackingview-ctrl4">2b.4 RemediationTrackingView (Ctrl+4)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remediation status per finding</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remediation timeline</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Tracking dashboard</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Completion metrics</li>
+</ul>
+
+<h4 id="2b5-capabilityassessmentview-ctrl5">2b.5 CapabilityAssessmentView (Ctrl+5)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Capability matrix display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Scoring aggregation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Assessment export</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Trend analysis</li>
+</ul>
+
+<h3 id="2c-advanced-features--runtime-execution-v34">2c: Advanced Features &amp; Runtime Execution (v3.4)</h3>
+
+<h4 id="2c1-collaborationengineview-alt1">2c.1 CollaborationEngineView (Alt+1)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Multi-operator session management</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Operator presence tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Real-time sync capability</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Conflict detection</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Collaborative changes logging</li>
+</ul>
+
+<h4 id="2c2-taskorchestrationview-alt2">2c.2 TaskOrchestrationView (Alt+2)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Task template creation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Task scheduling interface</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Execution status display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Task history tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Scheduled task management</li>
+</ul>
+
+<h4 id="2c3-behavioralanalyticsview-alt3">2c.3 BehavioralAnalyticsView (Alt+3)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Behavioral profile creation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Anomaly detection setup</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Defense prediction configuration</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Baseline pattern analysis</li>
+</ul>
+
+<h4 id="2c4-integrationgatewayview-alt4">2c.4 IntegrationGatewayView (Alt+4)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Webhook endpoint management</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />API integration configuration</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Delivery log display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Retry policy management</li>
+</ul>
+
+<h4 id="2c5-compliancereportingview-alt5">2c.5 ComplianceReportingView (Alt+5)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Compliance framework selection (SOC 2, FedRAMP, ISO 27001, NIST CSF)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Framework mapping to findings</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Compliance status dashboard</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Audit report generation</li>
+</ul>
+
+<h4 id="2c6-securityhardeningview-alt6">2c.6 SecurityHardeningView (Alt+6)</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />TLP classification application</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Immutable audit log management</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Session timeout configuration</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Retention policy management</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Secure deletion verification</li>
+</ul>
+
+<h3 id="2c7-background-task-execution-runtimeexecutor">2c.7 Background Task Execution (RuntimeExecutor)</h3>
+
+<h4 id="task-scheduler">Task Scheduler</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />RuntimeExecutor async class</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />30-second execution cycle</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Pending task retrieval</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Task execution with logging</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Status update tracking</li>
+</ul>
+
+<h4 id="webhook-delivery-engine">Webhook Delivery Engine</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Active webhook retrieval</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Webhook payload delivery</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />HTTP status code handling</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Retry logic simulation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Delivery logging</li>
+</ul>
+
+<h4 id="session-timeout-monitor">Session Timeout Monitor</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />120-minute inactivity tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Automatic session expiration</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Graceful session closure</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />End-time recording</li>
+</ul>
+
+<h4 id="retention-policy-scheduler">Retention Policy Scheduler</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Policy rule execution</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Data purging (findings, credentials, audit)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Data archival capability</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Multi-pass secure deletion</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Compliance record maintenance</li>
+</ul>
+
+<h4 id="anomaly-detection-hooks">Anomaly Detection Hooks</h4>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Behavioral profile analysis</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Operation rate baselines</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Anomaly detection triggers</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Confidence score calculation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection event logging</li>
+</ul>
+
+<h3 id="2c8-seeded-defaults">2c.8 Seeded Defaults</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />4 retention policies (findings 90d, credentials 180d, audit 365d, detection 30d)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />4 compliance frameworks (SOC 2, FedRAMP, ISO 27001, NIST CSF)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Default session timeout (120 minutes)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Default encryption settings (AES-256-GCM)</li>
+</ul>
+
+<h3 id="deliverables-2">Deliverables</h3>
+<ul>
+  <li>6 new UI views (Collab, Tasks, Analytics, Integration, Compliance, Security)</li>
+  <li>18 new database tables (41 total)</li>
+  <li>60+ new Database methods</li>
+  <li>RuntimeExecutor background task system</li>
+  <li>5 async task executors</li>
+  <li>30+ button handlers for v3.4 features</li>
+  <li>Keybindings: Alt+1-6 (v3.4)</li>
+  <li>Full Phase 0-2 integration</li>
+</ul>
+
+<hr />
+
+<h2 id="phase-3-reporting--export-engine--complete">PHASE 3: Reporting &amp; Export Engine ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Status:</strong> Complete</td>
+      <td><strong>Lines Added:</strong> 1,250+</td>
+      <td><strong>Tables:</strong> 8</td>
+      <td><strong>Views:</strong> 1 (ReportingView)</td>
+      <td><strong>Methods:</strong> 35+</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts: Reporting is comprehensive and enterprise-ready. Suggest versioning of templates, audit log retention strategies, and performance testing with large campaigns.</p>
+
+<h3 id="31-campaign-reporting">3.1 Campaign Reporting</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PDF report generation with reportlab</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />HTML report generation with CSS branding</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Executive summary section with metrics</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Technical findings appendix with CVSS scoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Risk scoring summary and attack narrative</li>
+</ul>
+
+<h3 id="32-evidence-chain-of-custody">3.2 Evidence Chain of Custody</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Evidence manifest generation (SHA256 hashing)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />SHA256 verification in manifest</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Collection timeline chronological ordering</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Operator attribution details in entries</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Integrity verification with entry hashing</li>
+</ul>
+
+<h3 id="33-finding-summaries">3.3 Finding Summaries</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />CVSS 3.1 vector parsing and scoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Automatic severity classification (CRITICAL/HIGH/MEDIUM/LOW)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Impact assessment with affected assets</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remediation recommendations storage</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Supporting evidence links in findings</li>
+</ul>
+
+<h3 id="34-compliance-mapping-reports">3.4 Compliance Mapping Reports</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />NIST SP 800-171 attestation generation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />FedRAMP compliance statements</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />ISO 27001 control mapping</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />SOC 2 Type II compliance tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Audit-ready documentation with satisfaction metrics</li>
+</ul>
+
+<h3 id="35-client-reports">3.5 Client Reports</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />White-labeled branding in HTML reports</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign-scoped filtering (only campaign findings)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Executive overview with metrics dashboard</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Risk dashboard with severity distribution</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Metrics summaries (total findings, critical count, etc.)</li>
+</ul>
+
+<h3 id="36-report-scheduling">3.6 Report Scheduling</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Recurring report generation (daily/weekly/monthly)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Email recipient list management</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Report archive management (report_history table)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Version tracking with timestamps</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Modification history with operator attribution</li>
+</ul>
+
+<h3 id="37-database-tables-8-new">3.7 Database Tables (8 new)</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />campaign_reports (report metadata, file paths, hashes)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />evidence_manifests (manifest creation, verification status)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />evidence_manifest_entries (individual evidence items in manifest)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />finding_summaries (CVSS scores, severity, remediation)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />compliance_report_mappings (finding-to-framework links)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />compliance_attestations (framework satisfaction tracking)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />client_reports (white-labeled filtered reports)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />report_schedules (recurring schedule definitions)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />report_history (execution history and status)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />report_templates (custom report format templates)</li>
+</ul>
+
+<h3 id="38-reportingview-ui">3.8 ReportingView UI</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign report generation form (type, format, summary)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Evidence manifest creation and verification buttons</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding summary editor with CVSS vector input</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Compliance framework selection and report generation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Report scheduling interface with frequency options</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Report preview pane for status display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Full audit logging for all reporting operations</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Status bar with timestamp and color-coded messages</li>
+</ul>
+
+<h3 id="key-technologies-integrated">Key Technologies Integrated</h3>
+<ul>
+  <li>reportlab (PDF generation with tables and styling)</li>
+  <li>jinja2 (template rendering for customizable reports)</li>
+  <li>hashlib (SHA256 for evidence integrity verification)</li>
+  <li>CVSS Calculator (3.1 vector parsing and scoring)</li>
+</ul>
+
+<h3 id="deliverables-3">Deliverables</h3>
+<ul>
+  <li>ReportingView: 350+ lines (UI component)</li>
+  <li>Database methods: 35+ new methods in Database class</li>
+  <li>8 new database tables with proper FK relationships</li>
+  <li>PDF report generator with professional formatting</li>
+  <li>HTML report generator with cyberpunk theming</li>
+  <li>Evidence manifest creation and verification system</li>
+  <li>Compliance mapping and attestation reports</li>
+  <li>Report scheduling with execution history</li>
+  <li>Full encryption for sensitive report data</li>
+  <li>Complete audit logging for compliance</li>
+</ul>
+
+<h3 id="integration-points">Integration Points</h3>
+<ul>
+  <li>Keybinding: Ctrl+R for ReportingView toggle</li>
+  <li>Integration with RuntimeExecutor for scheduled report execution</li>
+  <li>Evidence integrity verification on manifest creation</li>
+  <li>CVSS scoring tied to findings table</li>
+  <li>Campaign isolation enforced on all reports</li>
+  <li>RBAC enforcement (OPERATOR+ required)</li>
+  <li>Complete audit trail for all report generation</li>
+</ul>
+
+<hr />
+
+<h2 id="phase-4-multi-team--federation--complete">PHASE 4: Multi-Team &amp; Federation ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Status:</strong> Complete</td>
+      <td><strong>Lines Added:</strong> 650+</td>
+      <td><strong>Tables:</strong> 10</td>
+      <td><strong>Views:</strong> 1 (TeamManagementView)</td>
+      <td><strong>Methods:</strong> 15+</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts: Excellent multi-team and coordination design. Ensure <strong>transactional integrity</strong> and consider concurrency tests under multiple simultaneous operator actions.</p>
+
+<h3 id="41-team-management">4.1 Team Management</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team CRUD (create_team, list_teams, team status tracking)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team member assignment (add_team_member, get_team_members)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team role hierarchy (team_role field in team_members)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team budget tracking (budget_usd field in teams table)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team performance metrics (team_metrics table with calculations)</li>
+</ul>
+
+<h3 id="42-cross-team-coordination">4.2 Cross-Team Coordination</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Shared campaign visibility (campaign_team_assignments table)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team-specific data filtering (query filtering by team_id)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Shared intelligence feeds (team_intelligence_pools table)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Coordinated operations (coordination_logs table)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Coordination logging (log_coordination method)</li>
+</ul>
+
+<h3 id="43-data-sharing-policies">4.3 Data Sharing Policies</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team-level access control (data_sharing_policies table)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding visibility policies (access_level enforcement)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Evidence sharing rules (resource_type in policies)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Credential pool management (team isolation in queries)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Intelligence sharing gates (requires_approval flag)</li>
+</ul>
+
+<h3 id="44-operator-performance">4.4 Operator Performance</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Findings per operator (operator_performance table with findings_created)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Approval rate tracking (findings_approved &amp; approval_rate calculation)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Activity metrics (total_operations, average_cvss_score)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Leaderboards (get_team_leaderboard by effectiveness_score)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Performance trends (period-based performance tracking)</li>
+</ul>
+
+<h3 id="45-team-isolation">4.5 Team Isolation</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team-scoped databases (logical via campaign_team_assignments)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Cross-contamination prevention (team_id filtering in all queries)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team-specific reports (filtering by team in metrics)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Audit trail per team (team tracking in audit_log)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Data retention per team (team-based retention policies)</li>
+</ul>
+
+<h3 id="46-database-tables-10-new">4.6 Database Tables (10 new)</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />teams - Team metadata, budget, lead operator</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />team_members - User-to-team assignments with roles</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />team_roles - Custom team role definitions</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />team_permissions - Fine-grained permission grants</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />campaign_team_assignments - Campaign-to-team mapping with access levels</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />data_sharing_policies - Inter-team data sharing rules</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />team_metrics - Team performance metrics per period</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />operator_performance - Individual operator metrics per period per team</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />team_intelligence_pools - Shared intelligence repositories per team</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />coordination_logs - Cross-team coordination events and status</li>
+</ul>
+
+<h3 id="47-teammanagementview-ui">4.7 TeamManagementView UI</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team creation form (name, description, budget)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team members list and management interface</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Data sharing policy configuration</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Intelligence pool creation and management</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Team metrics dashboard (teams, members, campaigns, findings stats)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Operator leaderboard by effectiveness score</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Coordination logs with status tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Full audit logging for all team operations</li>
+</ul>
+
+<h3 id="key-technologies-integrated-1">Key Technologies Integrated</h3>
+<ul>
+  <li>Database transactions for atomic team operations</li>
+  <li>Role-based access control (LEAD+ for team creation, ADMIN for policies)</li>
+  <li>Comprehensive performance metrics calculation</li>
+  <li>Cross-team data isolation and filtering</li>
+</ul>
+
+<h3 id="deliverables-4">Deliverables</h3>
+<ul>
+  <li>TeamManagementView: 380+ lines (UI component)</li>
+  <li>Database methods: 15+ new methods in Database class</li>
+  <li>10 new database tables with proper FK relationships</li>
+  <li>Team CRUD operations with full audit logging</li>
+  <li>Performance metrics calculation system</li>
+  <li>Cross-team coordination logging and management</li>
+  <li>Intelligence pool management per team</li>
+  <li>Complete team isolation enforcement</li>
+</ul>
+
+<h3 id="integration-points-1">Integration Points</h3>
+<ul>
+  <li>Keybinding: Ctrl+T for TeamManagementView toggle</li>
+  <li>RBAC enforcement: LEAD+ for team ops, ADMIN for policies</li>
+  <li>Campaign isolation extended to team level</li>
+  <li>Audit trail integration for team operations</li>
+  <li>Operator performance aggregation per period</li>
+</ul>
+
+<hr />
+
+<h2 id="phase-5-advanced-threat-intelligence--complete">PHASE 5: Advanced Threat Intelligence ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Status:</strong> Complete</td>
+      <td><strong>Lines Added:</strong> 650+</td>
+      <td><strong>Tables:</strong> 8</td>
+      <td><strong>Views:</strong> 1 (ThreatIntelligenceView)</td>
+      <td><strong>Methods:</strong> 18+</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts: Feed ingestion, correlation, IoCs, risk scoring are strong. Operational Cognition (Phase 5.5) is the platform’s differentiator. Need <strong>performance monitoring</strong> for attack graph recalculation and recommendation engine.</p>
+
+<h3 id="51-external-feed-ingestion">5.1 External Feed Ingestion</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Threat feed registration (VirusTotal, Shodan, OTX, MISP types)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feed metadata tracking (name, type, URL, API key hash, status)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feed status and error logging</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Last updated timestamps</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Multi-source feed support</li>
+</ul>
+
+<h3 id="52-threat-actor-profiles">5.2 Threat Actor Profiles</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Threat actor creation and lifecycle (APT groups, cyber gangs, individuals)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Actor metadata (name, aliases, origin country, organization, targets)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Attribution confidence scoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign history association</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />TTP documentation per actor</li>
+</ul>
+
+<h3 id="53-indicator-management">5.3 Indicator Management</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />IoC ingestion (IP, Domain, File Hash, Email Address, C2)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Indicator type classification</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Threat level assignment (LOW/MEDIUM/HIGH/CRITICAL)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Source feed tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Confidence scoring per indicator</li>
+</ul>
+
+<h3 id="54-automated-enrichment">5.4 Automated Enrichment</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Enrichment data storage (GeoIP, WHOIS, threat scores, file signatures)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Multi-source enrichment integration</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Confidence tracking per enrichment</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />TTL/expiration for cached enrichments</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Enrichment type classification</li>
+</ul>
+
+<h3 id="55-correlation-engine">5.5 Correlation Engine</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding-to-IoC correlation with confidence scoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Threat actor linking (correlate findings/assets to actors)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign clustering and pattern recognition</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Automated correlation timestamp tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Evidence-based threat assessment</li>
+</ul>
+
+<h3 id="56-risk-scoring">5.6 Risk Scoring</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Automated risk score calculation (0-10)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Threat score, likelihood, and impact assessment</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Final score aggregation (threat<em>0.3 + likelihood</em>0.3 + impact*0.4)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Risk level classification (CRITICAL/HIGH/MEDIUM/LOW)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Trend analysis (rising/stable/falling)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding-specific risk scoring</li>
+</ul>
+
+<h3 id="57-intelligence-archive--history">5.7 Intelligence Archive &amp; History</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Long-term intelligence storage</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Archive by type (TTPs, campaigns, profiles)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Classification levels (UNCLASSIFIED/CONFIDENTIAL/SECRET)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Tagging system for organization</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Audit trail with operator attribution</li>
+</ul>
+
+<h3 id="58-threat-intelligence-view-ui">5.8 Threat Intelligence View (UI)</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />ThreatIntelligenceView with 4 main sections:
+    <ul>
+      <li>Threat feeds management (add, status, update tracking)</li>
+      <li>Threat actor profiles (list, TTPs, associations)</li>
+      <li>Indicators of compromise (type, value, enrichment, actor links)</li>
+      <li>Risk scores &amp; threat assessment (severity distribution)</li>
+    </ul>
+  </li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Ctrl+Shift+I keybinding</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />NEON_PINK theme color for threat intel</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />VimDataTable integration for all data</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Status bar with timestamp</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign context requirement</li>
+</ul>
+
+<h3 id="key-implementation-details">Key Implementation Details</h3>
+<ul>
+  <li>8 new database tables: threat_feeds, threat_actors, actor_ttps, indicators_of_compromise, enrichment_data, threat_correlations, risk_scores, intelligence_archive</li>
+  <li>18+ database methods for full CRUD + analysis</li>
+  <li>Automated risk calculation: (threat<em>0.3 + likelihood</em>0.3 + impact*0.4)</li>
+  <li>Full correlation engine for linking findings/assets to threat actors</li>
+  <li>Enrichment system with TTL support</li>
+  <li>ThreatIntelligenceView UI (Phase 5 specific)</li>
+  <li>Full audit logging for all threat intelligence operations</li>
+  <li>Role-based access control (LEAD+ for threat actors, OPERATOR+ for IoC ingestion)</li>
+</ul>
+
+<h3 id="technologies-used">Technologies Used</h3>
+<ul>
+  <li>SQLite3 for threat intelligence storage</li>
+  <li>Cryptographic HMAC for data integrity</li>
+  <li>Role-based access control</li>
+  <li>Audit logging system</li>
+  <li>Textual TUI framework</li>
+</ul>
+
+<h3 id="deliverables-5">Deliverables</h3>
+<ul>
+  <li>650+ lines of database code (vv_core.py)</li>
+  <li>380+ lines of UI code (vv.py ThreatIntelligenceView)</li>
+  <li>8 database tables with proper indexing</li>
+  <li>18+ database methods with docstrings</li>
+  <li>NEON_PINK color for Phase 5 theming</li>
+  <li>Ctrl+Shift+I keybinding</li>
+  <li>Full integration with existing RBAC and audit systems</li>
+</ul>
+
+<hr />
+
+<h2 id="phase-55-operational-cognition--decision-layer--complete">PHASE 5.5: Operational Cognition &amp; Decision Layer 🧠 COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Status:</strong> Complete</td>
+      <td><strong>Lines Added:</strong> 3,500</td>
+      <td><strong>Tables:</strong> +8</td>
+      <td><strong>Views:</strong> +4</td>
+      <td><strong>Methods:</strong> 60+</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts: The “Observe → Simulate → Execute → Evaluate → Adapt” flow is innovative. Ensure <strong>explainable recommendations</strong>, performance under multi-operator scenarios, and operator onboarding support.</p>
+
+<hr />
+
+<h3 id="core-concept">Core Concept</h3>
+
+<p>The platform stops being a passive campaign tracker and becomes an active operational advisor.</p>
+
+<p>The system continuously evaluates the campaign state and guides operator decisions.</p>
+
+<hr />
+
+<h2 id="engines">Engines</h2>
+
+<h3 id="551-attack-graph-engine">5.5.1 Attack Graph Engine</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Continuous compromise graph generation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Relationship modeling (admin_to, authenticates_to, trusts, delegates, controls)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Shortest path to objective calculation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Privilege escalation chain discovery</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Choke point identification</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Credential blast radius estimation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Domain dominance likelihood estimation</li>
+</ul>
+
+<h3 id="552-objective-distance-engine">5.5.2 Objective Distance Engine</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remaining effort score</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Blocking constraint detection</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Confidence level calculation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection pressure penalty</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Unknown edge weighting</li>
+</ul>
+
+<h3 id="553-action-recommendation-engine">5.5.3 Action Recommendation Engine</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Deterministic scoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Stealth vs value ranking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Ranked suggestions with explanation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Alternative safer actions</li>
+</ul>
+
+<h3 id="554-detection-pressure-engine">5.5.4 Detection Pressure Engine</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Continuous campaign pressure score</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Alert clustering detection</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Repetition penalties</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign state classification</li>
+</ul>
+
+<h3 id="555-opsec-simulation-engine">5.5.5 OPSEC Simulation Engine</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection probability prediction</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Log artifact preview</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />EDR behavior estimation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Safer alternative suggestion</li>
+</ul>
+
+<h3 id="556-engagement-replay-system">5.5.6 Engagement Replay System</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Append-only operation stream</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Timeline reconstruction</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Narrative generation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Training replay export</li>
+</ul>
+
+<h3 id="557-cross-campaign-memory">5.5.7 Cross-Campaign Memory</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Defender behavior learning</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Technique reliability tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Environment familiarity</li>
+</ul>
+
+<h3 id="558-confidence-scoring">5.5.8 Confidence Scoring</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Data completeness weighting</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Stability measurement</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Recommendation reliability annotation</li>
+</ul>
+
+<h3 id="559-campaign-tempo-model">5.5.9 Campaign Tempo Model</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Operator speed anomaly detection</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Suggested slow windows</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Staging recommendations</li>
+</ul>
+
+<h3 id="5510-infrastructure-burn-tracker">5.5.10 Infrastructure Burn Tracker</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />C2 exposure tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Payload reputation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Burn alerts</li>
+</ul>
+
+<hr />
+
+<h2 id="ui-integration-vvpy">UI Integration (vv.py)</h2>
+
+<p>The UI stops being CRUD navigation and becomes a situational awareness console.</p>
+
+<h3 id="new-views">New Views</h3>
+
+<ol>
+  <li>
+    <p><strong>Operational Dashboard View</strong></p>
+
+    <ul>
+      <li>Campaign health indicator</li>
+      <li>Detection pressure bar</li>
+      <li>Objective distance meter</li>
+      <li>Recommended next actions</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Attack Path View</strong></p>
+
+    <ul>
+      <li>Live compromise graph</li>
+      <li>Highlighted critical nodes</li>
+      <li>Dominance projection</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>OPSEC Preview Panel</strong></p>
+
+    <ul>
+      <li>Pre-execution risk simulation</li>
+      <li>Artifact preview</li>
+      <li>Safer alternatives</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Engagement Timeline View</strong></p>
+
+    <ul>
+      <li>Replayable operation history</li>
+      <li>Defender reaction markers</li>
+      <li>Kill-chain reconstruction</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="real-time-operator-flow">Real-Time Operator Flow</h2>
+
+<ol>
+  <li>Operator opens asset</li>
+  <li>Advisor shows recommended actions</li>
+  <li>Operator selects action</li>
+  <li>OPSEC preview appears</li>
+  <li>Operator executes</li>
+  <li>Detection pressure updates</li>
+  <li>Attack graph recalculates</li>
+  <li>Next suggestions adapt</li>
+</ol>
+
+<p>Loop:
+Observe → Simulate → Execute → Evaluate → Adapt</p>
+
+<hr />
+
+<h2 id="database-tables">Database Tables</h2>
+
+<ul>
+  <li>cognition_state_cache (NEW - v4.1)</li>
+  <li>recommendation_history (NEW - v4.1)</li>
+  <li>replay_events (NEW - v4.1)</li>
+  <li>technique_patterns (NEW - v4.1)</li>
+  <li>detection_pressure_history (NEW - v4.1)</li>
+  <li>operator_tempo_metrics (NEW - v4.1)</li>
+  <li>c2_infrastructure (NEW - v4.1)</li>
+  <li>objective_progress (NEW - v4.1)</li>
+</ul>
+
+<hr />
+
+<h2 id="deliverables--all-complete">Deliverables ✅ ALL COMPLETE</h2>
+
+<ul>
+  <li>vv_cognition.py - Data contract (400 lines) ✅</li>
+  <li>vv_graph.py - Attack graph (350 lines) ✅</li>
+  <li>vv_objective.py - Objective distance (300 lines) ✅</li>
+  <li>vv_recommend.py - Recommendation scoring (450 lines) ✅</li>
+  <li>vv_detection_pressure.py - Detection pressure (300 lines) ✅</li>
+  <li>vv_opsec.py - OpSec simulation (350 lines) ✅</li>
+  <li>vv_replay.py - Engagement replay (350 lines) ✅</li>
+  <li>vv_tempo.py - Operator tempo (250 lines) ✅</li>
+  <li>vv_infra_burn.py - Infrastructure burn (300 lines) ✅</li>
+  <li>vv_confidence.py - Confidence analysis (250 lines) ✅</li>
+  <li>vv_memory.py - Pattern learning (350 lines) ✅</li>
+  <li>vv_cognition_integration.py - Orchestration (350 lines) ✅</li>
+  <li>CognitionView UI (Phase 5.5 specific) ✅</li>
+  <li>Attack graph visualization ✅</li>
+  <li>Recommendation panel ✅</li>
+  <li>Detection pressure dashboard ✅</li>
+  <li>Event replay timeline ✅</li>
+</ul>
+
+<hr />
+
+<h2 id="phase-56-postgresql-migration--container-baseline--complete">PHASE 5.6: PostgreSQL Migration &amp; Container Baseline ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Status:</strong> Complete</td>
+      <td><strong>Release:</strong> v4.1</td>
+      <td><strong>Database:</strong> SQLite + PostgreSQL compatible</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="561-database-backend-migration">5.6.1 Database Backend Migration</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PostgreSQL runtime backend in <code class="language-plaintext highlighter-rouge">vv_core.py</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />SQLite-to-PostgreSQL schema export (<code class="language-plaintext highlighter-rouge">sql/postgres_schema.sql</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />SQLite-to-PostgreSQL data migration script</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Placeholder/conflict compatibility layer for existing DB methods</li>
+</ul>
+
+<h3 id="562-container-baseline">5.6.2 Container Baseline</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Dockerfile (Debian slim optimized for runtime dependencies)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />docker-compose PostgreSQL service with health checks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Persistent PostgreSQL volume</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Environment-driven DB configuration</li>
+</ul>
+
+<h3 id="563-operational-safety-and-validation">5.6.3 Operational Safety and Validation</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PostgreSQL reset/seed scripts</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PostgreSQL smoke tests</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Migration guide, regression checklist, audit report</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Runtime compatibility pass for SQL conflict and transaction behavior</li>
+</ul>
+
+<h3 id="deliverables-6">Deliverables</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Dockerfile</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docker-compose.yml</code></li>
+  <li><code class="language-plaintext highlighter-rouge">sql/postgres_schema.sql</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts/migrate_sqlite_to_postgres.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts/export_pg_schema.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts/reset_db.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts/seed_db.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/manuals/POSTGRES_MIGRATION_GUIDE.md</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/manuals/POSTGRES_USAGE_GUIDE.md</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/manuals/POSTGRES_AUDIT_REPORT.md</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/manuals/POSTGRES_REGRESSION_CHECKLIST.md</code></li>
+</ul>
+
+<hr />
+
+<h2 id="phase-6-deployment--hardening--complete">PHASE 6: Deployment &amp; Hardening ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>ETA:</strong> Q4 2026</td>
+      <td><strong>Estimated Lines:</strong> 300-400</td>
+      <td><strong>Tables:</strong> 0</td>
+      <td><strong>Status:</strong> <code class="language-plaintext highlighter-rouge">Implemented</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts: Critical for production readiness. Plan <strong>Docker + systemd + TLS + HSM integration</strong> carefully. Include IaC, CI/CD pipelines, and automated security validation. Begin early to avoid delays in Phase 7.</p>
+
+<h3 id="61-docker-containerization">6.1 Docker Containerization</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Multi-container Compose setup (baseline)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PostgreSQL backend option</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Redis cache support</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Nginx reverse proxy</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Health check mechanisms (all services)</li>
+</ul>
+
+<h3 id="62-service-management">6.2 Service Management</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />systemd service templates</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Auto-restart on failure</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Dependency management</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Log aggregation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Process monitoring</li>
+</ul>
+
+<h3 id="63-tlsmtls-security">6.3 TLS/mTLS Security</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Certificate generation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />TLS 1.3 enforcement</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Client certificate validation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Certificate rotation templates</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />HSTS headers</li>
+</ul>
+
+<h3 id="64-hardware-security-module-hsm">6.4 Hardware Security Module (HSM)</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />HSM key storage (optional)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PKCS#11 support (optional)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Hardware-based crypto hooks (optional)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Key rotation automation hooks (optional)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Compliance audit logging</li>
+</ul>
+
+<h3 id="65-air-gap-deployment">6.5 Air-Gap Deployment</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Offline archive generation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />No-internet mode</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Manual update installation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Isolated database dumps</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Secure transfer mechanisms</li>
+</ul>
+
+<h3 id="66-hardening-guide">6.6 Hardening Guide</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Security checklist</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Best practices documentation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Common misconfigurations</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Troubleshooting guide</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Post-deployment audit</li>
+</ul>
+
+<h3 id="deliverables-7">Deliverables</h3>
+<ul>
+  <li>Dockerfile (multi-stage)</li>
+  <li>docker-compose.yml</li>
+  <li>systemd service files</li>
+  <li>TLS certificate templates</li>
+  <li>Air-gap archive script</li>
+  <li>Deployment hardening guide</li>
+  <li>Functional/security/performance validation scripts</li>
+</ul>
+
+<hr />
+
+<h2 id="-phase-65-client-isolation--pre-portal-preparation--complete">🧱 PHASE 6.5: Client Isolation &amp; Pre-Portal Preparation ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>ETA:</strong> Completed February 18, 2026</td>
+      <td><strong>Estimated Lines:</strong> 350-500</td>
+      <td><strong>Status:</strong> <code class="language-plaintext highlighter-rouge">Implemented</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts: This phase converts the platform from an operator tool into a service platform.
+Goal: make Phase 7 safe and deployable per customer without redesign later.</p>
+
+<h3 id="651-tenant-isolation-architecture">6.5.1 Tenant Isolation Architecture</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Organization (tenant) table</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Migration-safe tenant_id defaults and non-null constraints</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Mandatory tenant_id in all read-only API queries</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Query guard wrapper and read-only repository</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Cross-tenant access prevention tests</li>
+</ul>
+
+<h3 id="652-per-customer-deployment-model">6.5.2 Per-Customer Deployment Model</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />One deployment per company (<code class="language-plaintext highlighter-rouge">customer-deploy</code> with <code class="language-plaintext highlighter-rouge">COMPOSE_PROJECT_NAME</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Environment config templating (<code class="language-plaintext highlighter-rouge">deploy/templates/customer.env.template</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Tenant bootstrap script (<code class="language-plaintext highlighter-rouge">scripts/bootstrap_tenant.py</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Automatic DB initialization (<code class="language-plaintext highlighter-rouge">phase65-migrate</code> in <code class="language-plaintext highlighter-rouge">make deploy</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Customer-scoped storage directories (<code class="language-plaintext highlighter-rouge">deploy/customers/&lt;customer&gt;/...</code>)</li>
+</ul>
+
+<h3 id="653-evidence-publishing-layer-read-only-api">6.5.3 Evidence Publishing Layer (READ-ONLY API)</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Sanitized evidence serializer</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remove operator/internal notes</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Approval state filter</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Client visibility flag</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Export-safe schemas</li>
+</ul>
+
+<h3 id="654-access-control-separation">6.5.4 Access Control Separation</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Operator logic kept unchanged (no route refactor)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />JWT tenant claim validation (<code class="language-plaintext highlighter-rouge">tenant_id</code>) on API routes</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Access scope validation through tenant filtering</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Read-only enforcement for client API access layer</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Audit-ready API contract and migration path documented</li>
+</ul>
+
+<h3 id="655-secure-exposure-gateway">6.5.5 Secure Exposure Gateway</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />API gateway service (FastAPI behind nginx)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Read-only enforcement in repository layer</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Secure TLS reverse proxy path</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Tenant-scoped query controls</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Health and OpenAPI smoke checks via Makefile</li>
+</ul>
+
+<h3 id="656-data-contract-stabilization">6.5.6 Data Contract Stabilization</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Public API schema freeze (<code class="language-plaintext highlighter-rouge">Paginated</code>, <code class="language-plaintext highlighter-rouge">RiskSummary</code>, <code class="language-plaintext highlighter-rouge">RemediationStatus</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Client-safe serializers (<code class="language-plaintext highlighter-rouge">ClientFinding</code>, <code class="language-plaintext highlighter-rouge">ClientEvidence</code>, <code class="language-plaintext highlighter-rouge">ClientReport</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Backward-compatible response model strategy</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Tenant isolation unit tests</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Phase 7 portal compatibility baseline</li>
+</ul>
+
+<h3 id="key-technologies">Key Technologies</h3>
+
+<ul>
+  <li>FastAPI (public API)</li>
+  <li>Pydantic schemas</li>
+  <li>SQLAlchemy 2.0</li>
+  <li>Nginx reverse proxy</li>
+  <li>JWT tenant claim validation</li>
+</ul>
+
+<h3 id="deliverables-8">Deliverables</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">vv_client_api.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">db/tenant_session.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">db/readonly_repo.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">security/tenant_auth.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">schemas/client_safe.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">api_contract/client_api_models.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">sql/phase65_tenant_migration.sql</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts/apply_pg_sql.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts/bootstrap_tenant.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">deploy/scripts/bootstrap_customer.sh</code></li>
+  <li><code class="language-plaintext highlighter-rouge">deploy/templates/customer.env.template</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tests/unit/test_tenant_isolation.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/manuals/CLIENT_API_MANUAL.md</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/PHASE65_API_QUICKSTART.md</code></li>
+</ul>
+
+<hr />
+
+<h2 id="-phase-7--750-client-portal--usage-telemetry--complete">🌐 PHASE 7 / 7.5.0: Client Portal + Usage Telemetry ✅ COMPLETE</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Completed:</strong> February 18, 2026</td>
+      <td><strong>Estimated Lines:</strong> 2,000+</td>
+      <td><strong>Status:</strong> <code class="language-plaintext highlighter-rouge">Complete</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>💡 Thoughts:
+Portal is <strong>customer-facing evidence viewer</strong>, not an operator console.
+Each customer gets its own deployment connected to its isolated backend.</p>
+
+<p>Progressive rollout recommended:</p>
+
+<ol>
+  <li>Read-only evidence portal</li>
+  <li>Reports &amp; tracking</li>
+  <li>Analytics dashboards</li>
+</ol>
+
+<h3 id="7a-client-public-read-only-api-backend-foundation">7A: Client Public Read-Only API (Backend Foundation)</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />API module scaffold (<code class="language-plaintext highlighter-rouge">app/client_api/</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Tenant-authenticated client routers (<code class="language-plaintext highlighter-rouge">Depends(get_current_tenant)</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Read-only response schemas for client exposure</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Docker-aware public URL builder (<code class="language-plaintext highlighter-rouge">utils/url_builder.py</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Rate-limit dependency placeholder (<code class="language-plaintext highlighter-rouge">client_rate_limit()</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Runtime integration into primary API app (<code class="language-plaintext highlighter-rouge">vv_client_api.py</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />End-to-end gateway validation for all 7A endpoints</li>
+</ul>
+
+<h3 id="7b-client-portal-ui-nextjs-14">7B: Client Portal UI (Next.js 14)</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Dockerized portal service (<code class="language-plaintext highlighter-rouge">vectorvue_portal</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Reverse-proxy routing via nginx for <code class="language-plaintext highlighter-rouge">/portal</code>, <code class="language-plaintext highlighter-rouge">/login</code>, <code class="language-plaintext highlighter-rouge">/_next</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Cookie-based auth middleware (<code class="language-plaintext highlighter-rouge">httpOnly</code> token)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Portal layout with sidebar + topbar</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Findings table + detail with evidence gallery</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Reports, risk, and remediation core views</li>
+</ul>
+
+<h3 id="7c-analytics-dashboard">7C: Analytics Dashboard</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Overall risk score widget</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Severity pie chart (Recharts)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />30-day trend chart (Recharts)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remediation table with status badges</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Report download cards (PDF / HTML actions)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Slow-network loading and error states</li>
+</ul>
+
+<hr />
+
+<h3 id="71-read-only-findings-view">7.1 Read-Only Findings View</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Client-scoped authentication</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding summary display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Evidence gallery</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Timeline visualization</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Severity sorting</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign separation view</li>
+</ul>
+
+<h3 id="72-notification--status-updates-not-soc-alerting">7.2 Notification &amp; Status Updates (NOT SOC ALERTING)</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Polling-based update system</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />New finding notifications</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Approval status updates</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remediation status changes</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Alert preferences</li>
+</ul>
+
+<h3 id="73-report--evidence-downloads">7.3 Report &amp; Evidence Downloads</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PDF report download</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />HTML export action in portal</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />JSON API export</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />CSV findings export</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Evidence file download</li>
+</ul>
+
+<h3 id="74-risk-scoring-dashboard-client-interpretable">7.4 Risk Scoring Dashboard (CLIENT INTERPRETABLE)</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Overall risk score</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Risk by severity</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Risk trends over time</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />CVSS distribution</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding count metrics</li>
+</ul>
+
+<h3 id="75-remediation-tracking">7.5 Remediation Tracking</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remediation plan display</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Status badges and table state</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Timeline tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Owner assignment column (UI-ready fallback)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Completion verification marking</li>
+</ul>
+
+<h3 id="750-portal-usage-telemetry-phase-8-dataset-foundation">7.5.0 Portal Usage Telemetry (Phase 8 Dataset Foundation)</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">client_activity_events</code> tenant-scoped telemetry table</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Event taxonomy: finding/report/dashboard/remediation interactions</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Async non-blocking ingestion endpoint (<code class="language-plaintext highlighter-rouge">POST /api/v1/client/events</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Basic rate limiting and privacy-safe metadata filtering</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Frontend instrumentation hooks (<code class="language-plaintext highlighter-rouge">portal/lib/telemetry.ts</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />MTTA and MTTR reference queries for defensive effectiveness analytics</li>
+</ul>
+
+<h3 id="76-web-ui-features">7.6 Web UI Features</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Responsive design (mobile-friendly)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Dark theme support</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Keyboard accessibility baseline</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Multi-language support</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Client-branded theme</li>
+</ul>
+
+<h3 id="77-deployment-model">7.7 Deployment Model</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />One portal per customer</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Configurable company branding</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Company subdomain</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Independent database tenancy</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Upgrade-safe migrations</li>
+</ul>
+
+<h3 id="key-technologies-recommended-stack">Key Technologies (RECOMMENDED STACK)</h3>
+
+<ul>
+  <li>Next.js (React)</li>
+  <li>TailwindCSS</li>
+  <li>shadcn/ui</li>
+  <li>FastAPI backend (Phase 6.5 API)</li>
+  <li>OAuth2 / OpenID Connect</li>
+  <li>Chart.js / Recharts</li>
+</ul>
+
+<hr />
+
+<h1 id="-phase-8--advanced-ml--analytics-patched">🧠 PHASE 8 — Advanced ML / Analytics (PATCHED)</h1>
+
+<p><strong>ETA:</strong> Delivered in v4.1 cycle
+<strong>Estimated Lines:</strong> 900–1600
+<strong>Status:</strong> ✅ Commercial Differentiator Feature Delivered
+<strong>Infra:</strong> Async ML workers + feature store + versioned models + explainability</p>
+
+<hr />
+
+<h2 id="️-80-ml-platform-foundations-required">🏗️ 8.0 ML Platform Foundations (REQUIRED)</h2>
+
+<blockquote>
+  <p>This is mandatory. Without it, none of the ML features are production-safe in multi-tenant SaaS.</p>
+</blockquote>
+
+<h3 id="data-pipeline">Data Pipeline</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Export events from operational DB → analytics schema</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Immutable append-only event tables</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feature materialization jobs</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Sliding window aggregations (1h / 24h / 7d / 30d)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Strict tenant-isolated datasets</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PII stripping / anonymization layer</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Backfill historical data processor</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Data validation checks (schema + null + range)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Late event handling</li>
+</ul>
+
+<h3 id="feature-store">Feature Store</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />PostgreSQL online feature tables</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Parquet cold storage</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feature versioning</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feature freshness tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Training vs inference consistency guard</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Point-in-time feature retrieval</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Dataset reproducibility hash</li>
+</ul>
+
+<h3 id="model-lifecycle--mlops">Model Lifecycle / MLOps</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Model registry table</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Model versioning</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Dataset hash tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Hyperparameter tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Promotion stages: experimental → staging → production</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Canary deployment</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Rollback support</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Shadow evaluation support</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Automatic retraining policy</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Manual approval workflow</li>
+</ul>
+
+<h3 id="workers">Workers</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Dedicated ML worker container</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Training job queue</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Inference job queue</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Periodic retraining queue</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />CPU execution support</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Optional GPU execution support</li>
+</ul>
+
+<h3 id="observability-critical">Observability (CRITICAL)</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Model performance metrics (accuracy, precision, recall)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Data drift detection</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feature distribution monitoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Prediction distribution monitoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Alert on degraded models</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Training vs production metric comparison</li>
+</ul>
+
+<h3 id="explainability">Explainability</h3>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />SHAP explanations per prediction</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feature importance tracking</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Human readable explanation generator</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Stored explanation artifacts</li>
+</ul>
+
+<hr />
+
+<h2 id="-81-offensive-cognition-models-internal-only">🧠 8.1 Offensive Cognition Models (Internal Only)</h2>
+
+<p>Goal: Assist red team operator decisions</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Attack graph builder (from campaign events)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Next step prediction model</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Technique recommendation engine</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Path success probability estimator</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Engagement efficiency scoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Operator assistance hints in UI</li>
+</ul>
+
+<p>Outputs:</p>
+
+<ul>
+  <li>predicted_next_action</li>
+  <li>probable_success_rate</li>
+  <li>recommended_vector</li>
+  <li>suggested_strategy</li>
+</ul>
+
+<hr />
+
+<h2 id="️-82-defensive-effectiveness-models-commercial">🛡️ 8.2 Defensive Effectiveness Models (Commercial)</h2>
+
+<p>Goal: Sellable customer analytics</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Control effectiveness scoring model</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection coverage estimation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Security maturity scoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Residual risk estimation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Improvement potential scoring</li>
+</ul>
+
+<p>Outputs:</p>
+
+<ul>
+  <li>security_score</li>
+  <li>detection_gap_score</li>
+  <li>residual_risk_score</li>
+  <li>improvement_priority</li>
+</ul>
+
+<hr />
+
+<h2 id="-83-behavioral-anomaly-learning">📈 8.3 Behavioral Anomaly Learning</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Baseline behavior profile per tenant</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Time-series anomaly scoring</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Campaign anomaly detection</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Sudden detection drop alerts</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Pattern clustering</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Behavioral drift tracking</li>
+</ul>
+
+<p>Algorithms:</p>
+
+<ul>
+  <li>Isolation Forest</li>
+  <li>DBSCAN</li>
+  <li>Statistical deviation models</li>
+</ul>
+
+<p>Outputs:</p>
+
+<ul>
+  <li>anomaly_score</li>
+  <li>abnormal_campaign_flag</li>
+  <li>unusual_detection_pattern</li>
+</ul>
+
+<hr />
+
+<h2 id="-84-remediation-intelligence">🧰 8.4 Remediation Intelligence</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Finding → remediation mapping</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remediation prioritization model</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Feasibility estimator</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Cost estimation model</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Expected risk reduction model</li>
+</ul>
+
+<p>Outputs:</p>
+
+<ul>
+  <li>remediation_priority</li>
+  <li>estimated_effort</li>
+  <li>expected_risk_reduction</li>
+  <li>recommended_fix_order</li>
+</ul>
+
+<hr />
+
+<h2 id="-85-organizational-security-analytics-sellable-reports">🏢 8.5 Organizational Security Analytics (Sellable Reports)</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Campaign clustering by behavior</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Defense performance over time</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Security posture trajectory</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Benchmark scoring vs peers (anonymized tenants)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Executive metrics generation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Quarterly trend report generator</li>
+</ul>
+
+<p>Outputs:</p>
+
+<ul>
+  <li>security_posture_trend</li>
+  <li>benchmark_percentile</li>
+  <li>maturity_level</li>
+  <li>executive_summary</li>
+</ul>
+
+<hr />
+
+<h2 id="-86-predictive-intelligence">🔮 8.6 Predictive Intelligence</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Attack likelihood prediction</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Detection success probability prediction</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Remediation outcome forecasting</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Risk projection model</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Scenario simulation engine</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />“What-if” defense planning tool</li>
+</ul>
+
+<p>Outputs:</p>
+
+<ul>
+  <li>predicted_attack_probability</li>
+  <li>predicted_detection_rate</li>
+  <li>projected_risk_after_fix</li>
+  <li>recommended_defense_investment</li>
+</ul>
+
+<hr />
+
+<h2 id="-technology-stack">🧩 Technology Stack</h2>
+
+<ul>
+  <li>Python ML pipelines</li>
+  <li>scikit-learn</li>
+  <li>Optional PyTorch (advanced models)</li>
+  <li>pandas / polars</li>
+  <li>PostgreSQL feature store</li>
+  <li>Parquet cold storage</li>
+  <li>SHAP explainability</li>
+  <li>Async workers (RQ/Celery equivalent)</li>
+  <li>Docker ML worker service</li>
+</ul>
+
+<hr />
+
+<h1 id="-updated--phase-9-continuous-compliance--regulatory-assurance">🧾 UPDATED — PHASE 9 Continuous Compliance &amp; Regulatory Assurance</h1>
+
+<p><strong>ETA:</strong> Q2 2027
+<strong>Estimated Lines:</strong> 1600–2600
+<strong>Status:</strong> Enterprise / Commercial Unlock</p>
+
+<p>💡 Goal: Convert operational security validation into auditable control effectiveness evidence across ISO 27001, SOC2, HIPAA and financial/health regulations.</p>
+
+<hr />
+
+<p>Perfect — below is a <strong>clean consolidated Phase 9</strong> (no duplication, no overlapping sections, consistent numbering, same style as your roadmap, checkboxes preserved, and audit-grade logic ordered correctly).</p>
+
+<p>This merges your two versions into <strong>one coherent implementation roadmap</strong>.</p>
+
+<hr />
+
+<h1 id="️-phase-9-continuous-compliance--regulatory-assurance--planned">🛡️ PHASE 9: Continuous Compliance &amp; Regulatory Assurance ⏳ PLANNED</h1>
+
+<p><strong>Status:</strong> Planned
+<strong>Estimated Lines:</strong> 3,500 – 5,000
+<strong>Tables:</strong> ~18 new
+<strong>Views:</strong> 0 (Headless Engine)
+<strong>APIs:</strong> Compliance &amp; Auditor API
+<strong>Depends On:</strong> Phase 0–8 telemetry</p>
+
+<p>💡 Thoughts:
+Phases 0–8 generate operational security reality.
+Phase 9 converts that reality into <strong>auditable control effectiveness evidence</strong> for ISO 27001, SOC 2, HIPAA, Financial and Healthcare regulatory environments across US/EU/LATAM.</p>
+
+<p>No new security testing features are introduced — this phase formalizes existing telemetry into defensible third-party verification artifacts.</p>
+
+<hr />
+
+<h2 id="purpose">Purpose</h2>
+
+<p>VectorVue continuously produces:</p>
+
+<ul>
+  <li>Control evidence</li>
+  <li>Policy enforcement records</li>
+  <li>Operational assurance metrics</li>
+  <li>Regulatory attestation artifacts</li>
+</ul>
+
+<p>This enables auditors to validate compliance using platform-generated evidence rather than interviews and screenshots.</p>
+
+<hr />
+
+<h2 id="architectural-principle">Architectural Principle</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Platform Capability</th>
+      <th>Compliance Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Immutable evidence chain</td>
+      <td>Non-repudiation</td>
+    </tr>
+    <tr>
+      <td>Detection tracking</td>
+      <td>Monitoring controls</td>
+    </tr>
+    <tr>
+      <td>Attack simulation</td>
+      <td>Control effectiveness</td>
+    </tr>
+    <tr>
+      <td>Telemetry analytics</td>
+      <td>Continuous assurance</td>
+    </tr>
+    <tr>
+      <td>Tenant isolation</td>
+      <td>Data segregation</td>
+    </tr>
+    <tr>
+      <td>Approval workflows</td>
+      <td>Change management</td>
+    </tr>
+    <tr>
+      <td>Operator attribution</td>
+      <td>Accountability</td>
+    </tr>
+    <tr>
+      <td>Timeline replay</td>
+      <td>Forensic reconstruction</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h1 id="90-96-implementation-status-delivered-vs-pending">9.0-9.6 Implementation Status (Delivered vs Pending)</h1>
+
+<h2 id="delivered">Delivered</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">assets</code> scope extensions for compliance context (<code class="language-plaintext highlighter-rouge">tenant_id</code>, <code class="language-plaintext highlighter-rouge">type</code>, <code class="language-plaintext highlighter-rouge">criticality</code>, <code class="language-plaintext highlighter-rouge">environment</code>, <code class="language-plaintext highlighter-rouge">business_process</code>, <code class="language-plaintext highlighter-rouge">in_scope</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">system_boundaries</code>, <code class="language-plaintext highlighter-rouge">control_owners</code>, <code class="language-plaintext highlighter-rouge">control_attestations</code>, <code class="language-plaintext highlighter-rouge">control_policies</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">control_observations</code> derivation worker from telemetry/events</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Control evaluation engine with states: <code class="language-plaintext highlighter-rouge">operating</code>, <code class="language-plaintext highlighter-rouge">degraded</code>, <code class="language-plaintext highlighter-rouge">failed</code>, <code class="language-plaintext highlighter-rouge">insufficient_evidence</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">control_state_history</code> persistence</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Append-only immutable <code class="language-plaintext highlighter-rouge">compliance_events</code> with hash-chain fields</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Dataset hash + timestamp signature generation for compliance evidence</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Framework/control mapping tables: <code class="language-plaintext highlighter-rouge">frameworks</code>, <code class="language-plaintext highlighter-rouge">controls</code>, <code class="language-plaintext highlighter-rouge">control_mappings</code>, <code class="language-plaintext highlighter-rouge">control_applicability_rules</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Framework automation coverage: ISO27001, SOC2, HIPAA, ISO27799, SOX, GLBA, FFIEC, DORA, GDPR32, LATAM baseline</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Continuous scoring tables: <code class="language-plaintext highlighter-rouge">compliance_scores</code>, <code class="language-plaintext highlighter-rouge">compliance_snapshots</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Auditor session model: <code class="language-plaintext highlighter-rouge">audit_sessions</code> with time-bounded token records</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Signed compliance API envelope contract</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Compliance endpoints:</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">POST /audit/session</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">GET /compliance/frameworks</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">GET /compliance/{framework}/controls</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">GET /compliance/{framework}/score</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">GET /compliance/{framework}/report</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">GET /compliance/audit-window</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Audit package download endpoint:</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><code class="language-plaintext highlighter-rouge">GET /compliance/{framework}/report/download</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Export package generation (<code class="language-plaintext highlighter-rouge">controls.json</code>, <code class="language-plaintext highlighter-rouge">evidence.json</code>, <code class="language-plaintext highlighter-rouge">metadata.json</code>, <code class="language-plaintext highlighter-rouge">checksums.txt</code>, <code class="language-plaintext highlighter-rouge">signature.txt</code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Daily compliance evaluation worker and observation worker in deployment</li>
+</ul>
+
+<h2 id="pending-backlog-for-9x-enhancements">Pending (Backlog for 9.x Enhancements)</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Dedicated evidence verification endpoint (separate from report/read endpoints)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Dedicated integrity verification endpoint (public recomputation helper)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Audit access log endpoint/report view</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Formal Statement of Applicability generator output</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Monthly/quarterly report scheduling and executive summary templates</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Automated compliance drift alerting thresholds by framework policy</li>
+</ul>
+
+<h2 id="post-phase-9-qa--stabilization-delivered">Post-Phase 9 QA &amp; Stabilization (Delivered)</h2>
+
+<p>Purpose: harden runtime behavior for commercial production use after compliance rollout.</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Added dedicated QA test package: <code class="language-plaintext highlighter-rouge">tests/qa_cycle/</code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />API verification suite:</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />route presence and OpenAPI contract checks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />auth enforcement checks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />tenant isolation checks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />pagination contract checks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Workflow validation suite:</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />event ingestion to persistence checks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />no orphan remediation relationships</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />compliance report generation + signed audit package download</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />expired session rejection checks</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Portal contract suite:</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />frontend proxy routes mapped to existing backend endpoints</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Data integrity checks:</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />compliance hash-chain continuity</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />timestamp consistency bounds</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />snapshot reproducibility checks (stable dataset hash for unchanged data)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Performance simulation checks:</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />10k analytics events ingestion scenario</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />parallel compliance export scenario</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Stabilization patches applied:</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />compliance export filename collision fix for concurrent downloads</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />deterministic dataset hash computation for reproducible snapshots</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />remediation due-date null edge-case fix</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />report media type correction (<code class="language-plaintext highlighter-rouge">application/pdf</code> when applicable)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />client API basic rate limiting implementation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />tenant-focused composite index additions for high-traffic client queries</li>
+</ul>
+
+<p>Execution command (in containerized QA flow):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose run <span class="nt">--rm</span> <span class="se">\</span>
+  <span class="nt">-e</span> <span class="nv">QA_BASE_URL</span><span class="o">=</span>http://vectorvue_app:8080 <span class="se">\</span>
+  <span class="nt">-v</span> <span class="s2">"</span><span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span><span class="s2">:/opt/vectorvue"</span> <span class="se">\</span>
+  vectorvue_app <span class="se">\</span>
+  python <span class="nt">-m</span> unittest <span class="nt">-v</span> <span class="se">\</span>
+    tests.qa_cycle.test_api_security <span class="se">\</span>
+    tests.qa_cycle.test_workflow_integrity <span class="se">\</span>
+    tests.qa_cycle.test_portal_contract
+</code></pre></div></div>
+
+<h2 id="database-additions-implemented">Database Additions (Implemented)</h2>
+
+<ul>
+  <li>frameworks</li>
+  <li>controls</li>
+  <li>control_mappings</li>
+  <li>control_applicability_rules</li>
+  <li>control_owners</li>
+  <li>control_attestations</li>
+  <li>control_policies</li>
+  <li>control_observations</li>
+  <li>control_state_history</li>
+  <li>compliance_events</li>
+  <li>compliance_scores</li>
+  <li>compliance_snapshots</li>
+  <li>audit_sessions</li>
+  <li>assurance_timeline</li>
+  <li>compliance_events</li>
+  <li>compliance_snapshots</li>
+</ul>
+
+<hr />
+
+<h1 id="deliverables-9">Deliverables</h1>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">vv_compliance_engine.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vv_control_mapper.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vv_evidence_builder.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vv_attestation.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vv_policy_state.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vv_continuous_validation.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">api/compliance_routes.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">schemas/compliance_models.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/COMPLIANCE_API_SPEC.md</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/AUDITOR_GUIDE.md</code></li>
+</ul>
+
+<hr />
+
+<h2 id="no-ui-by-design">No UI by Design</h2>
+
+<p>This phase is headless.
+Consumed by auditors, regulators, GRC platforms, and enterprise risk tooling.</p>
+
+<hr />
+
+<h2 id="-updated-dependencies">🔗 Updated Dependencies</h2>
+
+<h3 id="phase-6--65">Phase 6 → 6.5</h3>
+
+<ul>
+  <li>Containerization stable</li>
+  <li>Multi-tenant schema validated</li>
+</ul>
+
+<h3 id="phase-65--7">Phase 6.5 → 7</h3>
+
+<ul>
+  <li>Public read-only API stable</li>
+  <li>Tenant isolation verified</li>
+  <li>Evidence publishing safe</li>
+</ul>
+
+<h3 id="phase-750--8">Phase 7.5.0 → 8</h3>
+
+<ul>
+  <li>Client portal deployed</li>
+  <li>Historical portal-usage datasets accumulated</li>
+  <li>Defensive analytics dataset validated</li>
+</ul>
+
+<h3 id="phase-8--9">Phase 8 → 9</h3>
+
+<p><strong>Phase 0-8 → Generate security reality</strong>
+<strong>Phase 9 → Certify security reality</strong></p>
+
+<hr />
+
+<h2 id="-business-alignment-result">💰 Business Alignment Result</h2>
+
+<p><strong>After Phase 7 / 7.5.0:</strong>
+You sell <strong>Continuous Adversary Validation Portal</strong></p>
+
+<p><strong>After Phase 8:</strong>
+You sell <strong>Security Effectiveness Intelligence Platform</strong></p>
+
+<p><strong>After Phase 9:</strong></p>
+
+<blockquote>
+  <p>VectorVue no longer only tests security —
+it continuously proves security to third parties.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="risk-mitigation">Risk Mitigation</h2>
+
+<h3 id="data-integrity-risks">Data Integrity Risks</h3>
+<ul>
+  <li>✅ Phase 0: Immutable evidence + HMAC signing</li>
+  <li>Phase 3: Report versioning + audit trail</li>
+  <li>Phase 4: Team-level transaction support</li>
+</ul>
+
+<h3 id="security-risks">Security Risks</h3>
+<ul>
+  <li>✅ Phase 0-2: AES-256 encryption throughout</li>
+  <li>Phase 6: HSM + TLS 1.3 enforcement</li>
+  <li>Phase 7: Client auth via OAuth2</li>
+</ul>
+
+<h3 id="performance-risks">Performance Risks</h3>
+<ul>
+  <li>✅ Phase 2: Async task execution (RuntimeExecutor)</li>
+  <li>Phase 3: Report generation offload to queue</li>
+  <li>✅ Phase 7.5.0: Portal telemetry event volume validation for large datasets</li>
+  <li>✅ Phase 8: ML worker queue + model health/drift monitoring</li>
+</ul>
+
+<h3 id="scalability-risks">Scalability Risks</h3>
+<ul>
+  <li>✅ Phase 2: SQLite → PostgreSQL upgrade path</li>
+  <li>✅ Phase 5.6: Federation trust closure + dockerized secure ingestion baseline delivered</li>
+  <li>Phase 4: Team-level database sharding</li>
+  <li>Phase 5: Feed ingestion caching layer</li>
+</ul>
+
+<hr />
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>VectorVue has evolved from a single-operator security validation utility into a continuous security assurance platform designed for enterprise and regulated environments.</p>
+
+<p>Phases 0–5.5 established the trust and cognition foundation: immutable evidence storage, normalized telemetry ingestion, detection validation, attribution, reliability measurement, and replayable investigations. The platform moved to PostgreSQL and containerized deployment, enabling deterministic and reproducible security analysis across tenants.</p>
+
+<p>Phases 5.6–7.5 operationalized the system: federation trust closure, hardened deployment profiles, workflow integrations, responsibility mapping, remediation tracking, and organization-level operational visibility. VectorVue transitioned from a testing tool into a system embedded within real security operations, capable of measuring how defenses behave over time rather than at a single point.</p>
+
+<p>Phase 8 transformed operational data into explainable assurance analytics. Tenant-scoped models, evidence graphs, and simulation APIs enabled organizations to quantify defensive capability, stability trends, and degradation risk using reproducible datasets rather than subjective assessments.</p>
+
+<p>Phase 9 completed the platform by converting validated operational reality into regulatory assurance. VectorVue now produces cryptographically verifiable control effectiveness, continuous compliance scoring, and auditor-consumable evidence aligned with major frameworks (ISO 27001, SOC 2, HIPAA, financial regulations, and privacy regimes). Compliance is no longer documented — it is independently provable from observed behavior.</p>
+
+<p>Product Position</p>
+
+<p>VectorVue is not a scanner, SIEM, or GRC tracker.</p>
+
+<p>It is a Security Assurance System that continuously demonstrates whether security controls function correctly and produces third-party-verifiable proof of that capability.</p>
+
+<p>Organizations use VectorVue to:</p>
+
+<p>Validate defensive effectiveness under adversarial conditions</p>
+
+<p>Measure reliability and operational discipline</p>
+
+<p>Detect security posture degradation early</p>
+
+<p>Provide auditors independently verifiable evidence</p>
+
+<p>Maintain continuous certification readiness</p>
+
+<p>Strategic Outcome</p>
+
+<p>VectorVue shifts security from trust-based assurance to evidence-based assurance.</p>
+
+<p>Instead of asking organizations to prove they are secure during audits, the platform continuously builds the proof — allowing engineering, leadership, customers, and regulators to verify security posture directly from operational reality.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Current Status:</strong> Phase 9 Complete ✅</td>
+      <td><strong>Production Ready:</strong> Yes</td>
+      <td><strong>Commercial Scope:</strong> Delivered for v4.1 security validation + analytics + continuous compliance assurance</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>VectorVue Roadmap</strong></td>
+      <td>Last Updated: February 26, 2026</td>
+      <td>Maintained by: Internal Engineering Team</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Security Expansion Appendix: <a href="./Expansion_Appendix.md">VectorVue Security Expansion Appendix</a>
+SpectraStrike Integration Manual: <a href="./integration/spectrastrike-vectorvue.md">Secure SpectraStrike ↔ VectorVue Integration</a></p>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
