@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-1-sprint-1.1-secure-telemetry-gateway | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-1-sprint-11---secure-telemetry-gateway">Phase 1 Sprint 1.1 - Secure Telemetry Gateway</h1>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: inbound telemetry stream integrity and service-to-service trust boundary.</li>
+  <li>Trust boundary: private telemetry gateway network and authenticated ingest endpoint.</li>
+  <li>Adversary: forged service client, replay actor, unauthorized internal caller.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Unauthenticated telemetry POST calls.</li>
+  <li>Caller identity spoofing without mTLS client certificate.</li>
+  <li>Certificate substitution attack against expected producer identity.</li>
+  <li>Unsigned payload submission and signature forgery.</li>
+  <li>Nonce replay with reused signed requests.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>New internal-only gateway service: <code class="language-plaintext highlighter-rouge">services.telemetry_gateway.main</code>.</li>
+  <li>Mandatory mTLS identity header gate (<code class="language-plaintext highlighter-rouge">X-Client-Cert-Sha256</code>).</li>
+  <li>Certificate pinning against trusted service identity certificate fingerprints.</li>
+  <li>Mandatory Ed25519 payload signature validation via pinned public key (<code class="language-plaintext highlighter-rouge">VV_TG_SPECTRASTRIKE_ED25519_PUBKEY</code>).</li>
+  <li>Strict timestamp skew validation (default 30s).</li>
+  <li>Nonce replay guard with TTL enforcement.</li>
+  <li>Runtime returns fail-closed responses for missing/invalid security controls.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Current replay cache is in-memory and not shared across instances.</li>
+  <li>mTLS signal is represented by trusted header contract from upstream TLS terminator.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Move replay cache to Redis for multi-instance consistency.</li>
+  <li>Bind gateway ingress to dedicated mTLS reverse proxy with direct certificate extraction.</li>
+  <li>Add hardware-backed key lifecycle management for producer signing keys.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

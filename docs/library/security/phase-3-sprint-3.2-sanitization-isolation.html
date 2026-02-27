@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-3-sprint-3.2-sanitization-isolation | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-3-sprint-32---sanitization-and-isolation">Phase 3 Sprint 3.2 - Sanitization and Isolation</h1>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: tenant-scoped telemetry integrity and processing trust boundaries.</li>
+  <li>Adversary: attacker injecting HTML/JS or SQL-like payload fragments, cross-tenant event forger.</li>
+  <li>Trust boundary: signed telemetry ingest before queue publish.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>HTML/JS content injection in descriptive telemetry fields.</li>
+  <li>SQL-like injection markers in canonical payload text values.</li>
+  <li>Operator claiming another tenant context in request envelope.</li>
+  <li>Signed metadata mismatch between identity fields and payload mapping.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Canonical payload sanitization now escapes HTML/JS characters for string fields.</li>
+  <li>Injection-pattern blocking rejects SQL-like attack markers.</li>
+  <li>Strict signed metadata model enforces tenant/operator/campaign identity tuple.</li>
+  <li>Explicit operator-to-tenant mapping (<code class="language-plaintext highlighter-rouge">VV_TG_OPERATOR_TENANT_MAP</code>) blocks cross-tenant claims.</li>
+  <li>Violations are rejected before queue publish; schema failures route to DLQ.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Mapping table is environment-configured and requires disciplined change control.</li>
+  <li>Sanitization is rule-based and should evolve with threat intel.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Move operator-tenant mapping to signed control-plane config source.</li>
+  <li>Add centralized policy engine for text sanitization and deny-list updates.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-9-sprint-9.1-redteam-validation | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-9-sprint-91---red-team-validation-architecture">Phase 9 Sprint 9.1 - Red Team Validation Architecture</h1>
+
+<h2 id="summary">Summary</h2>
+<p>Added a dedicated red-team simulation suite as a release-gating security control within CI.</p>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>CI must treat incoming changes as untrusted and reject any build that permits critical attack-path regressions.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Replay and signature bypass.</li>
+  <li>Service identity spoofing / MITM fingerprint mismatch.</li>
+  <li>Cross-tenant access.</li>
+  <li>Queue poisoning.</li>
+  <li>Tamper log integrity bypass.</li>
+  <li>Rate limit exhaustion.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Phase 9.1 simulation suite executes adversarial request and tampering scenarios.</li>
+  <li>Security workflow now includes red-team simulations in required regression gate.</li>
+  <li>Promotion gate remains fail-closed when any simulation test fails.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>This sprint validates known controls; emerging vectors still require periodic suite expansion.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Add attack replay corpus and scenario versioning.</li>
+  <li>Add federation-specific replay and key-rotation adversarial tests.</li>
+</ul>
+
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<pre><code class="language-mermaid">flowchart LR
+  C[Candidate Change]
+  CI[Security Enforcement Workflow]
+  RT[Phase 9.1 Red-Team Simulation Suite]
+  G1[Telemetry Security Controls]
+  G2[Tenant Isolation Controls]
+  G3[Tamper Log Integrity Controls]
+  BLOCK[Promotion Blocked]
+  PASS[Promotion Eligible]
+
+  C --&gt; CI
+  CI --&gt; RT
+  RT --&gt; G1
+  RT --&gt; G2
+  RT --&gt; G3
+  G1 --&gt; BLOCK
+  G2 --&gt; BLOCK
+  G3 --&gt; BLOCK
+  RT --&gt; PASS
+</code></pre>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

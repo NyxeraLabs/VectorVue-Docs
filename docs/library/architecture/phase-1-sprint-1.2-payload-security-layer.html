@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-1-sprint-1.2-payload-security-layer | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-1-sprint-12---payload-security-layer-architecture">Phase 1 Sprint 1.2 - Payload Security Layer Architecture</h1>
+
+<h2 id="summary">Summary</h2>
+<p>The telemetry gateway now enforces signed payload verification, Redis-backed replay defense, and operator rate limiting before telemetry acceptance.</p>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Telemetry is untrusted until identity, signature, freshness, and replay checks all pass.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Signature forgery.</li>
+  <li>Expired timestamp replay.</li>
+  <li>Nonce reuse.</li>
+  <li>Burst flooding by operator identifier.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Ed25519 signature validation pipeline.</li>
+  <li>Header/body timestamp and nonce consistency checks.</li>
+  <li>Redis-backed nonce uniqueness TTL store.</li>
+  <li>Redis-backed per-operator per-minute counters with 429 enforcement.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Shared Redis availability is a dependency for strict fail-closed ingest.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Isolate security cache Redis DB and ACL from analytics workloads.</li>
+  <li>Add circuit-breaker and queue handoff after rate-limit threshold crossings.</li>
+</ul>
+
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<pre><code class="language-mermaid">flowchart LR
+  SS[SpectraStrike]
+  TG[Telemetry Gateway]
+  R[(Redis: nonce + rate-limit)]
+  Q[(Phase 2 queue)]
+
+  SS --&gt; TG
+  TG --&gt; R
+  TG --&gt; Q
+</code></pre>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

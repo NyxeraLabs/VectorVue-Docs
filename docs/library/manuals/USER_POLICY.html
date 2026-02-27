@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>USER POLICY | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-user-policy">VectorVue User Policy</h1>
+
+<h2 id="authorized-use">Authorized Use</h2>
+
+<ol>
+  <li>VectorVue may only be used under an explicit written authorization and signed Rules of Engagement.</li>
+  <li>Any unauthorized access, surveillance, persistence, or exploitation outside agreed scope is prohibited.</li>
+</ol>
+
+<h2 id="operator-obligations">Operator Obligations</h2>
+
+<ol>
+  <li>Operators must verify legal basis and contractual scope before execution.</li>
+  <li>Operators must preserve evidence integrity and audit trail continuity.</li>
+  <li>Operators must not tamper with immutable records, audit logs, or retention controls.</li>
+</ol>
+
+<h2 id="data-handling">Data Handling</h2>
+
+<ol>
+  <li>Credentials, secrets, and sensitive client data must be handled under least-privilege principles.</li>
+  <li>Exported reports and artifacts must be stored and transferred through approved secure channels.</li>
+  <li>Any suspected data exposure must be escalated immediately.</li>
+</ol>
+
+<h2 id="platform-safety">Platform Safety</h2>
+
+<ol>
+  <li>Users must respect RBAC boundaries and approval workflows.</li>
+  <li>Users must not disable security controls, encryption safeguards, or logging mechanisms.</li>
+  <li>Any policy violation requires immediate termination of active sessions and operator review.</li>
+</ol>
+
+<h2 id="acknowledgment">Acknowledgment</h2>
+
+<p>By accepting this policy, you confirm you understand and agree to operate VectorVue only in authorized and compliant contexts.</p>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-1-sprint-1.2 | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-1-sprint-12---payload-security-layer">Phase 1 Sprint 1.2 - Payload Security Layer</h1>
+
+<h2 id="objective">Objective</h2>
+<p>Enforce payload authenticity, replay resistance, and operator burst protections in the telemetry gateway.</p>
+
+<h2 id="deliverables">Deliverables</h2>
+<ul>
+  <li>Ed25519 verification for telemetry request signatures.</li>
+  <li>Strict header requirements for signed telemetry.</li>
+  <li>Redis nonce store for replay prevention.</li>
+  <li>±30s timestamp skew enforcement.</li>
+  <li>Per-operator rate limiting and burst anomaly rejection.</li>
+  <li>Security tests covering forged/expired/replayed/burst scenarios.</li>
+</ul>
+
+<h2 id="exit-criteria">Exit Criteria</h2>
+<ul>
+  <li>Forged payloads are rejected.</li>
+  <li>Expired timestamps are rejected.</li>
+  <li>Reused nonces are rejected.</li>
+  <li>Burst requests exceed threshold and return <code class="language-plaintext highlighter-rouge">429</code>.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

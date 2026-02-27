@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ACCEPTABLE USE POLICY | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+-->
+
+<h1 id="vectorvue-acceptable-use-policy-aup">VectorVue Acceptable Use Policy (AUP)</h1>
+
+<h2 id="1-purpose">1. Purpose</h2>
+
+<p>This Acceptable Use Policy defines the permitted and prohibited uses of VectorVue.</p>
+
+<p>VectorVue is a controlled cybersecurity intelligence and operational platform intended exclusively for authorized security testing, analysis, and research.</p>
+
+<h2 id="2-authorized-context">2. Authorized Context</h2>
+
+<p>VectorVue may only be used:</p>
+
+<ul>
+  <li>Under explicit written authorization</li>
+  <li>With signed Rules of Engagement (RoE)</li>
+  <li>Within defined contractual scope</li>
+  <li>In compliance with applicable laws</li>
+</ul>
+
+<h2 id="3-prohibited-activities">3. Prohibited Activities</h2>
+
+<p>Users may NOT:</p>
+
+<ul>
+  <li>Use VectorVue for unauthorized access or exploitation</li>
+  <li>Deploy VectorVue against systems without written authorization</li>
+  <li>Conduct surveillance outside agreed scope</li>
+  <li>Disable logging, audit trails, or integrity controls</li>
+  <li>Attempt to bypass RBAC or approval workflows</li>
+  <li>Use the platform to create competing commercial services (per BSL 1.1 restrictions)</li>
+</ul>
+
+<h2 id="4-infrastructure-misuse">4. Infrastructure Misuse</h2>
+
+<p>It is strictly prohibited to:</p>
+
+<ul>
+  <li>Use VectorVue to attack public infrastructure</li>
+  <li>Target government systems without legal mandate</li>
+  <li>Conduct destructive or disruptive operations</li>
+  <li>Use data for extortion, harassment, or unlawful activities</li>
+</ul>
+
+<h2 id="5-enforcement">5. Enforcement</h2>
+
+<p>Violations of this policy may result in:</p>
+
+<ul>
+  <li>Immediate termination of access</li>
+  <li>Revocation of license</li>
+  <li>Legal action</li>
+  <li>Reporting to appropriate authorities</li>
+</ul>
+
+<h2 id="6-acknowledgment">6. Acknowledgment</h2>
+
+<p>By installing, accessing, or operating VectorVue, you agree to comply with this Acceptable Use Policy.</p>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

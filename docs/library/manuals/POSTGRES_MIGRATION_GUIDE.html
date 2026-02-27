@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>POSTGRES MIGRATION GUIDE | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="postgresql-migration-guide">PostgreSQL Migration Guide</h1>
+
+<p>This guide describes migration and validation for PostgreSQL-backed VectorVue environments.</p>
+
+<h2 id="1-included-assets">1. Included Assets</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sql/postgres_schema.sql</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts/export_pg_schema.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts/migrate_sqlite_to_postgres.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tests/test_postgres_smoke.py</code></li>
+</ul>
+
+<h2 id="2-start-database-service">2. Start Database Service</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose up <span class="nt">-d</span> postgres
+docker compose ps
+</code></pre></div></div>
+
+<h2 id="3-apply-schema">3. Apply Schema</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make pg-schema-bootstrap
+</code></pre></div></div>
+
+<h2 id="4-optional-sqlite-to-postgresql-data-migration">4. Optional SQLite-to-PostgreSQL Data Migration</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose run <span class="nt">--rm</span> vectorvue_app python scripts/migrate_sqlite_to_postgres.py <span class="se">\</span>
+  <span class="nt">--sqlite</span> vectorvue.db <span class="se">\</span>
+  <span class="nt">--pg-url</span> postgresql://vectorvue:strongpassword@postgres:5432/vectorvue_db <span class="se">\</span>
+  <span class="nt">--schema</span> sql/postgres_schema.sql <span class="se">\</span>
+  <span class="nt">--truncate</span>
+</code></pre></div></div>
+
+<h2 id="5-apply-platform-migrations">5. Apply Platform Migrations</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make phase65-migrate
+make phase7e-migrate
+make phase8-migrate
+make phase9-migrate
+</code></pre></div></div>
+
+<h2 id="6-validate-runtime">6. Validate Runtime</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make deploy
+make api-smoke
+</code></pre></div></div>
+
+<h2 id="7-regression-checks">7. Regression Checks</h2>
+
+<p>Use checklist:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">docs/manuals/POSTGRES_REGRESSION_CHECKLIST.md</code></li>
+</ul>
+
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

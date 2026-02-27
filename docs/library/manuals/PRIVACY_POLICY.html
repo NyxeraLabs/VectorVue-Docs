@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PRIVACY POLICY | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+-->
+
+<h1 id="vectorvue-privacy-policy">VectorVue Privacy Policy</h1>
+
+<p>Effective Date: 2026-01-01</p>
+
+<p>This Privacy Policy describes how VectorVue handles data in both self-hosted and future SaaS deployment models.</p>
+
+<hr />
+
+<h1 id="1-scope">1. Scope</h1>
+
+<p>This policy applies to:</p>
+
+<ul>
+  <li>Self-hosted installations of VectorVue</li>
+  <li>Future managed SaaS offerings</li>
+  <li>Official VectorVue services operated by NyxeraLabs</li>
+</ul>
+
+<p>It does not apply to third-party infrastructure controlled by operators.</p>
+
+<hr />
+
+<h1 id="2-deployment-models">2. Deployment Models</h1>
+
+<h2 id="21-self-hosted-version">2.1 Self-Hosted Version</h2>
+
+<p>In self-hosted deployments:</p>
+
+<ul>
+  <li>NyxeraLabs does NOT collect operational data by default.</li>
+  <li>All logs, credentials, and audit trails remain under operator control.</li>
+  <li>No telemetry is transmitted externally unless explicitly enabled.</li>
+</ul>
+
+<p>The operator is solely responsible for:</p>
+
+<ul>
+  <li>Data protection compliance</li>
+  <li>Secure storage</li>
+  <li>Regulatory obligations</li>
+</ul>
+
+<h2 id="22-future-saas-version">2.2 Future SaaS Version</h2>
+
+<p>In SaaS deployments, VectorVue may process:</p>
+
+<ul>
+  <li>Account identifiers</li>
+  <li>Authentication logs</li>
+  <li>Role and access metadata</li>
+  <li>Operational audit logs</li>
+  <li>Platform usage telemetry</li>
+  <li>Abuse detection signals</li>
+</ul>
+
+<p>Sensitive operational artifacts remain tenant-isolated.</p>
+
+<hr />
+
+<h1 id="3-data-categories">3. Data Categories</h1>
+
+<p>VectorVue may handle the following categories of data:</p>
+
+<h3 id="31-account-data">3.1 Account Data</h3>
+<ul>
+  <li>Usernames</li>
+  <li>Email addresses</li>
+  <li>Role assignments</li>
+  <li>Authentication credentials (hashed)</li>
+</ul>
+
+<h3 id="32-operational-metadata">3.2 Operational Metadata</h3>
+<ul>
+  <li>Execution timestamps</li>
+  <li>Workflow actions</li>
+  <li>Audit events</li>
+  <li>Approval records</li>
+</ul>
+
+<h3 id="33-security-data">3.3 Security Data</h3>
+<ul>
+  <li>Access attempts</li>
+  <li>Privilege escalations</li>
+  <li>Integrity validation events</li>
+  <li>API usage logs</li>
+</ul>
+
+<p>VectorVue is not designed to collect personal data beyond what is required for secure account management.</p>
+
+<hr />
+
+<h1 id="4-purpose-of-processing">4. Purpose of Processing</h1>
+
+<p>Data is processed for:</p>
+
+<ul>
+  <li>Authentication and access control</li>
+  <li>Platform integrity</li>
+  <li>Abuse prevention</li>
+  <li>Audit traceability</li>
+  <li>Regulatory compliance</li>
+  <li>Security monitoring</li>
+</ul>
+
+<p>Data is not used for advertising or profiling.</p>
+
+<hr />
+
+<h1 id="5-data-retention">5. Data Retention</h1>
+
+<p>Retention policies depend on deployment model:</p>
+
+<ul>
+  <li>Self-hosted: defined and enforced by the operator.</li>
+  <li>SaaS: defined by service agreement and regulatory requirements.</li>
+</ul>
+
+<p>Audit logs may require extended retention for compliance purposes.</p>
+
+<hr />
+
+<h1 id="6-data-security">6. Data Security</h1>
+
+<p>VectorVue enforces:</p>
+
+<ul>
+  <li>Encryption in transit (TLS)</li>
+  <li>Encryption at rest (where configured)</li>
+  <li>Role-based access control</li>
+  <li>Immutable logging mechanisms</li>
+</ul>
+
+<p>Operators must ensure infrastructure-level security controls.</p>
+
+<hr />
+
+<h1 id="7-data-sharing">7. Data Sharing</h1>
+
+<p>NyxeraLabs does not sell personal data.</p>
+
+<p>Data may be disclosed only:</p>
+
+<ul>
+  <li>To comply with legal obligations</li>
+  <li>To prevent fraud or abuse</li>
+  <li>Under explicit contractual agreement (SaaS enterprise context)</li>
+</ul>
+
+<hr />
+
+<h1 id="8-international-data-transfers-future-saas">8. International Data Transfers (Future SaaS)</h1>
+
+<p>If SaaS is deployed internationally:</p>
+
+<ul>
+  <li>Appropriate safeguards will be implemented</li>
+  <li>Regulatory transfer mechanisms will be defined in service agreements</li>
+</ul>
+
+<hr />
+
+<h1 id="9-user-rights-saas-context">9. User Rights (SaaS Context)</h1>
+
+<p>Where applicable under law, users may have the right to:</p>
+
+<ul>
+  <li>Access their personal data</li>
+  <li>Request correction</li>
+  <li>Request deletion</li>
+  <li>Restrict processing</li>
+  <li>Object to certain processing activities</li>
+</ul>
+
+<p>Self-hosted deployments are governed by the operator’s own data policies.</p>
+
+<hr />
+
+<h1 id="10-childrens-data">10. Children’s Data</h1>
+
+<p>VectorVue is not intended for use by individuals under 18 years of age.</p>
+
+<hr />
+
+<h1 id="11-changes-to-this-policy">11. Changes to This Policy</h1>
+
+<p>This Privacy Policy may be updated to reflect:</p>
+
+<ul>
+  <li>Platform evolution</li>
+  <li>Regulatory changes</li>
+  <li>SaaS deployment expansion</li>
+</ul>
+
+<p>Material changes will be communicated where applicable.</p>
+
+<hr />
+
+<h1 id="12-contact">12. Contact</h1>
+
+<p>For privacy-related inquiries (future SaaS context):</p>
+
+<p>security@vectorvue.cloud</p>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

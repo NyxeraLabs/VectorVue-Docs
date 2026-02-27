@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-1-sprint-1.2-payload-security-layer | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-1-sprint-12---payload-security-layer">Phase 1 Sprint 1.2 - Payload Security Layer</h1>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: telemetry payload authenticity, freshness, and ingestion availability.</li>
+  <li>Adversary: forged sender, replay attacker, operator-level burst flood.</li>
+  <li>Trust policy: no implicit trust in source network or caller identity alone.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Forged telemetry body with invalid signature.</li>
+  <li>Unsigned payload submission.</li>
+  <li>Replay of prior signed payload (same nonce/timestamp).</li>
+  <li>Expired timestamp replay outside allowed skew window.</li>
+  <li>Operator burst submissions intended to exhaust ingest capacity.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Ed25519 payload signature verification enforced per request.</li>
+  <li>Mandatory <code class="language-plaintext highlighter-rouge">X-Telemetry-Signature</code>, <code class="language-plaintext highlighter-rouge">X-Telemetry-Timestamp</code>, and <code class="language-plaintext highlighter-rouge">X-Telemetry-Nonce</code> headers.</li>
+  <li>Timestamp skew enforcement (default ±30 seconds).</li>
+  <li>Nonce replay protection backed by Redis (<code class="language-plaintext highlighter-rouge">VV_TG_NONCE_BACKEND=redis</code>).</li>
+  <li>Per-operator per-minute rate limiting and burst anomaly rejection via Redis.</li>
+  <li>Fail-closed mode if Redis nonce/rate-limit backends are unavailable.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Rate limiting currently keyed by <code class="language-plaintext highlighter-rouge">operator_id</code>; abusive distributed operator identities can still increase load.</li>
+  <li>Telemetry queue isolation and backpressure controls are deferred to Phase 2.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Add adaptive anomaly thresholds by operator baseline.</li>
+  <li>Add dedicated metrics/alerts for rate-limit and replay rejection rates.</li>
+  <li>Add multi-region nonce consistency strategy.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

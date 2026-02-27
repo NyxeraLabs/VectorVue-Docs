@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-5-sprint-5.1-zero-trust-identity | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-5-sprint-51---zero-trust-service-identity-architecture">Phase 5 Sprint 5.1 - Zero Trust Service Identity Architecture</h1>
+
+<h2 id="summary">Summary</h2>
+<p>Service authentication now uses explicit service identity + certificate fingerprint mapping instead of a single shared trust value.</p>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Assume no internal service is trusted by default.</li>
+  <li>Require explicit identity and cryptographic certificate binding per caller.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Identity spoofing by unknown service ID.</li>
+  <li>Certificate mismatch for valid identity.</li>
+  <li>Shared static trust variable misuse.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Identity map enforcement (<code class="language-plaintext highlighter-rouge">service_id -&gt; cert_sha256</code>).</li>
+  <li>Identity cert/key/CA artifacts configured per service container.</li>
+  <li>Gateway startup fails if local identity artifacts are missing.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Identity-policy lifecycle management remains environment-based.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>SPIFFE/SPIRE or mesh-based workload identities.</li>
+  <li>Centralized policy signing and rollout validation.</li>
+</ul>
+
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<pre><code class="language-mermaid">flowchart LR
+  SVC[Caller Service]
+  IDMAP[Identity Policy Map]
+  GW[Telemetry Gateway]
+
+  SVC --&gt;|X-Service-Identity + cert fingerprint| GW
+  IDMAP --&gt; GW
+  GW --&gt;|allow only mapped identity+cert| Ingest[Telemetry Ingest]
+</code></pre>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

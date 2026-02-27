@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PORTAL TELEMETRY MANUAL | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-portal-telemetry-manual">VectorVue Portal Telemetry Manual</h1>
+
+<p>This manual defines how client portal telemetry is captured for security intelligence and assurance analytics.</p>
+
+<h2 id="1-purpose">1. Purpose</h2>
+
+<p>Telemetry supports:</p>
+
+<ul>
+  <li>time-to-acknowledge measurement</li>
+  <li>remediation latency measurement</li>
+  <li>dashboard/report consultation analysis</li>
+  <li>defensive effectiveness model datasets</li>
+</ul>
+
+<p>This is not marketing telemetry.</p>
+
+<h2 id="2-privacy-constraints">2. Privacy Constraints</h2>
+
+<p>Telemetry does not store:</p>
+
+<ul>
+  <li>IP addresses</li>
+  <li>user-agent strings</li>
+  <li>keystrokes or typed content</li>
+</ul>
+
+<p>Telemetry stores only security workflow actions.</p>
+
+<h2 id="3-event-types">3. Event Types</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">FINDING_VIEWED</code></li>
+  <li><code class="language-plaintext highlighter-rouge">FINDING_ACKNOWLEDGED</code></li>
+  <li><code class="language-plaintext highlighter-rouge">REMEDIATION_OPENED</code></li>
+  <li><code class="language-plaintext highlighter-rouge">REMEDIATION_COMPLETED</code></li>
+  <li><code class="language-plaintext highlighter-rouge">REPORT_DOWNLOADED</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DASHBOARD_VIEWED</code></li>
+</ul>
+
+<h2 id="4-storage-model">4. Storage Model</h2>
+
+<p>Table: <code class="language-plaintext highlighter-rouge">client_activity_events</code></p>
+
+<p>Core fields:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">id</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tenant_id</code></li>
+  <li><code class="language-plaintext highlighter-rouge">user_id</code> (nullable)</li>
+  <li><code class="language-plaintext highlighter-rouge">event_type</code></li>
+  <li><code class="language-plaintext highlighter-rouge">object_type</code></li>
+  <li><code class="language-plaintext highlighter-rouge">object_id</code></li>
+  <li><code class="language-plaintext highlighter-rouge">severity</code> (nullable)</li>
+  <li><code class="language-plaintext highlighter-rouge">timestamp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">metadata_json</code></li>
+</ul>
+
+<p>Primary index:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">(tenant_id, timestamp DESC)</code></li>
+</ul>
+
+<h2 id="5-runtime-flow">5. Runtime Flow</h2>
+
+<ol>
+  <li>Portal calls telemetry endpoint.</li>
+  <li>API validates tenant auth and event schema.</li>
+  <li>API applies basic rate limiting.</li>
+  <li>API sanitizes metadata.</li>
+  <li>Event is inserted asynchronously.</li>
+  <li>API returns <code class="language-plaintext highlighter-rouge">202 Accepted</code> quickly.</li>
+</ol>
+
+<h2 id="6-operational-commands">6. Operational Commands</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make phase7e-migrate
+make phase8-migrate
+make seed-clients
+</code></pre></div></div>
+
+<h2 id="7-analytics-usage">7. Analytics Usage</h2>
+
+<p>Telemetry data can be used to compute:</p>
+
+<ul>
+  <li>MTTA (Mean Time to Acknowledge)</li>
+  <li>MTTR (Mean Time to Remediate)</li>
+  <li>risk awareness behavior</li>
+  <li>defensive responsiveness indicators</li>
+</ul>
+
+<p>Reference SQL: <code class="language-plaintext highlighter-rouge">docs/manuals/PHASE7E_TELEMETRY_QUERIES.sql</code></p>
+
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

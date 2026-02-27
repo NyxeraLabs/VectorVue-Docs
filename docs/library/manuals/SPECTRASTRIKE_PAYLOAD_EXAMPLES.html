@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SPECTRASTRIKE PAYLOAD EXAMPLES | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="spectrastrike-payload-examples-hardened-federation-model">SpectraStrike Payload Examples (Hardened Federation Model)</h1>
+
+<p>This document contains payload examples for the current secure integration model.</p>
+
+<p>Public client API ingestion endpoints are retired. Use internal telemetry gateway and federation verify contracts only.</p>
+
+<h2 id="1-telemetry-ingest-payload-gateway">1. Telemetry Ingest Payload (Gateway)</h2>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"operator_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"op-001"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"campaign_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cmp-001"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"tenant_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000000-0000-0000-0000-000000000001"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"execution_hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1772107200</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nonce-telemetry-00000001"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"signed_metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"tenant_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000000-0000-0000-0000-000000000001"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"operator_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"op-001"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"campaign_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cmp-001"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"event_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"evt-001"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"event_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PROCESS_ANOMALY"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"source_system"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spectrastrike-sensor"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"severity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"high"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"observed_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-02-26T12:00:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"mitre_techniques"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"T1059.001"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"mitre_tactics"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"TA0002"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Observed suspicious process chain"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"asset_ref"</span><span class="p">:</span><span class="w"> </span><span class="s2">"host-nyc-01"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Required headers for this payload:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">X-Service-Identity</code></li>
+  <li><code class="language-plaintext highlighter-rouge">X-Client-Cert-Sha256</code></li>
+  <li><code class="language-plaintext highlighter-rouge">X-Telemetry-Timestamp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">X-Telemetry-Nonce</code></li>
+  <li><code class="language-plaintext highlighter-rouge">X-Telemetry-Signature</code> (Ed25519 signature over canonical message)</li>
+</ul>
+
+<h2 id="2-federation-verify-bundle-payload">2. Federation Verify Bundle Payload</h2>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"bundle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"operator_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"op-001"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"campaign_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cmp-001"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"execution_hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1772107200</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"nonce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nonce-federation-00000001"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"signature"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE64_ED25519_SIGNATURE"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="3-accepted-gateway-response">3. Accepted Gateway Response</h2>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"accepted"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"request_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"36d8e970-b189-4ac6-bbe5-e3a2b97e4f5a"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="4-rejected-response-examples">4. Rejected Response Examples</h2>
+
+<p>Invalid signature:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"detail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Invalid telemetry signature"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Replay nonce:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"detail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Replay detected: nonce already used"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Tenant mapping violation:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"detail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Operator tenant mapping violation"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="5-reference-documents">5. Reference Documents</h2>
+
+<ul>
+  <li><a href="/VectorVue-Docs/docs/library/integration/spectrastrike-vectorvue.html">Secure SpectraStrike ↔ VectorVue Integration</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/Expansion_Appendix.html">Security Expansion Appendix</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/CLIENT_API_MANUAL.html">Client API Manual</a></li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

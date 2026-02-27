@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-8-sprint-8.1-ci-cd-enforcement | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-8-sprint-81---security-cicd-enforcement">Phase 8 Sprint 8.1 - Security CI/CD Enforcement</h1>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: CI/CD decision path that gates merges into trusted branches.</li>
+  <li>Adversary: contributor (malicious or compromised) attempting to merge code with weakened telemetry security controls.</li>
+  <li>Trust boundary: GitHub Actions security workflow and repository policy gate script.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Silent disablement of telemetry mTLS requirement.</li>
+  <li>Silent bypass of payload signature enforcement.</li>
+  <li>Removal of tenant mapping or fail-closed guards while tests remain green.</li>
+  <li>Dependency vulnerabilities introduced through transitive updates.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Added dedicated security workflow with:
+    <ul>
+      <li>SAST (<code class="language-plaintext highlighter-rouge">bandit</code>) stage.</li>
+      <li>Dependency scanning (<code class="language-plaintext highlighter-rouge">pip-audit</code>) stage.</li>
+      <li>Security regression gate stage.</li>
+    </ul>
+  </li>
+  <li>Added repository policy gate script that fails pipeline when:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">VV_TG_REQUIRE_MTLS</code> is not enabled.</li>
+      <li><code class="language-plaintext highlighter-rouge">VV_TG_REQUIRE_PAYLOAD_SIGNATURE</code> is not enabled.</li>
+      <li>expected fail-closed guard strings are absent from telemetry gateway code.</li>
+    </ul>
+  </li>
+  <li>Added sprint-specific unit test coverage for policy gate pass/fail behavior.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>CI controls are effective only when protected branches enforce required checks.</li>
+  <li>String-based guard presence checks detect removal but do not prove full behavioral equivalence.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Enforce required workflow checks via branch protection as code.</li>
+  <li>Replace selected string checks with AST-level semantic validation.</li>
+  <li>Add SBOM generation and artifact signing verification in release workflow.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

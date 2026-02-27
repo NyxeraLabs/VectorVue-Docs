@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DISCLAIMER | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+BSL 1.1 License Header
+-->
+
+<h1 id="disclaimer">Disclaimer</h1>
+
+<p>VectorVue is provided “AS IS” without warranties of any kind.</p>
+
+<h2 id="1-no-warranty">1. No Warranty</h2>
+
+<p>VectorVue is distributed without:</p>
+
+<ul>
+  <li>Warranty of merchantability</li>
+  <li>Warranty of fitness for a particular purpose</li>
+  <li>Warranty of non-infringement</li>
+  <li>Guarantee of operational continuity</li>
+</ul>
+
+<h2 id="2-security-operations-risk">2. Security Operations Risk</h2>
+
+<p>VectorVue enables advanced cybersecurity analysis and operational workflows. Misuse may result in:</p>
+
+<ul>
+  <li>Legal liability</li>
+  <li>Regulatory violations</li>
+  <li>Civil or criminal penalties</li>
+</ul>
+
+<p>Users are solely responsible for ensuring lawful and authorized usage.</p>
+
+<h2 id="3-no-liability">3. No Liability</h2>
+
+<p>To the maximum extent permitted by law, NyxeraLabs and contributors shall not be liable for:</p>
+
+<ul>
+  <li>Direct damages</li>
+  <li>Indirect damages</li>
+  <li>Data loss</li>
+  <li>Business interruption</li>
+  <li>Regulatory penalties</li>
+</ul>
+
+<h2 id="4-operator-responsibility">4. Operator Responsibility</h2>
+
+<p>The operator assumes full responsibility for:</p>
+
+<ul>
+  <li>Legal authorization</li>
+  <li>Data protection compliance</li>
+  <li>Infrastructure hardening</li>
+  <li>Proper deployment configuration</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>INDEX | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-documentation-index">VectorVue Documentation Index</h1>
+
+<p>This is the official documentation entrypoint for production and commercial usage.</p>
+
+<p>Use documents by operational role and task. Internal phase names are intentionally minimized in operator-facing material.</p>
+
+<h2 id="role-based-navigation">Role-Based Navigation</h2>
+
+<h3 id="1-client-stakeholder--portal-user">1. Client Stakeholder / Portal User</h3>
+
+<ol>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/CLIENT_PORTAL_MANUAL.html">Client Portal Manual</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/DEMO_ACCESS_MATRIX.html">Demo Access Matrix</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/TROUBLESHOOTING_GUIDE.html">Troubleshooting Guide</a></li>
+</ol>
+
+<h3 id="2-security-operator--delivery-team">2. Security Operator / Delivery Team</h3>
+
+<ol>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/GETTING_STARTED.html">Getting Started</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/OPERATOR_MANUAL.html">Operator Manual</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/VECTORVUE_USER_GUIDE.html">VectorVue User Guide</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/PORTAL_TELEMETRY_MANUAL.html">Portal Telemetry Manual</a></li>
+</ol>
+
+<h3 id="3-api--integration-engineer">3. API / Integration Engineer</h3>
+
+<ol>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/CLIENT_API_MANUAL.html">Client API Manual</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/PHASE8_CLIENT_ANALYTICS_MANUAL.html">Client Analytics Manual</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/COMPLIANCE_API_SPEC.html">Compliance API Specification</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/POSTGRES_USAGE_GUIDE.html">PostgreSQL Usage Guide</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/integration/spectrastrike-vectorvue.html">Secure SpectraStrike ↔ VectorVue Integration</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/SPECTRASTRIKE_INTEGRATION_API.html">SpectraStrike Integration API (Legacy Status)</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/SPECTRASTRIKE_PAYLOAD_EXAMPLES.html">SpectraStrike Payload Examples</a></li>
+</ol>
+
+<h3 id="4-auditor--governance--risk">4. Auditor / Governance / Risk</h3>
+
+<ol>
+  <li><a href="/VectorVue-Docs/docs/library/AUDITOR_GUIDE.html">Auditor Guide</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/COMPLIANCE_API_SPEC.html">Compliance API Specification</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/ARCHITECTURE_SPEC.html">Architecture Specification</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/USER_POLICY.html">User Policy</a></li>
+</ol>
+
+<h3 id="5-platform-engineering--sre">5. Platform Engineering / SRE</h3>
+
+<ol>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/Deployment.html">Deployment</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/POSTGRES_MIGRATION_GUIDE.html">PostgreSQL Migration Guide</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/POSTGRES_REGRESSION_CHECKLIST.html">PostgreSQL Regression Checklist</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/DOCUMENTATION_POLICY.html">Documentation Policy</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/Expansion_Appendix.html">Security Expansion Appendix</a></li>
+</ol>
+
+<h2 id="common-operational-tasks">Common Operational Tasks</h2>
+
+<ul>
+  <li>Guided deployment/bootstrap menu: <code class="language-plaintext highlighter-rouge">make wizard</code></li>
+  <li>Deploy platform: <code class="language-plaintext highlighter-rouge">make deploy</code></li>
+  <li>Seed commercial demo data: <code class="language-plaintext highlighter-rouge">make seed-clients</code></li>
+  <li>Start TUI onboarding flow: <code class="language-plaintext highlighter-rouge">make run-tui</code> then <code class="language-plaintext highlighter-rouge">Ctrl+Shift+W</code></li>
+  <li>Verify API health: <code class="language-plaintext highlighter-rouge">make api-smoke</code></li>
+  <li>Validate PostgreSQL migrations: <code class="language-plaintext highlighter-rouge">make pg-schema-bootstrap</code></li>
+  <li>Apply compliance schema only: <code class="language-plaintext highlighter-rouge">make phase9-migrate</code></li>
+</ul>
+
+<h2 id="product-planning-reference">Product Planning Reference</h2>
+
+<ul>
+  <li><a href="/VectorVue-Docs/docs/library/ROADMAP.html">Roadmap</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/Expansion_Appendix.html">Security Expansion Appendix</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/integration/spectrastrike-vectorvue.html">Secure SpectraStrike ↔ VectorVue Integration</a></li>
+</ul>
+
+<h2 id="legal--compliance-enforcement">Legal &amp; Compliance Enforcement</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">make install</code> enforces mandatory legal validation before installation completes.</li>
+  <li><code class="language-plaintext highlighter-rouge">make deploy</code> is for development/testing workflows and does not enforce installer legal gating.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

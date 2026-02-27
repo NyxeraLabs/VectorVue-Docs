@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CLIENT API MANUAL | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-client-api-manual">VectorVue Client API Manual</h1>
+
+<p>This manual provides production-safe integration guidance for client-facing APIs.</p>
+
+<h2 id="1-security-model">1. Security Model</h2>
+
+<ul>
+  <li>JWT authentication with tenant claim required</li>
+  <li>Tenant-scoped reads only for client data APIs</li>
+  <li>Compliance APIs return signed response envelopes</li>
+  <li>Client API telemetry ingestion is disabled (Phase 0 Sprint 0.1)</li>
+</ul>
+
+<h2 id="2-base-url-and-authentication">2. Base URL and Authentication</h2>
+
+<p>Default local endpoint:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">https://127.0.0.1</code></li>
+</ul>
+
+<p>Login:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">POST /api/v1/client/auth/login</code></li>
+</ul>
+
+<p>Use access token in all calls:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Authorization: Bearer &lt;token&gt;</code></li>
+</ul>
+
+<h2 id="3-core-client-endpoints">3. Core Client Endpoints</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/findings</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/findings/{finding_id}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/evidence</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/evidence/{finding_id}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/reports</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/reports/{report_id}/download</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/risk</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/risk-summary</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/risk-trend</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/remediation</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /api/v1/client/remediation-status</code></li>
+</ul>
+
+<h2 id="4-analytics-endpoints">4. Analytics Endpoints</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/client/security-score</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/client/risk</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/client/detection-gaps</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/client/anomalies</code></li>
+  <li><code class="language-plaintext highlighter-rouge">POST /ml/client/simulate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/operator/suggestions/{campaign_id}</code></li>
+</ul>
+
+<p>Client analytics response contract:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">score</code></li>
+  <li><code class="language-plaintext highlighter-rouge">confidence</code></li>
+  <li><code class="language-plaintext highlighter-rouge">explanation</code></li>
+  <li><code class="language-plaintext highlighter-rouge">model_version</code></li>
+  <li><code class="language-plaintext highlighter-rouge">generated_at</code></li>
+</ul>
+
+<h2 id="5-compliance-endpoints">5. Compliance Endpoints</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">POST /audit/session</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/frameworks</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/{framework}/controls</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/{framework}/score</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/{framework}/report</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/audit-window</code></li>
+</ul>
+
+<p>Compliance responses include:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">data</code></li>
+  <li><code class="language-plaintext highlighter-rouge">signature</code> (cryptographic signature envelope)</li>
+</ul>
+
+<h2 id="6-example-login-flow">6. Example Login Flow</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-k</span> <span class="nt">-X</span> POST https://127.0.0.1/api/v1/client/auth/login <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  <span class="nt">-d</span> <span class="s1">'{
+    "username": "acme_viewer",
+    "password": "AcmeView3r!",
+    "tenant_id": "10000000-0000-0000-0000-000000000001"
+  }'</span>
+</code></pre></div></div>
+
+<h2 id="7-telemetry-endpoint-status">7. Telemetry Endpoint Status</h2>
+
+<p><code class="language-plaintext highlighter-rouge">POST /api/v1/client/events</code> and <code class="language-plaintext highlighter-rouge">/api/v1/integrations/spectrastrike/*</code> are retired and not exposed by the runtime API.</p>
+
+<h2 id="8-integration-validation-checklist">8. Integration Validation Checklist</h2>
+
+<ol>
+  <li>Authenticate and resolve tenant context.</li>
+  <li>Read findings, risk, and remediation data.</li>
+  <li>Confirm telemetry ingestion endpoints are not exposed.</li>
+  <li>Call one analytics endpoint.</li>
+  <li>Call one compliance endpoint and validate signature envelope presence.</li>
+</ol>
+
+<h2 id="9-operational-commands">9. Operational Commands</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make deploy
+make seed-clients
+make api-smoke
+</code></pre></div></div>
+
+<h2 id="10-related-references">10. Related References</h2>
+
+<ul>
+  <li><a href="/VectorVue-Docs/docs/library/COMPLIANCE_API_SPEC.html">Compliance API Spec</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/AUDITOR_GUIDE.html">Auditor Guide</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/roadmap/phase-0-sprint-0.1.html">Phase 0 Sprint 0.1 Roadmap</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/Expansion_Appendix.html">Security Expansion Appendix</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/integration/spectrastrike-vectorvue.html">Secure SpectraStrike ↔ VectorVue Integration</a></li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

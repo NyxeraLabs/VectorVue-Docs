@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>POSTGRES USAGE GUIDE | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="postgresql-usage-guide">PostgreSQL Usage Guide</h1>
+
+<p>This runbook covers day-to-day PostgreSQL operations for VectorVue deployments.</p>
+
+<h2 id="1-start-services">1. Start Services</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose up <span class="nt">-d</span> postgres redis vectorvue_app
+</code></pre></div></div>
+
+<h2 id="2-initialize-schema-and-migrations">2. Initialize Schema and Migrations</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make pg-schema-bootstrap
+make phase65-migrate
+make phase7e-migrate
+make phase8-migrate
+make phase9-migrate
+</code></pre></div></div>
+
+<h2 id="3-seed-environment">3. Seed Environment</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make seed-clients
+</code></pre></div></div>
+
+<h2 id="4-health-validation">4. Health Validation</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make api-smoke
+docker compose ps
+</code></pre></div></div>
+
+<h2 id="5-backup">5. Backup</h2>
+
+<p>Example logical backup:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose <span class="nb">exec</span> <span class="nt">-T</span> postgres pg_dump <span class="nt">-U</span> vectorvue <span class="nt">-d</span> vectorvue_db <span class="o">&gt;</span> backup.sql
+</code></pre></div></div>
+
+<h2 id="6-restore">6. Restore</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose <span class="nb">exec</span> <span class="nt">-T</span> postgres psql <span class="nt">-U</span> vectorvue <span class="nt">-d</span> vectorvue_db &lt; backup.sql
+</code></pre></div></div>
+
+<h2 id="7-reset-non-production">7. Reset (Non-Production)</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make pg-reset
+</code></pre></div></div>
+
+<h2 id="8-safety-notes">8. Safety Notes</h2>
+
+<ul>
+  <li>Validate tenant scoping after any restore.</li>
+  <li>Re-run smoke checks after migration or restore.</li>
+  <li>Restrict direct database access to platform operators.</li>
+</ul>
+
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

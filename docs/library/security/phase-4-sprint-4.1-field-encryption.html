@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-4-sprint-4.1-field-encryption | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-4-sprint-41---field-level-encryption">Phase 4 Sprint 4.1 - Field-Level Encryption</h1>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: evidence payload blobs stored in compliance event records and export pipelines.</li>
+  <li>Adversary: database snapshot thief, lateral internal reader, key exfiltration attacker.</li>
+  <li>Trust boundary: evidence serialization path at write/read in evidence engine.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Raw evidence blob disclosure from DB backups.</li>
+  <li>Cross-tenant decryption attempts.</li>
+  <li>Root key compromise blast radius across tenants.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Added envelope encryption for evidence blobs (<code class="language-plaintext highlighter-rouge">vv-evidence-env-v1</code>).</li>
+  <li>Data encrypted with per-record DEK (<code class="language-plaintext highlighter-rouge">AES-256-GCM</code>).</li>
+  <li>DEK wrapped with tenant-derived KEK (HKDF-SHA256 over HSM root key + tenant ID).</li>
+  <li>Tenant-bound AAD enforces decryption context integrity.</li>
+  <li>Evidence export path decrypts only when tenant context matches envelope tenant.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Current HSM provider bootstrap can be configured via environment JSON for dev/CI compatibility.</li>
+  <li>Production operations must source root keys from true HSM-backed secret distribution.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Replace bootstrap provider with cloud/HSM-native key handle integration.</li>
+  <li>Add key-rotation metadata table and automated rewrap workflow.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

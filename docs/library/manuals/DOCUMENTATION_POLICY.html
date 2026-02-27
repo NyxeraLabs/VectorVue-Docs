@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DOCUMENTATION POLICY | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-documentation-policy">VectorVue Documentation Policy</h1>
+
+<h2 id="1-purpose">1. Purpose</h2>
+
+<p>VectorVue documentation must support enterprise and regulated commercial usage.</p>
+
+<p>Primary goals:</p>
+
+<ul>
+  <li>reduce operator and client confusion</li>
+  <li>provide step-by-step operational clarity</li>
+  <li>preserve technical and legal accuracy</li>
+  <li>maintain a professional product narrative</li>
+</ul>
+
+<h2 id="2-required-standards">2. Required Standards</h2>
+
+<ul>
+  <li>Role-first structure: organize by operator, client, auditor, platform engineer.</li>
+  <li>Task-first writing: provide explicit steps and expected outcomes.</li>
+  <li>Production tone: concise, factual, and implementation-ready.</li>
+  <li>Tenant safety: always state scope and isolation constraints where relevant.</li>
+  <li>Version clarity: include relevant product version/date context.</li>
+</ul>
+
+<h2 id="3-naming-guidance">3. Naming Guidance</h2>
+
+<ul>
+  <li>Avoid phase-heavy language in user-facing manuals.</li>
+  <li>Use outcome-oriented names: “Client Analytics”, “Auditor Guide”, “Operator Manual”.</li>
+  <li>Internal roadmap may keep phase references for engineering planning.</li>
+</ul>
+
+<h2 id="4-legal-and-header-requirement">4. Legal and Header Requirement</h2>
+
+<p>All new project files must include a license header aligned with repository policy.</p>
+
+<p>Use:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- Copyright (c) 2026 NyxeraLabs | Author: José María Micoli | Licensed under BSL 1.1 | Change Date: 2033-02-17 → Apache-2.0 --&gt;
+</code></pre></div></div>
+
+<h2 id="5-update-rules">5. Update Rules</h2>
+
+<ul>
+  <li>When modifying a major workflow, update the corresponding manual in the same change.</li>
+  <li>Keep cross-references current from <code class="language-plaintext highlighter-rouge">README.md</code> and <code class="language-plaintext highlighter-rouge">docs/manuals/INDEX.md</code>.</li>
+  <li>Remove outdated statements that conflict with current deployment or feature behavior.</li>
+</ul>
+
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

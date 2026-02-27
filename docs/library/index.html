@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Full Library | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="full-documentation-library">Full Documentation Library</h1>
+
+<p>Complete imported documentation from <code class="language-plaintext highlighter-rouge">VectorVue/docs</code>.</p>
+
+<ul>
+  <li><a href="./.federation-audit-local.html">.federation-audit-local.md</a></li>
+  <li><a href="./ACCEPTABLE_USE_POLICY.html">ACCEPTABLE_USE_POLICY.md</a></li>
+  <li><a href="./AUDITOR_GUIDE.html">AUDITOR_GUIDE.md</a></li>
+  <li><a href="./COMPLIANCE_API_SPEC.html">COMPLIANCE_API_SPEC.md</a></li>
+  <li><a href="./DISCLAIMER.html">DISCLAIMER.md</a></li>
+  <li><a href="./E2E_EXECUTION_AUDIT_REPORT.html">E2E_EXECUTION_AUDIT_REPORT.md</a></li>
+  <li><a href="./END_USER_GUIDE.html">END_USER_GUIDE.md</a></li>
+  <li><a href="./EULA.html">EULA.md</a></li>
+  <li><a href="./Expansion_Appendix.html">Expansion_Appendix.md</a></li>
+  <li><a href="./FULL_FEDERATION_INTEGRATION.html">FULL_FEDERATION_INTEGRATION.md</a></li>
+  <li><a href="./PHASE65_API_QUICKSTART.html">PHASE65_API_QUICKSTART.md</a></li>
+  <li><a href="./PRIVACY_POLICY.html">PRIVACY_POLICY.md</a></li>
+  <li><a href="./ROADMAP.html">ROADMAP.md</a></li>
+  <li><a href="./SDK_DEVELOPER_GUIDE.html">SDK_DEVELOPER_GUIDE.md</a></li>
+  <li><a href="./SECURITY_POLICY.html">SECURITY_POLICY.md</a></li>
+  <li><a href="./TAB_NAVIGATION_GUIDE.html">TAB_NAVIGATION_GUIDE.md</a></li>
+  <li><a href="./USER_POLICY.html">USER_POLICY.md</a></li>
+  <li><a href="./architecture/phase-0-sprint-0.1-readonly-client-api.html">architecture/phase-0-sprint-0.1-readonly-client-api.md</a></li>
+  <li><a href="./architecture/phase-1-sprint-1.1-secure-telemetry-gateway.html">architecture/phase-1-sprint-1.1-secure-telemetry-gateway.md</a></li>
+  <li><a href="./architecture/phase-1-sprint-1.2-payload-security-layer.html">architecture/phase-1-sprint-1.2-payload-security-layer.md</a></li>
+  <li><a href="./architecture/phase-2-sprint-2.1-queue-layer.html">architecture/phase-2-sprint-2.1-queue-layer.md</a></li>
+  <li><a href="./architecture/phase-3-sprint-3.1-processing-schema.html">architecture/phase-3-sprint-3.1-processing-schema.md</a></li>
+  <li><a href="./architecture/phase-3-sprint-3.2-tenant-isolation.html">architecture/phase-3-sprint-3.2-tenant-isolation.md</a></li>
+  <li><a href="./architecture/phase-4-sprint-4.1-crypto-architecture.html">architecture/phase-4-sprint-4.1-crypto-architecture.md</a></li>
+  <li><a href="./architecture/phase-5-sprint-5.1-zero-trust-identity.html">architecture/phase-5-sprint-5.1-zero-trust-identity.md</a></li>
+  <li><a href="./architecture/phase-6-sprint-6.1-immutable-logging.html">architecture/phase-6-sprint-6.1-immutable-logging.md</a></li>
+  <li><a href="./architecture/phase-7-sprint-7.1-federation-architecture.html">architecture/phase-7-sprint-7.1-federation-architecture.md</a></li>
+  <li><a href="./architecture/phase-8-sprint-8.1-security-pipeline.html">architecture/phase-8-sprint-8.1-security-pipeline.md</a></li>
+  <li><a href="./architecture/phase-9-sprint-9.1-redteam-validation.html">architecture/phase-9-sprint-9.1-redteam-validation.md</a></li>
+  <li><a href="./index.html">index.md</a></li>
+  <li><a href="./integration/spectrastrike-vectorvue.html">integration/spectrastrike-vectorvue.md</a></li>
+  <li><a href="./manuals/ARCHITECTURE_SPEC.html">manuals/ARCHITECTURE_SPEC.md</a></li>
+  <li><a href="./manuals/CLIENT_API_MANUAL.html">manuals/CLIENT_API_MANUAL.md</a></li>
+  <li><a href="./manuals/CLIENT_PORTAL_MANUAL.html">manuals/CLIENT_PORTAL_MANUAL.md</a></li>
+  <li><a href="./manuals/DEMO_ACCESS_MATRIX.html">manuals/DEMO_ACCESS_MATRIX.md</a></li>
+  <li><a href="./manuals/DOCUMENTATION_POLICY.html">manuals/DOCUMENTATION_POLICY.md</a></li>
+  <li><a href="./manuals/Deployment.html">manuals/Deployment.md</a></li>
+  <li><a href="./manuals/GETTING_STARTED.html">manuals/GETTING_STARTED.md</a></li>
+  <li><a href="./manuals/INDEX.html">manuals/INDEX.md</a></li>
+  <li><a href="./manuals/OPERATOR_MANUAL.html">manuals/OPERATOR_MANUAL.md</a></li>
+  <li><a href="./manuals/PHASE8_CLIENT_ANALYTICS_MANUAL.html">manuals/PHASE8_CLIENT_ANALYTICS_MANUAL.md</a></li>
+  <li><a href="./manuals/PORTAL_TELEMETRY_MANUAL.html">manuals/PORTAL_TELEMETRY_MANUAL.md</a></li>
+  <li><a href="./manuals/POSTGRES_AUDIT_REPORT.html">manuals/POSTGRES_AUDIT_REPORT.md</a></li>
+  <li><a href="./manuals/POSTGRES_MIGRATION_GUIDE.html">manuals/POSTGRES_MIGRATION_GUIDE.md</a></li>
+  <li><a href="./manuals/POSTGRES_REGRESSION_CHECKLIST.html">manuals/POSTGRES_REGRESSION_CHECKLIST.md</a></li>
+  <li><a href="./manuals/POSTGRES_USAGE_GUIDE.html">manuals/POSTGRES_USAGE_GUIDE.md</a></li>
+  <li><a href="./manuals/PRIVACY_POLICY.html">manuals/PRIVACY_POLICY.md</a></li>
+  <li><a href="./manuals/SPECTRASTRIKE_INTEGRATION_API.html">manuals/SPECTRASTRIKE_INTEGRATION_API.md</a></li>
+  <li><a href="./manuals/SPECTRASTRIKE_PAYLOAD_EXAMPLES.html">manuals/SPECTRASTRIKE_PAYLOAD_EXAMPLES.md</a></li>
+  <li><a href="./manuals/TROUBLESHOOTING_GUIDE.html">manuals/TROUBLESHOOTING_GUIDE.md</a></li>
+  <li><a href="./manuals/USER_POLICY.html">manuals/USER_POLICY.md</a></li>
+  <li><a href="./manuals/VECTORVUE_USER_GUIDE.html">manuals/VECTORVUE_USER_GUIDE.md</a></li>
+  <li><a href="./roadmap/phase-0-sprint-0.1.html">roadmap/phase-0-sprint-0.1.md</a></li>
+  <li><a href="./roadmap/phase-1-sprint-1.1.html">roadmap/phase-1-sprint-1.1.md</a></li>
+  <li><a href="./roadmap/phase-1-sprint-1.2.html">roadmap/phase-1-sprint-1.2.md</a></li>
+  <li><a href="./roadmap/phase-2-sprint-2.1.html">roadmap/phase-2-sprint-2.1.md</a></li>
+  <li><a href="./roadmap/phase-3-sprint-3.1.html">roadmap/phase-3-sprint-3.1.md</a></li>
+  <li><a href="./roadmap/phase-3-sprint-3.2.html">roadmap/phase-3-sprint-3.2.md</a></li>
+  <li><a href="./roadmap/phase-4-sprint-4.1.html">roadmap/phase-4-sprint-4.1.md</a></li>
+  <li><a href="./roadmap/phase-5-sprint-5.1.html">roadmap/phase-5-sprint-5.1.md</a></li>
+  <li><a href="./roadmap/phase-6-sprint-6.1.html">roadmap/phase-6-sprint-6.1.md</a></li>
+  <li><a href="./roadmap/phase-7-sprint-7.1.html">roadmap/phase-7-sprint-7.1.md</a></li>
+  <li><a href="./roadmap/phase-8-sprint-8.1.html">roadmap/phase-8-sprint-8.1.md</a></li>
+  <li><a href="./roadmap/phase-9-sprint-9.1.html">roadmap/phase-9-sprint-9.1.md</a></li>
+  <li><a href="./security/phase-0-sprint-0.1-telemetry-capability-removal.html">security/phase-0-sprint-0.1-telemetry-capability-removal.md</a></li>
+  <li><a href="./security/phase-1-sprint-1.1-secure-telemetry-gateway.html">security/phase-1-sprint-1.1-secure-telemetry-gateway.md</a></li>
+  <li><a href="./security/phase-1-sprint-1.2-payload-security-layer.html">security/phase-1-sprint-1.2-payload-security-layer.md</a></li>
+  <li><a href="./security/phase-2-sprint-2.1-queue-isolation.html">security/phase-2-sprint-2.1-queue-isolation.md</a></li>
+  <li><a href="./security/phase-3-sprint-3.1-schema-enforcement.html">security/phase-3-sprint-3.1-schema-enforcement.md</a></li>
+  <li><a href="./security/phase-3-sprint-3.2-sanitization-isolation.html">security/phase-3-sprint-3.2-sanitization-isolation.md</a></li>
+  <li><a href="./security/phase-4-sprint-4.1-field-encryption.html">security/phase-4-sprint-4.1-field-encryption.md</a></li>
+  <li><a href="./security/phase-5-sprint-5.1-service-identity.html">security/phase-5-sprint-5.1-service-identity.md</a></li>
+  <li><a href="./security/phase-6-sprint-6.1-tamper-evident-logging.html">security/phase-6-sprint-6.1-tamper-evident-logging.md</a></li>
+  <li><a href="./security/phase-7-sprint-7.1-federation-proof-origin.html">security/phase-7-sprint-7.1-federation-proof-origin.md</a></li>
+  <li><a href="./security/phase-8-sprint-8.1-ci-cd-enforcement.html">security/phase-8-sprint-8.1-ci-cd-enforcement.md</a></li>
+  <li><a href="./security/phase-9-sprint-9.1-redteam-validation.html">security/phase-9-sprint-9.1-redteam-validation.md</a></li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

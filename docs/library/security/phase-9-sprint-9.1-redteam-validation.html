@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-9-sprint-9.1-redteam-validation | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-9-sprint-91---full-system-red-team-validation">Phase 9 Sprint 9.1 - Full System Red Team Validation</h1>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: production promotion decision for security-critical telemetry and federation paths.</li>
+  <li>Adversary: internal or external actor attempting to bypass one or more enforced controls before release.</li>
+  <li>Trust boundary: automated red-team simulation suite in CI.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Replay attacks.</li>
+  <li>Signature forgery.</li>
+  <li>MITM certificate fingerprint mismatch.</li>
+  <li>Cross-tenant access attempts.</li>
+  <li>Tamper-evident log mutation.</li>
+  <li>Queue poisoning via malformed telemetry.</li>
+  <li>Rate limit exhaustion.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Added Phase 9.1 red-team attack simulation test suite with explicit negative tests for each vector.</li>
+  <li>Integrated red-team suite into security regression CI workflow to fail promotion candidates automatically.</li>
+  <li>Preserved fail-closed behavior for unsigned telemetry, mTLS identity validation, tenant mapping, and queue safety controls.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Simulations currently target defined high-priority vectors and do not yet cover full chaos scenarios (network partitions, dependency compromise, host-level intrusion).</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Add adversarial network fault simulation in ephemeral integration environment.</li>
+  <li>Add continuous mutation testing against validation and auth guards.</li>
+  <li>Add scheduled red-team workflow runs independent of merge events.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

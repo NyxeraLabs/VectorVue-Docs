@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-0-sprint-0.1-readonly-client-api | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-0-sprint-01---client-api-surface-reduction">Phase 0 Sprint 0.1 - Client API Surface Reduction</h1>
+
+<h2 id="summary">Summary</h2>
+<p>The client API was reduced to tenant-portal read and signed compliance responses. Public telemetry ingestion paths were removed.</p>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Public write APIs increase exploitability and abuse probability.</li>
+  <li>Read-only, tenant-scoped APIs reduce data mutation and ingestion abuse risk.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Mass-ingestion flooding on public API.</li>
+  <li>Forged telemetry payload submission.</li>
+  <li>Cross-tenant status enumeration.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>SpectraStrike integration router removed from active API graph.</li>
+  <li><code class="language-plaintext highlighter-rouge">/api/v1/client/events</code> removed.</li>
+  <li>Read-only client resources continue to enforce tenant scoping.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Client portal may keep non-functional telemetry client code until follow-up cleanup.</li>
+  <li>Authentication endpoints remain writable by design for login/register flows.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Move telemetry to an internal-only gateway with mTLS, signature validation, replay protection, and queue isolation.</li>
+</ul>
+
+<h2 id="architecture-diagram-before">Architecture Diagram (Before)</h2>
+<pre><code class="language-mermaid">flowchart LR
+  P[Client Portal] --&gt; CAPI[VectorVue Client API]
+  SS[SpectraStrike] --&gt; CAPI
+  CAPI --&gt; DB[(PostgreSQL)]
+  CAPI --&gt; TBL1[(client_activity_events)]
+  CAPI --&gt; TBL2[(spectrastrike_* tables)]
+</code></pre>
+
+<h2 id="architecture-diagram-after">Architecture Diagram (After)</h2>
+<pre><code class="language-mermaid">flowchart LR
+  P[Client Portal] --&gt; CAPI[VectorVue Client API\nRead-only tenant data + signed compliance]
+  CAPI --&gt; DB[(PostgreSQL)]
+  SS[SpectraStrike] -. blocked .-&gt; CAPI
+</code></pre>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

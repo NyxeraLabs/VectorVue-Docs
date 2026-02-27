@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VECTORVUE USER GUIDE | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-user-guide">VectorVue User Guide</h1>
+
+<p>Audience: security operators, client stakeholders, auditors, and platform teams.</p>
+
+<p>This guide explains how VectorVue is used as a commercial security validation and assurance platform.</p>
+
+<h2 id="1-what-vectorvue-delivers">1. What VectorVue Delivers</h2>
+
+<ul>
+  <li>Security validation execution with tenant isolation</li>
+  <li>Operational visibility into findings, remediation, and risk posture</li>
+  <li>Explainable analytics for defensive effectiveness</li>
+  <li>Continuous compliance evidence with cryptographic integrity</li>
+</ul>
+
+<h2 id="2-product-workflows">2. Product Workflows</h2>
+
+<h3 id="21-operator-workflow">2.1 Operator Workflow</h3>
+
+<ol>
+  <li>Configure campaign scope and controls</li>
+  <li>Execute and record campaign observations</li>
+  <li>Produce findings and evidence</li>
+  <li>Track remediation outcomes</li>
+  <li>Publish reports and analytics updates</li>
+</ol>
+
+<h3 id="22-client-workflow">2.2 Client Workflow</h3>
+
+<ol>
+  <li>Review portal overview and analytics</li>
+  <li>Prioritize findings by severity and exploitability</li>
+  <li>Track remediation ownership and completion</li>
+  <li>Download formal reports and evidence artifacts</li>
+</ol>
+
+<h3 id="23-auditor-workflow">2.3 Auditor Workflow</h3>
+
+<ol>
+  <li>Select framework and time window</li>
+  <li>Retrieve signed compliance dataset</li>
+  <li>Verify checksums and hash chain</li>
+  <li>Recompute control effectiveness state</li>
+  <li>Validate framework score consistency</li>
+</ol>
+
+<h2 id="3-platform-architecture-summary">3. Platform Architecture Summary</h2>
+
+<ul>
+  <li>API layer: FastAPI</li>
+  <li>Datastore: PostgreSQL</li>
+  <li>Queue/workers: Redis + RQ workers</li>
+  <li>Portal: Next.js</li>
+  <li>Reverse proxy: nginx</li>
+  <li>Internal telemetry gateway: mTLS + Ed25519 verification + replay defense</li>
+</ul>
+
+<p>Core design rules:</p>
+
+<ul>
+  <li>tenant boundary enforcement</li>
+  <li>append-only evidence records where required</li>
+  <li>reproducible analytics outputs with version lineage</li>
+  <li>no silent model promotion</li>
+  <li>zero-trust federation (no shared secrets, explicit trust material only)</li>
+</ul>
+
+<h2 id="4-security-and-privacy-baseline">4. Security and Privacy Baseline</h2>
+
+<ul>
+  <li>JWT-based tenant-scoped access</li>
+  <li>signed compliance API responses</li>
+  <li>immutable compliance event chain</li>
+  <li>telemetry limited to security workflow behavior</li>
+  <li>no marketing-style tracking data capture</li>
+  <li>read-only client API (telemetry ingestion removed from public client API)</li>
+  <li>mandatory mTLS and signed telemetry for SpectraStrike federation path</li>
+  <li>tamper-evident audit logging and red-team validation gates in CI</li>
+</ul>
+
+<h2 id="5-commercial-service-quality-checklist">5. Commercial Service Quality Checklist</h2>
+
+<ul>
+  <li>Documentation and workflows are role-based</li>
+  <li>Reports are consistent and exportable</li>
+  <li>Compliance evidence is independently verifiable</li>
+  <li>Deployment procedures are repeatable</li>
+  <li>Support teams can troubleshoot using published runbooks</li>
+</ul>
+
+<h2 id="6-guided-onboarding-standard-language">6. Guided Onboarding (Standard Language)</h2>
+
+<p>Use guided workflows to reduce setup errors and keep operations consistent.</p>
+
+<h3 id="61-cli-guided-wizard-recommended">6.1 CLI Guided Wizard (Recommended)</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make wizard
+</code></pre></div></div>
+
+<p>Use menu options:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1</code> full commercial deploy</li>
+  <li><code class="language-plaintext highlighter-rouge">2</code> isolated customer portal deploy (tenant + users + host mapping)</li>
+  <li><code class="language-plaintext highlighter-rouge">3</code> real tenant bootstrap without dummy campaigns</li>
+  <li><code class="language-plaintext highlighter-rouge">4</code> seed multi-tenant demo dataset</li>
+  <li><code class="language-plaintext highlighter-rouge">5</code> real scenario validation (Phase 7-9 smoke)</li>
+</ul>
+
+<h3 id="62-tui-guided-onboarding-wizard-admin">6.2 TUI Guided Onboarding Wizard (Admin)</h3>
+
+<ol>
+  <li>Start TUI:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make run-tui
+</code></pre></div></div>
+
+<ol>
+  <li>Login with admin role.</li>
+  <li>Open onboarding:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Ctrl+Shift+W</code>, or</li>
+      <li>sidebar <code class="language-plaintext highlighter-rouge">ONBOARD WIZARD</code>.</li>
+    </ul>
+  </li>
+  <li>Fill tenant and portal fields:
+    <ul>
+      <li>tenant id and tenant name</li>
+      <li>portal host and company name</li>
+      <li>primary/accent branding colors</li>
+      <li>tenant admin and client credentials</li>
+    </ul>
+  </li>
+  <li>Submit <code class="language-plaintext highlighter-rouge">CREATE TENANT + USERS</code>.</li>
+</ol>
+
+<h2 id="7-where-to-go-next">7. Where to Go Next</h2>
+
+<ul>
+  <li>Day-one setup: <a href="/VectorVue-Docs/docs/library/manuals/GETTING_STARTED.html">Getting Started</a></li>
+  <li>Delivery operations: <a href="/VectorVue-Docs/docs/library/manuals/OPERATOR_MANUAL.html">Operator Manual</a></li>
+  <li>Client usage: <a href="/VectorVue-Docs/docs/library/manuals/CLIENT_PORTAL_MANUAL.html">Client Portal Manual</a></li>
+  <li>API integrations: <a href="/VectorVue-Docs/docs/library/manuals/CLIENT_API_MANUAL.html">Client API Manual</a></li>
+  <li>Compliance and audit: <a href="/VectorVue-Docs/docs/library/COMPLIANCE_API_SPEC.html">Compliance API Spec</a>, <a href="/VectorVue-Docs/docs/library/AUDITOR_GUIDE.html">Auditor Guide</a></li>
+  <li>Platform roadmap: <a href="/VectorVue-Docs/docs/library/ROADMAP.html">Product Roadmap</a></li>
+  <li>Hardening details: <a href="/VectorVue-Docs/docs/library/Expansion_Appendix.html">Security Expansion Appendix</a></li>
+  <li>Federation operations: <a href="/VectorVue-Docs/docs/library/integration/spectrastrike-vectorvue.html">Secure SpectraStrike ↔ VectorVue Integration</a></li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

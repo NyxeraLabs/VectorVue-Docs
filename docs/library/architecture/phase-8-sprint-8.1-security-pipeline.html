@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-8-sprint-8.1-security-pipeline | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-8-sprint-81---security-pipeline-architecture">Phase 8 Sprint 8.1 - Security Pipeline Architecture</h1>
+
+<h2 id="summary">Summary</h2>
+<p>Introduced a dedicated security enforcement workflow that blocks insecure telemetry changes before integration.</p>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>CI pipeline is treated as a zero-trust control plane and must fail closed when mandatory security controls are weakened.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Pipeline bypass through disabled security jobs.</li>
+  <li>Security control regression merged without dedicated gate validation.</li>
+  <li>Dependency vulnerability drift.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>New <code class="language-plaintext highlighter-rouge">security-enforcement.yml</code> workflow with isolated jobs:
+    <ul>
+      <li>SAST.</li>
+      <li>Dependency scan.</li>
+      <li>Security regression tests and policy gate.</li>
+    </ul>
+  </li>
+  <li>Policy gate validates explicit secure runtime configuration and gateway guard presence.</li>
+  <li>Workflow runs on sprint feature branches and integration PRs to prevent delayed detection.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Local pre-push validation is still optional; first detection may occur in remote CI.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Add pre-commit hook profile mirroring CI security gate.</li>
+  <li>Add signed provenance attestation for workflow outputs.</li>
+</ul>
+
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<pre><code class="language-mermaid">flowchart LR
+  PR[Feature Branch / PR]
+  WF[Security Enforcement Workflow]
+  SAST[SAST - Bandit]
+  DEP[Dependency Scan - pip-audit]
+  GATE[Policy Gate + Security Tests]
+  BLOCK[Fail Closed]
+  PASS[Merge Eligible]
+
+  PR --&gt; WF
+  WF --&gt; SAST
+  WF --&gt; DEP
+  WF --&gt; GATE
+  SAST --&gt; BLOCK
+  DEP --&gt; BLOCK
+  GATE --&gt; BLOCK
+  GATE --&gt; PASS
+</code></pre>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

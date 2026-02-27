@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-1-sprint-1.1-secure-telemetry-gateway | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-1-sprint-11---telemetry-gateway-architecture">Phase 1 Sprint 1.1 - Telemetry Gateway Architecture</h1>
+
+<h2 id="summary">Summary</h2>
+<p>A dedicated telemetry gateway service was introduced for internal use only. Client API remains read-only for tenant portal consumption.</p>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Assume any caller is untrusted until identity and payload integrity are verified.</li>
+  <li>Enforce explicit service identity and cryptographic authenticity on every request.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Public exposure of telemetry ingestion endpoints.</li>
+  <li>Bypass of mTLS identity requirements.</li>
+  <li>Forged producer signatures.</li>
+  <li>Replay of previously valid telemetry payloads.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Isolated compose service <code class="language-plaintext highlighter-rouge">vectorvue_telemetry_gateway</code> on <code class="language-plaintext highlighter-rouge">telemetry_private</code> internal network.</li>
+  <li>No host port mapping for telemetry gateway.</li>
+  <li>mTLS fingerprint pinning and Ed25519 verification at gateway ingress.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Gateway currently validates a proxy-provided certificate fingerprint header.</li>
+  <li>Horizontal scaling requires shared replay cache.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Add Envoy/Nginx mTLS sidecar that injects immutable certificate metadata headers.</li>
+  <li>Introduce distributed replay defense backend.</li>
+</ul>
+
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<pre><code class="language-mermaid">flowchart LR
+  SS[SpectraStrike Producer]
+  MTLS[mTLS Boundary / TLS Terminator]
+  TG[VectorVue Telemetry Gateway\ninternal/v1/telemetry]
+  Q[(Secure Queue - Phase 2)]
+
+  SS --&gt; MTLS
+  MTLS --&gt; TG
+  TG --&gt; Q
+
+  subgraph Private Network
+    TG
+  end
+</code></pre>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-3-sprint-3.1-schema-enforcement | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-3-sprint-31---schema-enforcement">Phase 3 Sprint 3.1 - Schema Enforcement</h1>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: telemetry semantic integrity and downstream analytics reliability.</li>
+  <li>Adversary: malformed-event sender, schema-bypass sender, MITRE mapping forger.</li>
+  <li>Trust boundary: telemetry gateway to processing engine validation boundary.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Payloads with undeclared fields to smuggle unsafe data.</li>
+  <li>Missing required canonical fields that break processing invariants.</li>
+  <li>Invalid MITRE ATT&amp;CK TTP identifiers to poison attribution analytics.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Added canonical telemetry schema model with <code class="language-plaintext highlighter-rouge">extra=forbid</code>.</li>
+  <li>Enforced strict top-level ingest schema and canonical nested payload schema.</li>
+  <li>Added MITRE technique code validation (<code class="language-plaintext highlighter-rouge">T####</code> / <code class="language-plaintext highlighter-rouge">T####.###</code>).</li>
+  <li>Added MITRE tactic code validation (<code class="language-plaintext highlighter-rouge">TA####</code>).</li>
+  <li>Routed canonical/schema violations to DLQ with explicit error metadata.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Validation currently runs in gateway process; dedicated downstream schema registry is not yet deployed.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Introduce versioned schema registry and compatibility policies.</li>
+  <li>Add consumer-side schema verification gates before processing.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

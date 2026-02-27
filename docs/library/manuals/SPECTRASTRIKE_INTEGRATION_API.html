@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SPECTRASTRIKE INTEGRATION API | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="spectrastrike-integration-api-legacy-status">SpectraStrike Integration API (Legacy Status)</h1>
+
+<blockquote>
+  <p>Status: Retired from public client API in Phase 0 Sprint 0.1.</p>
+</blockquote>
+
+<p>Public endpoints under <code class="language-plaintext highlighter-rouge">/api/v1/integrations/spectrastrike/*</code> are no longer part of the client API surface and must not be reintroduced.</p>
+
+<h2 id="current-supported-integration-path">Current Supported Integration Path</h2>
+
+<p>SpectraStrike integration is now supported only through the hardened internal telemetry gateway and federation verification model documented here:</p>
+
+<ul>
+  <li><a href="/VectorVue-Docs/docs/library/integration/spectrastrike-vectorvue.html">Secure SpectraStrike ↔ VectorVue Integration Manual</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/Expansion_Appendix.html">Security Expansion Appendix</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/ROADMAP.html">Product Roadmap</a></li>
+</ul>
+
+<h2 id="internal-cognitive-api-sprint-31-alignment">Internal Cognitive API (Sprint 31 Alignment)</h2>
+
+<p>These endpoints are internal-only and protected by the same mTLS + signature controls as telemetry ingest:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">POST /internal/v1/cognitive/execution-graph</code></li>
+  <li><code class="language-plaintext highlighter-rouge">POST /internal/v1/cognitive/feedback/adjustments/query</code></li>
+</ul>
+
+<p>Feedback responses are signed and replay-protected. SpectraStrike must reject any response missing:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">signature</code></li>
+  <li><code class="language-plaintext highlighter-rouge">signed_at</code></li>
+  <li><code class="language-plaintext highlighter-rouge">nonce</code></li>
+  <li><code class="language-plaintext highlighter-rouge">schema_version</code></li>
+</ul>
+
+<p>Each feedback item must include:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">tenant_id</code></li>
+  <li><code class="language-plaintext highlighter-rouge">execution_fingerprint</code></li>
+  <li><code class="language-plaintext highlighter-rouge">target_urn</code></li>
+  <li><code class="language-plaintext highlighter-rouge">action</code></li>
+  <li><code class="language-plaintext highlighter-rouge">confidence</code></li>
+  <li><code class="language-plaintext highlighter-rouge">rationale</code></li>
+  <li><code class="language-plaintext highlighter-rouge">timestamp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">schema_version</code></li>
+</ul>
+
+<p>Cognitive request payloads must include <code class="language-plaintext highlighter-rouge">operator_id</code> and the gateway enforces <code class="language-plaintext highlighter-rouge">operator_id -&gt; tenant_id</code> mapping on both graph ingest and feedback query routes.</p>
+
+<h2 id="security-requirements-current">Security Requirements (Current)</h2>
+
+<ul>
+  <li>Zero-trust service-to-service communication.</li>
+  <li>Mandatory mTLS certificate identity validation.</li>
+  <li>Mandatory Ed25519 payload signatures.</li>
+  <li>Replay protection (timestamp window + nonce enforcement).</li>
+  <li>Tenant mapping enforcement through signed metadata.</li>
+  <li>Tamper-evident logging of accept/reject outcomes.</li>
+  <li>Signed feedback response verification before policy binding.</li>
+  <li>Feedback replay rejection (response nonce + signed timestamp window).</li>
+</ul>
+
+<h2 id="prohibited-patterns">Prohibited Patterns</h2>
+
+<ul>
+  <li>Shared secrets between SpectraStrike and VectorVue services.</li>
+  <li>Unsigned telemetry ingestion.</li>
+  <li>Public client API write endpoints for telemetry ingestion.</li>
+  <li>mTLS bypass or optional certificate identity checks.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

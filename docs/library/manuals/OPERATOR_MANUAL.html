@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OPERATOR MANUAL | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-operator-manual">VectorVue Operator Manual</h1>
+
+<p>This manual is for delivery teams running security validation operations in VectorVue.</p>
+
+<h2 id="1-operating-model">1. Operating Model</h2>
+
+<p>VectorVue workflow for operators:</p>
+
+<ol>
+  <li>Prepare campaign scope and rules of engagement</li>
+  <li>Execute and record activity evidence</li>
+  <li>Track findings and remediation</li>
+  <li>Validate defensive effectiveness through analytics</li>
+  <li>Deliver auditor-ready evidence and reports</li>
+</ol>
+
+<h2 id="2-access-and-roles">2. Access and Roles</h2>
+
+<p>Minimum role guidance:</p>
+
+<ul>
+  <li>Viewer: read-only access</li>
+  <li>Operator: create and update operational records</li>
+  <li>Lead: approvals and team coordination</li>
+  <li>Admin: platform administration and user management</li>
+</ul>
+
+<h2 id="21-guided-onboarding-paths">2.1 Guided Onboarding Paths</h2>
+
+<p>Use guided workflows to reduce operator error during setup:</p>
+
+<ol>
+  <li>CLI guided wizard:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">make wizard</code></li>
+    </ul>
+  </li>
+  <li>TUI guided onboarding (admin):
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">make run-tui</code></li>
+      <li>open with <code class="language-plaintext highlighter-rouge">Ctrl+Shift+W</code> or sidebar <code class="language-plaintext highlighter-rouge">ONBOARD WIZARD</code></li>
+    </ul>
+  </li>
+  <li>Use the wizard to set:
+    <ul>
+      <li>tenant id/name</li>
+      <li>portal host and company branding</li>
+      <li>tenant admin and client credentials</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="3-daily-operator-procedure">3. Daily Operator Procedure</h2>
+
+<h3 id="31-start-of-day-checks">3.1 Start-of-Day Checks</h3>
+
+<ol>
+  <li>Confirm platform health:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make api-smoke
+</code></pre></div></div>
+
+<ol>
+  <li>Confirm active campaign and tenant context.</li>
+  <li>Confirm evidence and reporting storage are available.</li>
+</ol>
+
+<h3 id="32-campaign-execution">3.2 Campaign Execution</h3>
+
+<ol>
+  <li>Open active campaign context.</li>
+  <li>Register operational events and observations.</li>
+  <li>Maintain finding records with severity and technical details.</li>
+  <li>Attach supporting evidence for each significant finding.</li>
+</ol>
+
+<h3 id="33-detection-and-response-tracking">3.3 Detection and Response Tracking</h3>
+
+<ol>
+  <li>Review detections and timeline indicators.</li>
+  <li>Mark remediation progress where applicable.</li>
+  <li>Escalate critical findings to lead for formal approval.</li>
+</ol>
+
+<h3 id="34-end-of-day-closure">3.4 End-of-Day Closure</h3>
+
+<ol>
+  <li>Verify no orphan findings remain without severity.</li>
+  <li>Verify critical findings have evidence and remediation owner.</li>
+  <li>Review analytics summary for posture shifts.</li>
+  <li>Prepare report artifacts for stakeholder review.</li>
+</ol>
+
+<h2 id="4-quality-standards">4. Quality Standards</h2>
+
+<p>Use these standards for commercial delivery:</p>
+
+<ul>
+  <li>Every critical finding must include reproducible evidence.</li>
+  <li>Every remediation task must have owner and status.</li>
+  <li>Every report should map to current campaign window.</li>
+  <li>All tenant data must remain isolated and scoped.</li>
+</ul>
+
+<h2 id="5-multi-tenant-safety-rules">5. Multi-Tenant Safety Rules</h2>
+
+<ul>
+  <li>Never process or export data across tenants.</li>
+  <li>Always confirm tenant identity before running bulk exports.</li>
+  <li>Use tenant-scoped credentials and API tokens only.</li>
+</ul>
+
+<h2 id="6-compliance-aware-operations">6. Compliance-Aware Operations</h2>
+
+<p>Operator actions directly feed compliance evidence generation.</p>
+
+<p>To maintain auditor-grade quality:</p>
+
+<ul>
+  <li>Keep timestamps and object references accurate.</li>
+  <li>Avoid manual edits to immutable evidence datasets.</li>
+  <li>Ensure findings and remediation states are updated promptly.</li>
+</ul>
+
+<h2 id="7-recommended-demo-walkthrough">7. Recommended Demo Walkthrough</h2>
+
+<ol>
+  <li>Overview: current campaign and risk posture</li>
+  <li>Findings: focus critical/high severity</li>
+  <li>Remediation: verify accountability and progress</li>
+  <li>Reports: export executive artifacts</li>
+  <li>Compliance APIs: show signed framework report response</li>
+</ol>
+
+<h2 id="8-incident-and-escalation-guidance">8. Incident and Escalation Guidance</h2>
+
+<p>Escalate to lead/admin when:</p>
+
+<ul>
+  <li>unauthorized access is suspected</li>
+  <li>tenant data scope appears inconsistent</li>
+  <li>evidence integrity checks fail</li>
+  <li>API responses show signature or hash mismatch</li>
+</ul>
+
+<h2 id="9-references">9. References</h2>
+
+<ul>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/CLIENT_PORTAL_MANUAL.html">Client Portal Manual</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/CLIENT_API_MANUAL.html">Client API Manual</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/COMPLIANCE_API_SPEC.html">Compliance API Spec</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/AUDITOR_GUIDE.html">Auditor Guide</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/manuals/TROUBLESHOOTING_GUIDE.html">Troubleshooting Guide</a></li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-7-sprint-7.1-federation-proof-origin | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-7-sprint-71---federation-proof-of-origin">Phase 7 Sprint 7.1 - Federation Proof-of-Origin</h1>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: federated evidence bundles received from SpectraStrike.</li>
+  <li>Adversary: sender impersonation, signature forgery, bundle-field tampering.</li>
+  <li>Trust boundary: federation verify API at telemetry gateway.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Forged bundle signature.</li>
+  <li>Bundle mutation after signing.</li>
+  <li>Schema extension with hidden unvalidated fields.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Added strict signed evidence bundle schema (<code class="language-plaintext highlighter-rouge">extra=forbid</code>).</li>
+  <li>Canonical signed fields defined:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">operator_id</code></li>
+      <li><code class="language-plaintext highlighter-rouge">campaign_id</code></li>
+      <li><code class="language-plaintext highlighter-rouge">execution_hash</code></li>
+      <li><code class="language-plaintext highlighter-rouge">timestamp</code></li>
+      <li><code class="language-plaintext highlighter-rouge">nonce</code></li>
+      <li><code class="language-plaintext highlighter-rouge">signature</code></li>
+    </ul>
+  </li>
+  <li>Implemented Ed25519 proof-of-origin verification over canonical bundle message.</li>
+  <li>Added federation verification endpoint guarded by service identity checks.</li>
+  <li>Added tamper-evident audit log entries for accepted/rejected federation verifications.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Current proof covers origin authenticity; timestamp freshness windows for federation bundles can be tightened in next phase.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Add replay defense and strict time window enforcement for federation verification endpoint.</li>
+  <li>Add key rotation metadata and bundle key-id support.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

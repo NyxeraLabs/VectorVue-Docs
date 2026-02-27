@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>spectrastrike-vectorvue | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="spectrastrike--vectorvue-secure-integration-manual">SpectraStrike ↔ VectorVue Secure Integration Manual</h1>
+
+<p>Document Version: 1.0<br />
+Last Updated: February 26, 2026<br />
+Audience: Security Engineering, Platform Engineering, DevOps, SRE</p>
+
+<h2 id="1-executive-overview">1. Executive Overview</h2>
+<p>This document defines the production integration pattern between SpectraStrike and VectorVue after the completed security expansion (Phases 0-9). The integration is designed as zero-trust federation: no implicit network trust, no shared secrets between systems, mandatory mTLS for transport, mandatory Ed25519 payload signatures for telemetry authenticity, cryptographic tenant isolation, tamper-evident logging, and fail-closed CI/CD enforcement.</p>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Insecure direct ingestion or trust bypass from external producer.</li>
+  <li>Impact: Unauthorized telemetry injection, tenant contamination, false evidence creation.</li>
+  <li>Mitigation: Internal-only gateway, mTLS identity binding, signature verification, replay defense, strict schema and tenant mapping.</li>
+  <li>Residual risk: Misconfiguration of required checks in branch protection can weaken enforcement if governance fails.</li>
+</ul>
+
+<h2 id="2-architecture-overview">2. Architecture Overview</h2>
+<p>VectorVue uses an internal telemetry gateway as the only accepted ingress path for SpectraStrike telemetry. Gateway controls enforce identity, payload authenticity, freshness, tenant mapping, queue integrity, and tamper-evident audit trails.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+  SS[SpectraStrike Producer]
+  GW[VectorVue Telemetry Gateway]
+  Q[Internal Secure Queue + DLQ]
+  PE[Telemetry Processing Engine]
+  EV[Evidence Engine + Envelope Encryption]
+  TL[Tamper-Evident Audit Log]
+  FED[Federation Verify Endpoint]
+
+  SS --&gt;|mTLS + Ed25519 Signed Telemetry| GW
+  GW --&gt;|Validated Events| Q
+  Q --&gt; PE
+  PE --&gt; EV
+  GW --&gt; TL
+  SS --&gt;|Signed Federation Bundle| FED
+  FED --&gt; TL
+</code></pre>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Bypass gateway and push telemetry directly into processing path.</li>
+  <li>Impact: Unvalidated events alter scoring/evidence.</li>
+  <li>Mitigation: Gateway as trust choke-point; internal queue not publicly exposed.</li>
+  <li>Residual risk: Host-level compromise can still abuse internal network channels.</li>
+</ul>
+
+<h2 id="3-trust-model">3. Trust Model</h2>
+<p>Trust is explicit and per-request.</p>
+
+<ol>
+  <li>Transport trust: mTLS with service identity certificate pinning.</li>
+  <li>Message trust: Ed25519 signature verification using configured SpectraStrike public key.</li>
+  <li>Freshness trust: timestamp skew validation + nonce replay lock.</li>
+  <li>Tenant trust: signed metadata equality checks + operator-to-tenant mapping.</li>
+  <li>Processing trust: strict schema + MITRE mapping + sanitization.</li>
+  <li>Cognitive trust: signed feedback responses bound to tenant and replay-safe nonce/timestamp.</li>
+</ol>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Assume internal source is trusted without proof.</li>
+  <li>Impact: Lateral movement can impersonate producer.</li>
+  <li>Mitigation: Every request must satisfy identity + signature + freshness + tenant constraints.</li>
+  <li>Residual risk: Insider with valid private key remains authorized until revoked.</li>
+</ul>
+
+<h2 id="4-cryptographic-federation-model">4. Cryptographic Federation Model</h2>
+<p>Federation bundles are accepted only when signed evidence envelope fields validate against canonical signature input.</p>
+
+<p>Canonical fields:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">operator_id</code></li>
+  <li><code class="language-plaintext highlighter-rouge">campaign_id</code></li>
+  <li><code class="language-plaintext highlighter-rouge">execution_hash</code></li>
+  <li><code class="language-plaintext highlighter-rouge">timestamp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">nonce</code></li>
+  <li><code class="language-plaintext highlighter-rouge">signature</code></li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Bundle tampering after signing or forged sender identity.</li>
+  <li>Impact: Corrupt downstream evidence and audit outcomes.</li>
+  <li>Mitigation: Strict bundle schema (<code class="language-plaintext highlighter-rouge">extra=forbid</code>) + Ed25519 proof-of-origin verification.</li>
+  <li>Residual risk: Freshness/replay controls for federation bundles should be tightened with dedicated nonce cache.</li>
+</ul>
+
+<h2 id="5-secure-telemetry-flow">5. Secure Telemetry Flow</h2>
+<ol>
+  <li>SpectraStrike prepares canonical JSON telemetry payload.</li>
+  <li>SpectraStrike signs message: <code class="language-plaintext highlighter-rouge">"{timestamp}.{nonce}." + raw_json</code> using Ed25519 private key.</li>
+  <li>SpectraStrike sends request over mTLS with required headers.</li>
+  <li>Gateway validates:
+    <ul>
+      <li>service identity + cert fingerprint pin</li>
+      <li>signature integrity</li>
+      <li>timestamp skew and nonce uniqueness</li>
+      <li>operator rate limits</li>
+      <li>strict schema and MITRE mappings</li>
+      <li>signed tenant metadata and operator mapping</li>
+    </ul>
+  </li>
+  <li>Gateway routes accepted payload to secure queue with integrity hash.</li>
+  <li>Invalid payloads are sent to DLQ with rejection metadata.</li>
+  <li>All accept/reject outcomes are appended to tamper-evident audit log.</li>
+</ol>
+
+<pre><code class="language-mermaid">sequenceDiagram
+  participant S as SpectraStrike
+  participant G as Telemetry Gateway
+  participant Q as Secure Queue
+  participant D as DLQ
+  participant L as Tamper Log
+
+  S-&gt;&gt;G: mTLS POST + signature + nonce + timestamp
+  G-&gt;&gt;G: Identity, signature, replay, tenant, schema checks
+  alt Valid
+    G-&gt;&gt;Q: publish ingest envelope + integrity_hash
+    G-&gt;&gt;L: append telemetry.accepted
+    G--&gt;&gt;S: 202 Accepted
+  else Invalid
+    G-&gt;&gt;D: publish dead_letter envelope
+    G-&gt;&gt;L: append telemetry.rejected
+    G--&gt;&gt;S: 4xx/5xx rejection
+  end
+</code></pre>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Malformed payload intended to poison queue or parser.</li>
+  <li>Impact: Processing faults, dropped data, hidden exploitation attempts.</li>
+  <li>Mitigation: strict validation + DLQ routing + logged reject reasons.</li>
+  <li>Residual risk: DLQ flood volume can increase storage pressure.</li>
+</ul>
+
+<h2 id="56-cognitive-feedback-flow-sprint-31-alignment">5.6 Cognitive Feedback Flow (Sprint 31 Alignment)</h2>
+<ol>
+  <li>SpectraStrike sends execution graph metadata to <code class="language-plaintext highlighter-rouge">/internal/v1/cognitive/execution-graph</code>.</li>
+  <li>Gateway applies mTLS identity, signature verification, and replay checks.</li>
+  <li>VectorVue stores graph metadata under tenant scope.</li>
+  <li>SpectraStrike queries <code class="language-plaintext highlighter-rouge">/internal/v1/cognitive/feedback/adjustments/query</code>.</li>
+  <li>Gateway returns tenant-scoped adjustments with response signature, nonce, and signed timestamp.</li>
+  <li>SpectraStrike verifies signature + replay window and rejects unsigned/forged/replayed responses.</li>
+  <li>Only verified adjustments are bound into policy evaluation context.</li>
+</ol>
+
+<p>Required feedback item fields:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">tenant_id</code></li>
+  <li><code class="language-plaintext highlighter-rouge">execution_fingerprint</code></li>
+  <li><code class="language-plaintext highlighter-rouge">target_urn</code></li>
+  <li><code class="language-plaintext highlighter-rouge">action</code></li>
+  <li><code class="language-plaintext highlighter-rouge">confidence</code></li>
+  <li><code class="language-plaintext highlighter-rouge">rationale</code></li>
+  <li><code class="language-plaintext highlighter-rouge">timestamp</code></li>
+  <li><code class="language-plaintext highlighter-rouge">schema_version</code></li>
+</ul>
+
+<h2 id="6-identity--certificate-management">6. Identity &amp; Certificate Management</h2>
+<p>Identity model:</p>
+<ul>
+  <li>Each service uses unique certificate identity.</li>
+  <li>Gateway maps allowed service IDs to pinned certificate SHA-256 fingerprints.</li>
+  <li>Cert artifacts required on startup; missing artifacts fail service health.</li>
+</ul>
+
+<p>Required controls:</p>
+<ul>
+  <li>Certificates are issued from internal CA under dual control.</li>
+  <li>Short-lived certs are preferred (&lt;=90 days).</li>
+  <li>Pinsets are explicit, not wildcard.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: MITM using untrusted cert or spoofed service name.</li>
+  <li>Impact: False producer accepted.</li>
+  <li>Mitigation: mTLS + cert fingerprint pinning + non-empty identity allowlist.</li>
+  <li>Residual risk: Stale pinsets during rotation can cause outage if not coordinated.</li>
+</ul>
+
+<h2 id="7-deployment-topology">7. Deployment Topology</h2>
+<p>Deployment zones:</p>
+<ul>
+  <li>Zone A: SpectraStrike producer network.</li>
+  <li>Zone B: VectorVue private integration network.</li>
+  <li>Zone C: Internal queue and processing network.</li>
+</ul>
+
+<p>Topology requirements:</p>
+<ul>
+  <li>No public exposure of queue endpoints.</li>
+  <li>Gateway ingress limited to approved source CIDRs and mTLS client certs.</li>
+  <li>Processing services accept only internal network traffic.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Public path to internal queue/processor.</li>
+  <li>Impact: Direct unvalidated event injection.</li>
+  <li>Mitigation: Network ACLs + internal DNS + no external queue listeners.</li>
+  <li>Residual risk: Cloud misconfiguration remains possible; enforce IaC policy checks.</li>
+</ul>
+
+<h2 id="8-secure-configuration-steps">8. Secure Configuration Steps</h2>
+<ol>
+  <li>Generate/issue service certificates for SpectraStrike producer and VectorVue gateway.</li>
+  <li>Register SpectraStrike service identity and pinned fingerprint in gateway config.</li>
+  <li>Configure gateway Ed25519 public key for signature verification.</li>
+  <li>Enable mTLS and signature-required flags (<code class="language-plaintext highlighter-rouge">VV_TG_REQUIRE_MTLS=1</code>, <code class="language-plaintext highlighter-rouge">VV_TG_REQUIRE_PAYLOAD_SIGNATURE=1</code>).</li>
+  <li>Configure nonce backend and TTL; configure rate-limit backend and threshold.</li>
+  <li>Configure operator-to-tenant mapping and signed metadata enforcement.</li>
+  <li>Configure queue backend (internal), subjects, and DLQ.</li>
+  <li>Enable tamper log path and seal interval.</li>
+  <li>Run CI security enforcement workflow and red-team suite before merge.</li>
+</ol>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Insecure defaults or omitted critical controls.</li>
+  <li>Impact: Silent acceptance of unsigned/untrusted payloads.</li>
+  <li>Mitigation: explicit fail-closed settings + policy gate in CI.</li>
+  <li>Residual risk: Manual runtime changes outside IaC can drift from approved baseline.</li>
+</ul>
+
+<h2 id="9-spectrastrike-configuration">9. SpectraStrike Configuration</h2>
+<p>Example <code class="language-plaintext highlighter-rouge">config.yaml</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spectrastrike</span><span class="pi">:</span>
+  <span class="na">producer</span><span class="pi">:</span>
+    <span class="na">endpoint</span><span class="pi">:</span> <span class="s">https://vectorvue-telemetry-gateway.internal/internal/v1/telemetry</span>
+    <span class="na">service_identity</span><span class="pi">:</span> <span class="s">spectrastrike-producer</span>
+    <span class="na">mtls</span><span class="pi">:</span>
+      <span class="na">cert_path</span><span class="pi">:</span> <span class="s">/etc/spectrastrike/certs/client.crt</span>
+      <span class="na">key_path</span><span class="pi">:</span> <span class="s">/etc/spectrastrike/certs/client.key</span>
+      <span class="na">ca_path</span><span class="pi">:</span> <span class="s">/etc/spectrastrike/certs/ca.crt</span>
+      <span class="na">verify_peer</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">signing</span><span class="pi">:</span>
+      <span class="na">algorithm</span><span class="pi">:</span> <span class="s">ed25519</span>
+      <span class="na">private_key_path</span><span class="pi">:</span> <span class="s">/etc/spectrastrike/keys/telemetry_ed25519.key</span>
+      <span class="na">key_id</span><span class="pi">:</span> <span class="s">spectrastrike-ed25519-2026q1</span>
+    <span class="na">replay</span><span class="pi">:</span>
+      <span class="na">nonce_length</span><span class="pi">:</span> <span class="m">24</span>
+      <span class="na">timestamp_format</span><span class="pi">:</span> <span class="s">unix_epoch_seconds</span>
+      <span class="na">max_clock_skew_seconds</span><span class="pi">:</span> <span class="m">30</span>
+    <span class="na">retry</span><span class="pi">:</span>
+      <span class="na">max_attempts</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">backoff_ms</span><span class="pi">:</span> <span class="m">500</span>
+      <span class="na">jitter_ms</span><span class="pi">:</span> <span class="m">250</span>
+</code></pre></div></div>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Producer sends unsigned or stale telemetry due to weak local config.</li>
+  <li>Impact: High reject rates; potential data loss.</li>
+  <li>Mitigation: enforce signing and timestamp generation in producer pipeline.</li>
+  <li>Residual risk: Producer clock drift can trigger false rejection.</li>
+</ul>
+
+<h2 id="10-vectorvue-configuration">10. VectorVue Configuration</h2>
+<p>Example gateway <code class="language-plaintext highlighter-rouge">config.yaml</code> representation (maps to environment variables):</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">vectorvue</span><span class="pi">:</span>
+  <span class="na">telemetry_gateway</span><span class="pi">:</span>
+    <span class="na">require_mtls</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">require_payload_signature</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">allowed_clock_skew_seconds</span><span class="pi">:</span> <span class="m">30</span>
+    <span class="na">nonce_ttl_seconds</span><span class="pi">:</span> <span class="m">120</span>
+    <span class="na">nonce_backend</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">redis_url</span><span class="pi">:</span> <span class="s">redis://vectorvue-redis.internal:6379/0</span>
+    <span class="na">rate_limit_per_minute</span><span class="pi">:</span> <span class="m">120</span>
+    <span class="na">rate_limit_backend</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">queue_backend</span><span class="pi">:</span> <span class="s">nats</span>
+    <span class="na">nats_url</span><span class="pi">:</span> <span class="s">nats://vectorvue-nats.internal:4222</span>
+    <span class="na">queue_subject</span><span class="pi">:</span> <span class="s">vectorvue.telemetry.ingest</span>
+    <span class="na">dlq_subject</span><span class="pi">:</span> <span class="s">vectorvue.telemetry.dlq</span>
+    <span class="na">spectrastrike_ed25519_public_key_b64</span><span class="pi">:</span> <span class="s">&lt;base64-32-byte-public-key&gt;</span>
+    <span class="na">allowed_service_identities</span><span class="pi">:</span>
+      <span class="na">spectrastrike-producer</span><span class="pi">:</span> <span class="s">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+    <span class="na">operator_tenant_map</span><span class="pi">:</span>
+      <span class="na">op-001</span><span class="pi">:</span> <span class="s">10000000-0000-0000-0000-000000000001</span>
+</code></pre></div></div>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Runtime config drift disables verification controls.</li>
+  <li>Impact: Unauthorized payload acceptance.</li>
+  <li>Mitigation: CI policy gate validates security flags and guard presence.</li>
+  <li>Residual risk: Runtime override outside deployment pipeline can still bypass policy unless admission controls exist.</li>
+</ul>
+
+<h2 id="11-telemetry-gateway-setup">11. Telemetry Gateway Setup</h2>
+<ol>
+  <li>Deploy gateway service in private subnet.</li>
+  <li>Mount identity cert/key/CA and verify file permissions (<code class="language-plaintext highlighter-rouge">0400</code> for keys).</li>
+  <li>Inject security environment variables from secret manager/config service.</li>
+  <li>Enable liveness/readiness checks and startup validation.</li>
+  <li>Restrict ingress to SpectraStrike egress CIDRs + mTLS.</li>
+  <li>Bind queue and Redis dependencies over internal TLS where available.</li>
+</ol>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Gateway starts with incomplete security artifacts.</li>
+  <li>Impact: Fails open or unstable ingress path.</li>
+  <li>Mitigation: startup hard-fail for missing cert/key/CA/public key values.</li>
+  <li>Residual risk: Dependency outages can produce temporary reject spikes.</li>
+</ul>
+
+<h2 id="12-mtls-configuration-steps">12. mTLS Configuration Steps</h2>
+<p>Certificate generation example (OpenSSL):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1) Root CA</span>
+openssl genrsa <span class="nt">-out</span> ca.key 4096
+openssl req <span class="nt">-x509</span> <span class="nt">-new</span> <span class="nt">-nodes</span> <span class="nt">-key</span> ca.key <span class="nt">-sha256</span> <span class="nt">-days</span> 3650 <span class="se">\</span>
+  <span class="nt">-subj</span> <span class="s2">"/CN=VectorVue-Internal-CA"</span> <span class="nt">-out</span> ca.crt
+
+<span class="c"># 2) SpectraStrike client cert</span>
+openssl genrsa <span class="nt">-out</span> spectrastrike.key 2048
+openssl req <span class="nt">-new</span> <span class="nt">-key</span> spectrastrike.key <span class="nt">-subj</span> <span class="s2">"/CN=spectrastrike-producer"</span> <span class="nt">-out</span> spectrastrike.csr
+openssl x509 <span class="nt">-req</span> <span class="nt">-in</span> spectrastrike.csr <span class="nt">-CA</span> ca.crt <span class="nt">-CAkey</span> ca.key <span class="nt">-CAcreateserial</span> <span class="se">\</span>
+  <span class="nt">-out</span> spectrastrike.crt <span class="nt">-days</span> 90 <span class="nt">-sha256</span>
+
+<span class="c"># 3) Gateway server cert</span>
+openssl genrsa <span class="nt">-out</span> gateway.key 2048
+openssl req <span class="nt">-new</span> <span class="nt">-key</span> gateway.key <span class="nt">-subj</span> <span class="s2">"/CN=vectorvue-telemetry-gateway.internal"</span> <span class="nt">-out</span> gateway.csr
+openssl x509 <span class="nt">-req</span> <span class="nt">-in</span> gateway.csr <span class="nt">-CA</span> ca.crt <span class="nt">-CAkey</span> ca.key <span class="nt">-CAcreateserial</span> <span class="se">\</span>
+  <span class="nt">-out</span> gateway.crt <span class="nt">-days</span> 90 <span class="nt">-sha256</span>
+
+<span class="c"># 4) Fingerprint pin material</span>
+openssl x509 <span class="nt">-in</span> spectrastrike.crt <span class="nt">-noout</span> <span class="nt">-fingerprint</span> <span class="nt">-sha256</span>
+</code></pre></div></div>
+
+<p>Certificate validation sequence:</p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+  participant S as SpectraStrike Client
+  participant G as Gateway TLS Listener
+  participant CA as Internal CA Trust Store
+  participant PIN as Fingerprint Pinset
+
+  S-&gt;&gt;G: TLS ClientHello + certificate
+  G-&gt;&gt;CA: Validate chain and expiry
+  CA--&gt;&gt;G: Valid/Invalid
+  G-&gt;&gt;PIN: Compare SHA-256 fingerprint
+  PIN--&gt;&gt;G: Match/Mismatch
+  alt Valid + Match
+    G--&gt;&gt;S: mTLS established
+  else Invalid or Mismatch
+    G--&gt;&gt;S: handshake reject / 401
+  end
+</code></pre>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Stolen certificate or rogue CA issuance.</li>
+  <li>Impact: Producer impersonation.</li>
+  <li>Mitigation: private CA control, short cert validity, pinset checks, revocation process.</li>
+  <li>Residual risk: Delay in revocation propagation.</li>
+</ul>
+
+<h2 id="13-signature-verification-model">13. Signature Verification Model</h2>
+<p>Ed25519 signing flow example (producer):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">nacl.signing</span> <span class="kn">import</span> <span class="n">SigningKey</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{...}</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s">","</span><span class="p">,</span> <span class="s">":"</span><span class="p">)).</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">)</span>
+<span class="n">timestamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s">"timestamp"</span><span class="p">])</span>
+<span class="n">nonce</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s">"nonce"</span><span class="p">]</span>
+<span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s">.</span><span class="si">{</span><span class="n">nonce</span><span class="si">}</span><span class="s">."</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">)</span> <span class="o">+</span> <span class="n">raw</span>
+
+<span class="n">sk</span> <span class="o">=</span> <span class="n">SigningKey</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">"/etc/spectrastrike/keys/telemetry_ed25519.key"</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">).</span><span class="n">read</span><span class="p">())</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">sk</span><span class="p">.</span><span class="n">sign</span><span class="p">(</span><span class="n">message</span><span class="p">).</span><span class="n">signature</span>
+<span class="n">signature_b64</span> <span class="o">=</span> <span class="n">base64</span><span class="p">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">signature</span><span class="p">).</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Validation middleware pseudo-code:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function verify_request(req, raw_body):
+  enforce_header("X-Service-Identity")
+  enforce_header("X-Client-Cert-Sha256")
+  enforce_header("X-Telemetry-Timestamp")
+  enforce_header("X-Telemetry-Nonce")
+  enforce_header("X-Telemetry-Signature")
+
+  enforce_mtls_identity_and_pin(req.service_identity, req.cert_fp)
+
+  ts = parse_int(req.timestamp)
+  require(abs(now() - ts) &lt;= allowed_clock_skew_seconds)
+
+  signature = base64_decode(req.signature)
+  message = bytes(f"{ts}.{req.nonce}.") + raw_body
+  verify_ed25519(signature, message, configured_public_key)
+
+  register_nonce_or_reject(ts, req.nonce)
+  return OK
+</code></pre></div></div>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Signature substitution or unsigned payload replay.</li>
+  <li>Impact: Forged telemetry accepted.</li>
+  <li>Mitigation: canonical message construction + strict signature verify + mandatory headers.</li>
+  <li>Residual risk: Public key misconfiguration causes false reject/accept if governance is weak.</li>
+</ul>
+
+<h2 id="14-replay-protection-mechanism">14. Replay Protection Mechanism</h2>
+<p>Mechanism:</p>
+<ul>
+  <li>Validate timestamp within bounded skew window.</li>
+  <li>Construct nonce key from <code class="language-plaintext highlighter-rouge">sha256("{timestamp}:{nonce}")</code>.</li>
+  <li>Atomically register nonce with TTL in Redis or in-memory fallback for tests.</li>
+  <li>Reject if nonce exists.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Re-submit valid signed payload to duplicate effects.</li>
+  <li>Impact: Event inflation, false incident amplification.</li>
+  <li>Mitigation: nonce uniqueness and time window enforcement.</li>
+  <li>Residual risk: Memory backend is not multi-instance safe; Redis backend required in production.</li>
+</ul>
+
+<h2 id="15-tenant-isolation-model">15. Tenant Isolation Model</h2>
+<p>Tenant enforcement path:</p>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">signed_metadata.tenant_id/operator_id/campaign_id</code> must match payload top-level fields.</li>
+  <li><code class="language-plaintext highlighter-rouge">operator_id</code> must map to approved tenant via gateway operator map.</li>
+  <li>On mismatch, reject with <code class="language-plaintext highlighter-rouge">401</code> or <code class="language-plaintext highlighter-rouge">403</code> and append audit entry.</li>
+  <li>Downstream repositories enforce tenant-scoped query guards.</li>
+</ol>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Cross-tenant injection by modifying tenant IDs.</li>
+  <li>Impact: Data contamination and confidentiality breach.</li>
+  <li>Mitigation: signed metadata equality + operator-to-tenant allowlist + tenant-scoped persistence guards.</li>
+  <li>Residual risk: Mapping errors in config can deny valid traffic; requires change-control review.</li>
+</ul>
+
+<h2 id="16-evidence-encryption-model">16. Evidence Encryption Model</h2>
+<p>Evidence blob encryption:</p>
+<ul>
+  <li>Envelope encryption with per-tenant derived KEK.</li>
+  <li>Data encryption key (DEK) generated per payload.</li>
+  <li>DEK wrapped using tenant KEK; payload encrypted with DEK.</li>
+  <li>Root keys sourced via HSM provider abstraction.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Storage compromise exposing evidence data.</li>
+  <li>Impact: Sensitive evidence disclosure.</li>
+  <li>Mitigation: encryption at rest + tenant-bound AAD + key hierarchy isolation.</li>
+  <li>Residual risk: If root key material is env-backed (non-HSM), hardware guarantees are reduced.</li>
+  <li>Security deficiency: <strong>SD-01 (Medium)</strong>. HSM enforcement is abstracted but not guaranteed by runtime policy in all environments.</li>
+</ul>
+
+<h2 id="17-tamper-evident-logging-model">17. Tamper-Evident Logging Model</h2>
+<p>Audit logging model:</p>
+<ul>
+  <li>Append-only JSONL records.</li>
+  <li>Each record includes <code class="language-plaintext highlighter-rouge">previous_hash</code> and deterministic <code class="language-plaintext highlighter-rouge">entry_hash</code>.</li>
+  <li>Periodic seal entries (<code class="language-plaintext highlighter-rouge">log.sealed</code>) checkpoint chain state.</li>
+  <li>Integrity verification returns precise break reason.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Post-incident log rewrite or deletion.</li>
+  <li>Impact: Loss of forensic confidence.</li>
+  <li>Mitigation: hash-chain integrity checks and seal checkpoints.</li>
+  <li>Residual risk: Local file deletion by privileged host access is still possible.</li>
+  <li>Security deficiency: <strong>SD-02 (High)</strong>. No mandatory remote immutable anchoring/WORM sink for seals in baseline deployment.</li>
+</ul>
+
+<h2 id="18-federation-protocol-specification">18. Federation Protocol Specification</h2>
+<p>Envelope structure (signed evidence bundle):</p>
+
+<pre><code class="language-mermaid">classDiagram
+  class SignedEvidenceBundle {
+    +string operator_id
+    +string campaign_id
+    +string execution_hash
+    +int timestamp
+    +string nonce
+    +string signature
+    +extra = forbid
+  }
+</code></pre>
+
+<p>Protocol rules:</p>
+<ul>
+  <li>Fields outside schema are rejected.</li>
+  <li>Signature verification uses canonical concatenation:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">operator_id|campaign_id|execution_hash|timestamp|nonce</code></li>
+    </ul>
+  </li>
+  <li>Verification endpoint requires service identity authentication.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Bundle extension with hidden fields.</li>
+  <li>Impact: Signed-content ambiguity and parser confusion.</li>
+  <li>Mitigation: strict schema and canonical sign/verify contract.</li>
+  <li>Residual risk: Federation nonce replay protection can be strengthened.</li>
+</ul>
+
+<h2 id="19-error-handling--rejection-cases">19. Error Handling &amp; Rejection Cases</h2>
+<p>Primary rejection classes:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">401 Unauthorized</code>: missing/invalid mTLS identity, cert mismatch, missing signature headers, invalid signature, metadata mismatch, timestamp skew.</li>
+  <li><code class="language-plaintext highlighter-rouge">403 Forbidden</code>: operator not mapped to tenant, tenant mapping violation.</li>
+  <li><code class="language-plaintext highlighter-rouge">409 Conflict</code>: replay detected (nonce reused).</li>
+  <li><code class="language-plaintext highlighter-rouge">422 Unprocessable Entity</code>: schema validation, MITRE mapping, sanitization/injection block failures.</li>
+  <li><code class="language-plaintext highlighter-rouge">429 Too Many Requests</code>: operator burst anomaly.</li>
+  <li><code class="language-plaintext highlighter-rouge">503 Service Unavailable</code>: Redis/queue/DLQ backend unavailable.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Error ambiguity allows attacker probing without detection.</li>
+  <li>Impact: Control bypass attempts become stealthy.</li>
+  <li>Mitigation: deterministic status codes + tamper-evident rejected-event logging.</li>
+  <li>Residual risk: Highly verbose external error details can aid reconnaissance; keep external messages bounded.</li>
+</ul>
+
+<h2 id="20-failure--recovery-scenarios">20. Failure &amp; Recovery Scenarios</h2>
+<p>Scenario matrix:</p>
+<ol>
+  <li>Redis nonce store unavailable -&gt; gateway returns <code class="language-plaintext highlighter-rouge">503</code>; trigger incident and failover.</li>
+  <li>Queue unavailable -&gt; publish failure returns <code class="language-plaintext highlighter-rouge">503</code>; replay-safe retries allowed from producer.</li>
+  <li>High reject rate due to cert expiry -&gt; rotate certs and revalidate pinset.</li>
+  <li>Signature key mismatch after rotation -&gt; deploy updated public key and rerun signed handshake checks.</li>
+</ol>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Dependency outage exploited to force operational bypass.</li>
+  <li>Impact: Temptation to disable controls under pressure.</li>
+  <li>Mitigation: explicit policy: no insecure fallback; fail closed and execute recovery playbook.</li>
+  <li>Residual risk: Availability impact during prolonged dependency outages.</li>
+</ul>
+
+<h2 id="21-revocation--kill-switch-procedure">21. Revocation &amp; Kill Switch Procedure</h2>
+<p>Kill switch objective: immediately stop SpectraStrike-to-VectorVue federation when compromise is suspected.</p>
+
+<p>Procedure:</p>
+<ol>
+  <li>Open <code class="language-plaintext highlighter-rouge">SEV-1</code> incident and assign Security Commander + Platform Commander.</li>
+  <li>Revoke SpectraStrike producer cert at CA and distribute CRL/OCSP updates.</li>
+  <li>Remove producer identity from <code class="language-plaintext highlighter-rouge">allowed_service_identities</code> pinset.</li>
+  <li>Rotate gateway Ed25519 public key to reject previously trusted signatures.</li>
+  <li>Apply network ACL deny rule from SpectraStrike egress CIDRs.</li>
+  <li>Run gateway config reload/redeploy.</li>
+  <li>Validate all inbound producer attempts are rejected (<code class="language-plaintext highlighter-rouge">401/403</code>).</li>
+  <li>Preserve tamper-evident logs and evidence for forensics.</li>
+</ol>
+
+<p>Kill-switch revocation flow:</p>
+
+<pre><code class="language-mermaid">flowchart TD
+  DETECT[Compromise Detected]
+  SEV[Declare SEV-1]
+  CA[Revoke Producer Cert]
+  PIN[Remove Pinned Identity]
+  KEY[Rotate Verify Key]
+  ACL[Block Network Path]
+  DEPLOY[Reload Gateway Config]
+  VERIFY[Validate Rejection + Alerts]
+
+  DETECT --&gt; SEV --&gt; CA --&gt; PIN --&gt; KEY --&gt; ACL --&gt; DEPLOY --&gt; VERIFY
+</code></pre>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Delayed revocation after key/cert theft.</li>
+  <li>Impact: Continued unauthorized telemetry ingress.</li>
+  <li>Mitigation: dual-plane revocation (cert + pinset + network + key rotation).</li>
+  <li>Residual risk: Control-plane propagation delay.</li>
+  <li>Security deficiency: <strong>SD-03 (Medium)</strong>. No single atomic kill-switch API; revocation requires orchestrated multi-step operation.</li>
+</ul>
+
+<h2 id="22-key-rotation-procedure">22. Key Rotation Procedure</h2>
+<p>Rotation targets:</p>
+<ul>
+  <li>SpectraStrike Ed25519 signing keys.</li>
+  <li>Gateway trust public keys.</li>
+  <li>mTLS certificates.</li>
+</ul>
+
+<p>Procedure:</p>
+<ol>
+  <li>Generate new Ed25519 keypair in secure key store.</li>
+  <li>Publish new public key to VectorVue config under approved change window.</li>
+  <li>Deploy producer update to sign with new private key.</li>
+  <li>Run dual-validation canary (old/new keys where supported).</li>
+  <li>Decommission old key after cutover confirmation.</li>
+  <li>Rotate mTLS certificates and update pinset fingerprints.</li>
+  <li>Execute regression suite + red-team checks.</li>
+</ol>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Long-lived keys increase blast radius of compromise.</li>
+  <li>Impact: Persistent forgery capability.</li>
+  <li>Mitigation: scheduled rotation with dual control and validation gates.</li>
+  <li>Residual risk: Incomplete rollout can temporarily increase reject rates.</li>
+</ul>
+
+<h2 id="23-audit--compliance-mapping">23. Audit &amp; Compliance Mapping</h2>
+<p>Mapping examples:</p>
+<ul>
+  <li>ISO 27001 A.8/A.12/A.14: cryptographic controls, logging integrity, secure development pipeline.</li>
+  <li>SOC 2 CC6/CC7/CC8: logical access, change management, monitoring.</li>
+  <li>NIST-style controls: SC-8/SC-12/SC-13/AU-9/SI-4 analogs.</li>
+</ul>
+
+<p>Evidence artifacts:</p>
+<ul>
+  <li>CI security enforcement run logs.</li>
+  <li>Red-team simulation results.</li>
+  <li>Tamper log verification outputs.</li>
+  <li>Certificate issuance/rotation records.</li>
+  <li>Key rotation and revocation approvals.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Compliance evidence generated manually and inconsistently.</li>
+  <li>Impact: Audit gaps and unverifiable assertions.</li>
+  <li>Mitigation: automate artifact generation and retention from control execution paths.</li>
+  <li>Residual risk: Policy exceptions outside pipeline can weaken assurance.</li>
+</ul>
+
+<h2 id="24-red-team-validation-checklist">24. Red Team Validation Checklist</h2>
+<p>Required scenarios before production promotion:</p>
+<ul>
+  <li>Invalid signature</li>
+  <li>Expired timestamp</li>
+  <li>Replay nonce reuse</li>
+  <li>Cross-tenant injection</li>
+  <li>Queue poisoning</li>
+  <li>Log tampering</li>
+  <li>Certificate revocation enforcement</li>
+</ul>
+
+<p>Validation matrix:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Scenario</th>
+      <th>Expected System Behavior</th>
+      <th>Logs Generated</th>
+      <th>Alert Triggered</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Invalid signature</td>
+      <td>Gateway rejects request with <code class="language-plaintext highlighter-rouge">401</code>; event is not queued.</td>
+      <td><code class="language-plaintext highlighter-rouge">telemetry.rejected</code> with reason <code class="language-plaintext highlighter-rouge">Invalid telemetry signature</code>; tamper log entry hash chained.</td>
+      <td><code class="language-plaintext highlighter-rouge">P1</code> if signature-failure rate exceeds threshold.</td>
+    </tr>
+    <tr>
+      <td>Expired timestamp</td>
+      <td>Gateway rejects request with <code class="language-plaintext highlighter-rouge">401</code> for clock skew violation.</td>
+      <td><code class="language-plaintext highlighter-rouge">telemetry.rejected</code> with reason <code class="language-plaintext highlighter-rouge">Telemetry timestamp out of allowed clock skew</code>.</td>
+      <td><code class="language-plaintext highlighter-rouge">P2</code> on sustained skew failures (producer clock drift).</td>
+    </tr>
+    <tr>
+      <td>Replay attempt</td>
+      <td>First request accepted; second identical nonce rejected with <code class="language-plaintext highlighter-rouge">409</code>.</td>
+      <td><code class="language-plaintext highlighter-rouge">telemetry.accepted</code> for first, <code class="language-plaintext highlighter-rouge">telemetry.rejected</code> replay reason for second.</td>
+      <td><code class="language-plaintext highlighter-rouge">P1</code> on replay spike by source/operator.</td>
+    </tr>
+    <tr>
+      <td>Cross-tenant injection</td>
+      <td>Gateway rejects request with <code class="language-plaintext highlighter-rouge">403</code> on tenant mapping violation.</td>
+      <td><code class="language-plaintext highlighter-rouge">telemetry.rejected</code> with <code class="language-plaintext highlighter-rouge">Operator tenant mapping violation</code>.</td>
+      <td><code class="language-plaintext highlighter-rouge">P1</code> immediate security alert for tenant boundary violation.</td>
+    </tr>
+    <tr>
+      <td>Queue corruption (poison attempt)</td>
+      <td>Invalid telemetry rejected with <code class="language-plaintext highlighter-rouge">422</code> and routed to DLQ only.</td>
+      <td>DLQ envelope (<code class="language-plaintext highlighter-rouge">dead_letter</code>) + reject tamper-log entry.</td>
+      <td><code class="language-plaintext highlighter-rouge">P2</code> on DLQ anomaly growth or repeated schema violations.</td>
+    </tr>
+    <tr>
+      <td>Log tampering attempt</td>
+      <td>Integrity verification reports <code class="language-plaintext highlighter-rouge">ok=false</code> and mismatch reason.</td>
+      <td>Tamper-log verifier output with <code class="language-plaintext highlighter-rouge">entry_hash_mismatch</code> or <code class="language-plaintext highlighter-rouge">previous_hash_mismatch</code>.</td>
+      <td><code class="language-plaintext highlighter-rouge">P1</code> integrity-failure alert (forensic priority).</td>
+    </tr>
+    <tr>
+      <td>Certificate revocation</td>
+      <td>Revoked producer cert/fingerprint requests fail mTLS/identity check with <code class="language-plaintext highlighter-rouge">401</code>.</td>
+      <td><code class="language-plaintext highlighter-rouge">telemetry.rejected</code> identity mismatch/revoked cert reason; revocation change logs.</td>
+      <td><code class="language-plaintext highlighter-rouge">P1</code> if revoked identity still attempts ingress.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Untested control regressions entering production.</li>
+  <li>Impact: latent exploitable paths.</li>
+  <li>Mitigation: mandatory phase-9 simulation suite in CI.</li>
+  <li>Residual risk: New attack classes require periodic suite expansion.</li>
+</ul>
+
+<h2 id="25-security-hardening-checklist">25. Security Hardening Checklist</h2>
+<ul>
+  <li>Enforce <code class="language-plaintext highlighter-rouge">require_mtls=true</code>.</li>
+  <li>Enforce <code class="language-plaintext highlighter-rouge">require_payload_signature=true</code>.</li>
+  <li>Use Redis backend for nonce/rate-limit in production.</li>
+  <li>Restrict queue/network to private segments.</li>
+  <li>Enable tamper log with seal interval and off-host backup.</li>
+  <li>Protect private keys with strict file permissions and hardware-backed storage.</li>
+  <li>Enforce branch protection with required Security Enforcement workflow.</li>
+  <li>Maintain operator-to-tenant allowlist under change control.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Hardening drift over time.</li>
+  <li>Impact: gradual erosion of trust guarantees.</li>
+  <li>Mitigation: periodic configuration audits + policy as code.</li>
+  <li>Residual risk: emergency changes may temporarily bypass rigor unless reviewed post-incident.</li>
+</ul>
+
+<h2 id="26-operational-runbook">26. Operational Runbook</h2>
+<h3 id="261-first-time-federation-setup">26.1 First-Time Federation Setup</h3>
+<ol>
+  <li>Approve federation request under dual control (Security + Platform).</li>
+  <li>Issue SpectraStrike producer certificate and register fingerprint pin.</li>
+  <li>Generate/import Ed25519 keypair for SpectraStrike producer.</li>
+  <li>Configure gateway public key and identity mapping.</li>
+  <li>Configure operator-to-tenant mappings.</li>
+  <li>Run dry-run telemetry and federation verification tests.</li>
+  <li>Run compliance verification and red-team suite.</li>
+  <li>Approve production cutover.</li>
+</ol>
+
+<h3 id="262-certificate-issuance">26.2 Certificate Issuance</h3>
+<ol>
+  <li>Open change request with owner, scope, validity period.</li>
+  <li>Generate CSR and sign with internal CA.</li>
+  <li>Record fingerprint, serial, not-before/not-after.</li>
+  <li>Store artifacts in controlled secret distribution path.</li>
+  <li>Update pinset and deploy.</li>
+</ol>
+
+<h3 id="263-gateway-deployment">26.3 Gateway Deployment</h3>
+<ol>
+  <li>Build from signed, approved commit.</li>
+  <li>Inject config through deployment system (no shell overrides).</li>
+  <li>Validate health endpoint and required controls.</li>
+  <li>Run smoke test: valid signed message accepted, invalid message rejected.</li>
+</ol>
+
+<h3 id="264-spectrastrike-registration">26.4 SpectraStrike Registration</h3>
+<ol>
+  <li>Assign service identity string.</li>
+  <li>Register cert fingerprint in gateway allowlist.</li>
+  <li>Register signing key metadata (key ID and activation time).</li>
+</ol>
+
+<h3 id="265-tenant-mapping-configuration">26.5 Tenant Mapping Configuration</h3>
+<ol>
+  <li>Submit operator-to-tenant mapping change under ticket.</li>
+  <li>Validate UUID format and uniqueness.</li>
+  <li>Deploy and run cross-tenant rejection test.</li>
+</ol>
+
+<h3 id="266-compliance-verification-test">26.6 Compliance Verification Test</h3>
+<ol>
+  <li>Execute CI security workflow.</li>
+  <li>Archive reports and hashes.</li>
+  <li>Verify audit chain integrity.</li>
+</ol>
+
+<h3 id="267-red-team-validation">26.7 Red Team Validation</h3>
+<ol>
+  <li>Execute full phase-9 simulation suite.</li>
+  <li>Review failures as release blockers.</li>
+  <li>Record sign-off from Security Architect and Release Manager.</li>
+</ol>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Inconsistent operational execution.</li>
+  <li>Impact: secure architecture not reflected in runtime posture.</li>
+  <li>Mitigation: deterministic runbook with approver gates and recorded artifacts.</li>
+  <li>Residual risk: Human error in emergency change windows.</li>
+</ul>
+
+<h2 id="27-cicd-integration-notes">27. CI/CD Integration Notes</h2>
+<p>Required workflow controls:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">security-enforcement.yml</code> must run on feature branches and PRs.</li>
+  <li>Jobs required:
+    <ul>
+      <li>SAST (Bandit)</li>
+      <li>Dependency scan (pip-audit)</li>
+      <li>Security policy gate (mTLS/signature/tenant guard checks)</li>
+      <li>Security regression tests (including phase-9 red-team tests)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Branch policy:</p>
+<ul>
+  <li>Protected branches must require successful Security Enforcement checks.</li>
+  <li>Force pushes to protected branches disabled.</li>
+  <li>Signed commits required.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Merge insecure changes without security validation.</li>
+  <li>Impact: direct regression into integration branch.</li>
+  <li>Mitigation: required status checks + signed commits + policy gate.</li>
+  <li>Residual risk: misconfigured repository protection settings.</li>
+</ul>
+
+<h2 id="28-monitoring--alerting-setup">28. Monitoring &amp; Alerting Setup</h2>
+<p>Metrics and alerts:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">telemetry.accepted</code> vs <code class="language-plaintext highlighter-rouge">telemetry.rejected</code> ratio.</li>
+  <li>Reject counts by status code (401/403/409/422/429/503).</li>
+  <li>Nonce replay detections per operator.</li>
+  <li>Signature failure rate.</li>
+  <li>mTLS identity mismatch count.</li>
+  <li>DLQ volume and age.</li>
+  <li>Tamper log integrity verification failures.</li>
+</ul>
+
+<p>Alert severities:</p>
+<ul>
+  <li>P1: tamper log integrity failure, unexpected cert mismatch surge, replay flood.</li>
+  <li>P2: elevated 422/429 rates, DLQ backlog growth.</li>
+  <li>P3: intermittent 503 dependency errors.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Slow-rolling attacks hidden in noise.</li>
+  <li>Impact: delayed detection and containment.</li>
+  <li>Mitigation: security-centric telemetry and threshold-based alerting.</li>
+  <li>Residual risk: alert fatigue if thresholds are not tuned.</li>
+</ul>
+
+<h2 id="29-performance--scalability-notes">29. Performance &amp; Scalability Notes</h2>
+<p>Guidance:</p>
+<ul>
+  <li>Use Redis for replay/rate-limit state across multiple gateway replicas.</li>
+  <li>Keep clock skew tight (30s default) and monitor producer NTP health.</li>
+  <li>Scale gateway horizontally; keep queue internal and partitioned by subject.</li>
+  <li>Use backpressure and retry with jitter from producer.</li>
+  <li>Monitor p95/p99 verification latency, DLQ throughput, and Redis command latency.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Resource exhaustion to degrade control paths.</li>
+  <li>Impact: elevated rejects and processing delays.</li>
+  <li>Mitigation: rate limits, horizontal scaling, bounded retries.</li>
+  <li>Residual risk: extreme distributed attacks may still affect availability.</li>
+</ul>
+
+<h2 id="30-known-limitations--residual-risk">30. Known Limitations &amp; Residual Risk</h2>
+<ol>
+  <li><strong>SD-01 (Medium)</strong>: HSM is abstracted but not strictly enforced in every runtime profile.</li>
+  <li><strong>SD-02 (High)</strong>: Tamper-evident log chain is local-first; remote immutable anchoring is not mandatory baseline.</li>
+  <li><strong>SD-03 (Medium)</strong>: Kill switch requires coordinated multi-step revocation, not single atomic control.</li>
+  <li>Federation replay controls should be expanded with endpoint-specific nonce cache and policy.</li>
+  <li>Runtime config drift protection depends on deployment governance outside CI.</li>
+</ol>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Gaps between designed and enforced guarantees.</li>
+  <li>Impact: Reduced assurance under advanced threat conditions.</li>
+  <li>Mitigation: track deficiencies with owners, due dates, and compensating controls.</li>
+  <li>Residual risk: until remediated, these are accepted risks requiring executive sign-off.</li>
+</ul>
+
+<h2 id="31-future-federation-enhancements">31. Future Federation Enhancements</h2>
+<ul>
+  <li>Mandatory hardware-backed key operations for producer signing and gateway verify key management.</li>
+  <li>CRL/OCSP enforcement telemetry with revocation freshness SLOs.</li>
+  <li>Remote WORM anchoring of tamper-log seals.</li>
+  <li>Federation replay cache and strict TTL for bundle verify endpoint.</li>
+  <li>Protocol versioning with backward-compatible signed envelope negotiation.</li>
+  <li>Automated drift detection and runtime policy attestation.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Capability stagnation against evolving adversaries.</li>
+  <li>Impact: controls become insufficient over time.</li>
+  <li>Mitigation: scheduled enhancement roadmap with measurable security acceptance criteria.</li>
+  <li>Residual risk: delivery delays can extend exposure window.</li>
+</ul>
+
+<h2 id="32-governance--dual-control-processes">32. Governance &amp; Dual Control Processes</h2>
+<p>Approval authorities:</p>
+<ul>
+  <li>Federation approval: Principal Security Architect + Platform Owner.</li>
+  <li>Key rotation approval: Security Cryptography Lead + Operations Manager.</li>
+  <li>Integration revocation approval: Incident Commander + CISO delegate.</li>
+  <li>Federation protocol modification approval: Security Architecture Review Board.</li>
+</ul>
+
+<p>Dual control requirements:</p>
+<ul>
+  <li>Any trust-material change (cert pin, public key, operator-tenant mapping) requires two independent approvers.</li>
+  <li>Emergency changes require post-incident review within 24 hours.</li>
+  <li>Separation of duties: requester cannot be sole approver.</li>
+</ul>
+
+<p>Threat Model:</p>
+<ul>
+  <li>Attack vector: Single-actor unauthorized trust change.</li>
+  <li>Impact: covert trust downgrade or malicious access grant.</li>
+  <li>Mitigation: dual approval, immutable audit trail, and periodic access review.</li>
+  <li>Residual risk: collusion risk remains and must be governed via organizational controls.</li>
+</ul>
+
+<h2 id="service-to-service-zero-trust-model-diagram">Service-to-Service Zero-Trust Model Diagram</h2>
+<pre><code class="language-mermaid">flowchart LR
+  SS[SpectraStrike Service]
+  GW[Telemetry Gateway]
+  AUTH[Identity + Cert Pin Validation]
+  SIG[Ed25519 Signature Verification]
+  RP[Replay Protection]
+  TM[Tenant Mapping Enforcement]
+  Q[Internal Queue]
+
+  SS --&gt; GW
+  GW --&gt; AUTH --&gt; SIG --&gt; RP --&gt; TM --&gt; Q
+</code></pre>
+
+<h2 id="integration-readiness-checklist">Integration Readiness Checklist</h2>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />SpectraStrike producer certificate issued and pinned in gateway allowlist.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Ed25519 public key configured in VectorVue gateway.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />mTLS enforced (<code class="language-plaintext highlighter-rouge">VV_TG_REQUIRE_MTLS=1</code>).</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Payload signature enforced (<code class="language-plaintext highlighter-rouge">VV_TG_REQUIRE_PAYLOAD_SIGNATURE=1</code>).</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Replay backend configured to Redis for production.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Rate limiting enabled and thresholds approved.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Operator-to-tenant mapping approved and deployed.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Security enforcement CI workflow required by branch protection.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Phase-9 red-team simulation suite passing.</li>
+</ul>
+
+<h2 id="production-go-live-checklist">Production Go-Live Checklist</h2>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Final change approvals completed under dual control.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Certificate validity and pinset values verified.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Gateway health checks green in target environment.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Queue and DLQ connectivity verified.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Tamper-log integrity check returns <code class="language-plaintext highlighter-rouge">ok=true</code>.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Monitoring dashboards and alert routes active.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Kill-switch drill executed in staging within last 30 days.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Rollback and revocation runbooks validated.</li>
+</ul>
+
+<h2 id="incident-response-quick-reference">Incident Response Quick Reference</h2>
+<ol>
+  <li>Detect anomaly (signature failures, replay spike, cert mismatch surge).</li>
+  <li>Declare incident severity and assign commander.</li>
+  <li>Freeze non-essential config changes.</li>
+  <li>If compromise suspected, execute kill-switch procedure.</li>
+  <li>Preserve tamper-evident logs and CI artifacts.</li>
+  <li>Rotate affected certs/keys.</li>
+  <li>Re-run red-team and regression validation before restore.</li>
+  <li>Document root cause and corrective actions.</li>
+</ol>
+
+<h2 id="federation-revocation-emergency-steps">Federation Revocation Emergency Steps</h2>
+<ol>
+  <li>Revoke SpectraStrike cert at internal CA.</li>
+  <li>Remove SpectraStrike service identity pin from gateway config.</li>
+  <li>Rotate gateway trusted Ed25519 public key.</li>
+  <li>Apply network deny rules for producer source ranges.</li>
+  <li>Redeploy gateway and verify all requests rejected.</li>
+  <li>Archive incident timeline, log chain verification, and remediation approvals.</li>
+</ol>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PHASE8 CLIENT ANALYTICS MANUAL | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="client-analytics-manual">Client Analytics Manual</h1>
+
+<p>This manual explains how to use VectorVue analytics in commercial delivery and stakeholder communication.</p>
+
+<h2 id="scope">Scope</h2>
+
+<p>Analytics capabilities include:</p>
+
+<ul>
+  <li>security effectiveness scoring</li>
+  <li>residual risk estimation</li>
+  <li>detection coverage insight</li>
+  <li>anomaly visibility</li>
+  <li>explainable model output and confidence indicators</li>
+</ul>
+
+<h2 id="portal-workflow">Portal Workflow</h2>
+
+<ol>
+  <li>Open <code class="language-plaintext highlighter-rouge">Overview</code> and verify KPI and analytics cards load.</li>
+  <li>Open <code class="language-plaintext highlighter-rouge">Analytics</code> and review score, confidence, explanations, model version, and generation time.</li>
+  <li>Run simulation to evaluate proposed defensive improvements.</li>
+  <li>Open <code class="language-plaintext highlighter-rouge">Risk</code> to communicate trend and severity posture.</li>
+</ol>
+
+<h2 id="api-workflow">API Workflow</h2>
+
+<p>Use tenant-authenticated token and call:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/client/security-score</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/client/risk</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/client/detection-gaps</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /ml/client/anomalies</code></li>
+  <li><code class="language-plaintext highlighter-rouge">POST /ml/client/simulate</code></li>
+</ul>
+
+<p>Expected response contract:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">score</code></li>
+  <li><code class="language-plaintext highlighter-rouge">confidence</code></li>
+  <li><code class="language-plaintext highlighter-rouge">explanation</code></li>
+  <li><code class="language-plaintext highlighter-rouge">model_version</code></li>
+  <li><code class="language-plaintext highlighter-rouge">generated_at</code></li>
+</ul>
+
+<h2 id="quality-and-governance-rules">Quality and Governance Rules</h2>
+
+<ul>
+  <li>Tenant isolation is mandatory for all analytics data paths.</li>
+  <li>Predictions must reference model version and dataset lineage.</li>
+  <li>Explanations must be available for client-facing decisions.</li>
+  <li>Model promotion is explicit and controlled.</li>
+</ul>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<ol>
+  <li>Verify migrations and seed data:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make deploy
+make seed-clients
+</code></pre></div></div>
+
+<ol>
+  <li>Verify workers are healthy:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose ps
+</code></pre></div></div>
+
+<ol>
+  <li>Validate endpoint behavior with API smoke and direct calls.</li>
+</ol>
+
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

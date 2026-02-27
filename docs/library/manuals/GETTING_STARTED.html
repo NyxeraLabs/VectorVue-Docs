@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GETTING STARTED | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="getting-started-with-vectorvue">Getting Started with VectorVue</h1>
+
+<p>This guide brings a new environment from zero to a working commercial demo.</p>
+
+<p>Security baseline for this deployment:</p>
+<ul>
+  <li>Client API telemetry ingestion is retired.</li>
+  <li>SpectraStrike federation uses internal telemetry gateway only.</li>
+  <li>mTLS + Ed25519 signed telemetry are mandatory.</li>
+</ul>
+
+<h2 id="objective">Objective</h2>
+
+<p>By the end of this guide you will have:</p>
+
+<ul>
+  <li>Full platform deployed</li>
+  <li>Tenant demo data loaded</li>
+  <li>Client portals accessible</li>
+  <li>API and compliance endpoints validated</li>
+</ul>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+  <li>Docker and Docker Compose installed</li>
+  <li><code class="language-plaintext highlighter-rouge">make</code> available</li>
+  <li>Hosts entries for local tenant domains if required by your environment</li>
+</ul>
+
+<p>Recommended local host mapping:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">acme.vectorvue.local</code> -&gt; <code class="language-plaintext highlighter-rouge">127.0.0.1</code></li>
+  <li><code class="language-plaintext highlighter-rouge">globex.vectorvue.local</code> -&gt; <code class="language-plaintext highlighter-rouge">127.0.0.1</code></li>
+</ul>
+
+<h2 id="step-1-deploy-services">Step 1: Deploy Services</h2>
+
+<p>Recommended guided flow:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make wizard
+</code></pre></div></div>
+
+<p>Select:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1</code> for full commercial deploy</li>
+  <li><code class="language-plaintext highlighter-rouge">4</code> for demo seeding</li>
+</ul>
+
+<p>Direct command path:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make deploy
+</code></pre></div></div>
+
+<p>This starts API, portal, runtime services, workers, PostgreSQL, Redis, and nginx.</p>
+
+<h2 id="step-2-seed-demo-data">Step 2: Seed Demo Data</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make seed-clients
+</code></pre></div></div>
+
+<p>This creates multi-tenant demo content including campaigns, findings, reports, remediation tasks, analytics records, and compliance-ready activity data.</p>
+
+<h2 id="step-3-access-portals">Step 3: Access Portals</h2>
+
+<p>Open:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">https://acme.vectorvue.local/login</code></li>
+  <li><code class="language-plaintext highlighter-rouge">https://globex.vectorvue.local/login</code></li>
+</ul>
+
+<p>Use credentials from <a href="/VectorVue-Docs/docs/library/manuals/DEMO_ACCESS_MATRIX.html">Demo Access Matrix</a>.</p>
+
+<h2 id="step-4-validate-api-health">Step 4: Validate API Health</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make api-smoke
+</code></pre></div></div>
+
+<p>Expected result:</p>
+
+<ul>
+  <li>API health check returns healthy</li>
+  <li>OpenAPI responds successfully</li>
+</ul>
+
+<h2 id="step-5-validate-compliance-endpoints">Step 5: Validate Compliance Endpoints</h2>
+
+<p>Call any tenant-authenticated endpoint, for example:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/frameworks</code></li>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/ISO27001/score</code></li>
+</ul>
+
+<p>Compliance API responses are signed and tenant scoped.</p>
+
+<h2 id="step-6-validate-worker-health">Step 6: Validate Worker Health</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose ps
+</code></pre></div></div>
+
+<p>Confirm these services are up:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_ml_worker</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_compliance_observation_worker</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_compliance_daily_worker</code></li>
+</ul>
+
+<h2 id="optional-real-tenant-onboarding-no-dummy-data">Optional: Real Tenant Onboarding (No Dummy Data)</h2>
+
+<p>Create a production-style tenant and users only:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make tenant-bootstrap-real <span class="se">\</span>
+  <span class="nv">TENANT_ID</span><span class="o">=</span>30000000-0000-0000-0000-000000000003 <span class="se">\</span>
+  <span class="nv">TENANT_NAME</span><span class="o">=</span><span class="s2">"RealCorp Manufacturing"</span> <span class="se">\</span>
+  <span class="nv">TENANT_ADMIN_USER</span><span class="o">=</span>realcorp_admin <span class="se">\</span>
+  <span class="nv">TENANT_ADMIN_PASS</span><span class="o">=</span><span class="s1">'RealCorpAdm1n!'</span> <span class="se">\</span>
+  <span class="nv">TENANT_CLIENT_USER</span><span class="o">=</span>realcorp_viewer <span class="se">\</span>
+  <span class="nv">TENANT_CLIENT_PASS</span><span class="o">=</span><span class="s1">'RealCorpView3r!'</span>
+</code></pre></div></div>
+
+<p>Validate Phase 7-9 endpoint behavior for that tenant:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make phase79-real-smoke <span class="se">\</span>
+  <span class="nv">TENANT_ID</span><span class="o">=</span>30000000-0000-0000-0000-000000000003 <span class="se">\</span>
+  <span class="nv">TENANT_ADMIN_USER</span><span class="o">=</span>realcorp_admin <span class="se">\</span>
+  <span class="nv">TENANT_ADMIN_PASS</span><span class="o">=</span><span class="s1">'RealCorpAdm1n!'</span>
+</code></pre></div></div>
+
+<p>Guided alternative:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make wizard
+</code></pre></div></div>
+
+<p>Select:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">3</code> to bootstrap a real tenant</li>
+  <li><code class="language-plaintext highlighter-rouge">5</code> to run real scenario validation</li>
+</ul>
+
+<h2 id="optional-fully-isolated-client-portal-stack">Optional: Fully Isolated Client Portal Stack</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make customer-deploy-portal-isolated <span class="se">\</span>
+  <span class="nv">CUSTOMER</span><span class="o">=</span>realcorp <span class="se">\</span>
+  <span class="nv">TENANT_ID</span><span class="o">=</span>30000000-0000-0000-0000-000000000003 <span class="se">\</span>
+  <span class="nv">TENANT_NAME</span><span class="o">=</span><span class="s2">"RealCorp Manufacturing"</span> <span class="se">\</span>
+  <span class="nv">TENANT_PORTAL_HOST</span><span class="o">=</span>realcorp.vectorvue.local
+</code></pre></div></div>
+
+<p>Guided alternative:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make wizard
+</code></pre></div></div>
+
+<p>Select option <code class="language-plaintext highlighter-rouge">2</code>.</p>
+
+<h2 id="optional-tui-onboarding-wizard-admin">Optional: TUI Onboarding Wizard (Admin)</h2>
+
+<p>Use this when you want an in-app onboarding flow.</p>
+
+<ol>
+  <li>Start TUI:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make run-tui
+</code></pre></div></div>
+
+<ol>
+  <li>Login with an admin account.</li>
+  <li>Open onboarding wizard with <code class="language-plaintext highlighter-rouge">Ctrl+Shift+W</code> or <code class="language-plaintext highlighter-rouge">ONBOARD WIZARD</code> in sidebar.</li>
+  <li>Enter tenant and portal/company data:
+    <ul>
+      <li>tenant id and name</li>
+      <li>portal host</li>
+      <li>company name + colors</li>
+      <li>tenant admin and client credentials</li>
+    </ul>
+  </li>
+  <li>Click <code class="language-plaintext highlighter-rouge">CREATE TENANT + USERS</code>.</li>
+</ol>
+
+<h2 id="recommended-first-walkthrough">Recommended First Walkthrough</h2>
+
+<ol>
+  <li>Client Portal: Overview -&gt; Analytics -&gt; Findings -&gt; Remediation -&gt; Reports -&gt; Risk</li>
+  <li>API: login -&gt; findings -&gt; risk -&gt; telemetry event -&gt; ML endpoint</li>
+  <li>Compliance: frameworks -&gt; controls -&gt; score -&gt; report</li>
+</ol>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<p>If migration or seed errors appear:</p>
+
+<ol>
+  <li>Re-run <code class="language-plaintext highlighter-rouge">make deploy</code></li>
+  <li>Re-run <code class="language-plaintext highlighter-rouge">make seed-clients</code></li>
+  <li>Check logs:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose logs <span class="nt">--tail</span><span class="o">=</span>100 vectorvue_app
+docker compose logs <span class="nt">--tail</span><span class="o">=</span>100 vectorvue_postgres
+</code></pre></div></div>
+
+<p>For deeper troubleshooting use <a href="/VectorVue-Docs/docs/library/manuals/TROUBLESHOOTING_GUIDE.html">Troubleshooting Guide</a>.</p>
+
+<h2 id="security-references">Security References</h2>
+
+<ul>
+  <li><a href="/VectorVue-Docs/docs/library/ROADMAP.html">Product Roadmap</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/Expansion_Appendix.html">Security Expansion Appendix</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/integration/spectrastrike-vectorvue.html">Secure SpectraStrike ↔ VectorVue Integration</a></li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

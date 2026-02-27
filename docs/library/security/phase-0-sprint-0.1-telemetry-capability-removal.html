@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-0-sprint-0.1-telemetry-capability-removal | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-0-sprint-01---telemetry-capability-removal">Phase 0 Sprint 0.1 - Telemetry Capability Removal</h1>
+
+<h2 id="scope">Scope</h2>
+<p>This sprint removes telemetry ingestion from the client API and keeps the client API focused on tenant portal read and compliance access patterns.</p>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Asset: tenant telemetry data, client API attack surface, tenant isolation boundaries.</li>
+  <li>Adversary: external actor abusing public write routes, compromised integration client, replay actor.</li>
+  <li>Trust boundary: all public client API endpoints.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Unauthorized telemetry POST attempts to <code class="language-plaintext highlighter-rouge">/api/v1/client/events</code>.</li>
+  <li>Abuse of <code class="language-plaintext highlighter-rouge">/api/v1/integrations/spectrastrike/*</code> ingestion endpoints.</li>
+  <li>Replay or forged ingestion payload submissions.</li>
+  <li>Lateral tenant probing through ingest status APIs.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Removed SpectraStrike telemetry ingestion router from the runtime API.</li>
+  <li>Removed client telemetry event ingestion endpoint from <code class="language-plaintext highlighter-rouge">vv_client_api.py</code>.</li>
+  <li>Removed ingestion DTO/controller/service modules previously used by SpectraStrike ingest flows.</li>
+  <li>Added security regression tests to enforce endpoint absence and write-method rejection on read-only resources.</li>
+  <li>Added SQL cleanup script to drop telemetry ingestion tables:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">spectrastrike_ingest_requests</code></li>
+      <li><code class="language-plaintext highlighter-rouge">spectrastrike_idempotency</code></li>
+      <li><code class="language-plaintext highlighter-rouge">spectrastrike_events</code></li>
+      <li><code class="language-plaintext highlighter-rouge">spectrastrike_findings</code></li>
+      <li><code class="language-plaintext highlighter-rouge">client_activity_events</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Portal code may still attempt telemetry calls; these now fail closed (<code class="language-plaintext highlighter-rouge">404</code>).</li>
+  <li>Existing deployed databases require explicit cleanup script execution.</li>
+  <li>Legacy docs/manual references can reintroduce confusion if not retired consistently.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Introduce dedicated private telemetry gateway (Phase 1) with mandatory mTLS and signature verification.</li>
+  <li>Add startup policy checks that fail service boot when public telemetry ingestion routes are present.</li>
+  <li>Add CI policy gate that scans OpenAPI for forbidden ingestion endpoints.</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

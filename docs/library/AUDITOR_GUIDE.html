@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AUDITOR GUIDE | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-auditor-guide">VectorVue Auditor Guide</h1>
+
+<p>This guide enables external auditors to validate control evidence independently.</p>
+
+<h2 id="objective">Objective</h2>
+
+<p>Confirm that framework compliance states are reproducible from exported datasets without relying on platform trust assumptions.</p>
+
+<h2 id="preconditions">Preconditions</h2>
+
+<ol>
+  <li>Tenant has active operational data in selected time window.</li>
+  <li>Compliance schema is applied.</li>
+  <li>Auditor has authorized credentials.</li>
+</ol>
+
+<h2 id="audit-procedure">Audit Procedure</h2>
+
+<h3 id="1-select-time-window">1. Select Time Window</h3>
+
+<p>Call:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/audit-window?framework=ISO27001&amp;days=90</code></li>
+</ul>
+
+<p>Record:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">from_ts</code></li>
+  <li><code class="language-plaintext highlighter-rouge">to_ts</code></li>
+  <li>observation and evidence volumes</li>
+</ul>
+
+<h3 id="2-retrieve-signed-compliance-report">2. Retrieve Signed Compliance Report</h3>
+
+<p>Call:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">GET /compliance/ISO27001/report?days=90</code></li>
+</ul>
+
+<p>Record:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">dataset_hash</code></li>
+  <li><code class="language-plaintext highlighter-rouge">signature</code></li>
+  <li>audit package metadata</li>
+</ul>
+
+<h3 id="3-download-evidence-package">3. Download Evidence Package</h3>
+
+<p>Use audit token workflow and download endpoint where required.</p>
+
+<p>Verify package contents:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">controls.json</code></li>
+  <li><code class="language-plaintext highlighter-rouge">evidence.json</code></li>
+  <li><code class="language-plaintext highlighter-rouge">metadata.json</code></li>
+  <li><code class="language-plaintext highlighter-rouge">checksums.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">signature.txt</code></li>
+</ul>
+
+<h3 id="4-verify-integrity">4. Verify Integrity</h3>
+
+<ol>
+  <li>Recompute file checksums and compare with <code class="language-plaintext highlighter-rouge">checksums.txt</code>.</li>
+  <li>Verify response signature envelope.</li>
+  <li>Validate compliance event hash chain using <code class="language-plaintext highlighter-rouge">previous_event_hash</code> and <code class="language-plaintext highlighter-rouge">chain_hash</code>.</li>
+</ol>
+
+<h3 id="5-recompute-control-effectiveness">5. Recompute Control Effectiveness</h3>
+
+<p>Using exported policy thresholds and observations, recompute control state:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">operating</code></li>
+  <li><code class="language-plaintext highlighter-rouge">degraded</code></li>
+  <li><code class="language-plaintext highlighter-rouge">failed</code></li>
+  <li><code class="language-plaintext highlighter-rouge">insufficient_evidence</code></li>
+</ul>
+
+<p>Compare with platform output.</p>
+
+<h3 id="6-recompute-framework-score">6. Recompute Framework Score</h3>
+
+<p>Aggregate control states and coverage into framework-level score.
+Compare with <code class="language-plaintext highlighter-rouge">/compliance/{framework}/score</code>.</p>
+
+<h2 id="minimal-acceptance-checklist">Minimal Acceptance Checklist</h2>
+
+<ul>
+  <li>Tenant scope is correct</li>
+  <li>Dataset hash is stable</li>
+  <li>Chain integrity is valid</li>
+  <li>Recomputed control states match</li>
+  <li>Recomputed framework score is consistent</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

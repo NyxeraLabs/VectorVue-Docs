@@ -5,44 +5,64 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Home | VectorVue Documentation</title>
   <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
-  <link rel="stylesheet" href="/pages/NyxeraLabs/VectorVue-Docs/assets/css/style.css" />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>document.addEventListener('DOMContentLoaded', () => { if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' }); });</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
 </head>
 <body>
   <header class="topbar">
     <div class="brand-wrap">
-      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
-      <img src="/pages/NyxeraLabs/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
       <div>
         <h1>VectorVue Documentation</h1>
-        <p>Static docs and whitepaper portal</p>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
       </div>
     </div>
     <nav class="nav">
-      <a href="/pages/NyxeraLabs/VectorVue-Docs/">Home</a>
-      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/end-user/">End User</a>
-      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/sdk/">SDK</a>
-      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/integration/">Integration</a>
-      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/architecture/">Architecture</a>
-      <a href="/pages/NyxeraLabs/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
     </nav>
   </header>
 
   <main class="content">
-    <h1 id="vectorvue-static-documentation">VectorVue Static Documentation</h1>
+    <h1 id="vectorvue-documentation-portal">VectorVue Documentation Portal</h1>
 
-<p>This is the static GitHub Pages portal for VectorVue documentation and whitepaper material.</p>
+<p>This static portal publishes the official VectorVue technical documentation set for assurance teams, API consumers, integrators, and enterprise decision makers.</p>
 
-<h2 id="sections">Sections</h2>
+<h2 id="documentation-tracks">Documentation Tracks</h2>
 
 <ul>
-  <li><a href="/pages/NyxeraLabs/VectorVue-Docs/docs/end-user/">End User</a></li>
-  <li><a href="/pages/NyxeraLabs/VectorVue-Docs/docs/sdk/">SDK</a></li>
-  <li><a href="/pages/NyxeraLabs/VectorVue-Docs/docs/integration/">Integration</a></li>
-  <li><a href="/pages/NyxeraLabs/VectorVue-Docs/docs/architecture/">Architecture</a></li>
-  <li><a href="/pages/NyxeraLabs/VectorVue-Docs/docs/whitepaper/">Whitepaper</a></li>
+  <li><a href="/VectorVue-Docs/docs/end-user/">End User</a></li>
+  <li><a href="/VectorVue-Docs/docs/sdk/">SDK</a></li>
+  <li><a href="/VectorVue-Docs/docs/integration/">Integration</a></li>
+  <li><a href="/VectorVue-Docs/docs/architecture/">Architecture</a></li>
+  <li><a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a></li>
+  <li><a href="/VectorVue-Docs/docs/library/">Full Documentation Library</a></li>
 </ul>
+
+<h2 id="coverage">Coverage</h2>
+
+<p>The Full Library includes all available source docs from the VectorVue repository, including manuals, architecture phases, security tracks, roadmap phases, and integration references.</p>
 
   </main>
 

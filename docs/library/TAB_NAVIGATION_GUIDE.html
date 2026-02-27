@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TAB NAVIGATION GUIDE | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<p>”””
+VectorVue Tab Navigation System - Operator Guide</p>
+
+<p>Version: v4.1+
+Phase: 5.5 UI Enhancement</p>
+
+<p>The visual tab system provides three ways to navigate between views:</p>
+<ol>
+  <li>Keybindings (fastest)</li>
+  <li>Mouse clicks on tabs</li>
+  <li>Keyboard navigation between tabs</li>
+</ol>
+
+<p>============================================================================
+CORE UI NAVIGATION TABS
+============================================================================</p>
+
+<p>┌─────────────────────────────────────────────────────────────────────┐
+│ Files │ MITRE │ Campaign │ Cmd Log │ Sessions │ Detections │ …  │
+└─────────────────────────────────────────────────────────────────────┘</p>
+
+<p>FILES MANAGER (Space)</p>
+<ul>
+  <li>Browse workspace files</li>
+  <li>Upload evidence artifacts</li>
+  <li>Download reports</li>
+  <li>Manage file organization</li>
+</ul>
+
+<p>MITRE DATABASE (Ctrl+M)</p>
+<ul>
+  <li>Search MITRE ATT&amp;CK techniques</li>
+  <li>Link findings to tactics/techniques</li>
+  <li>View technique details &amp; controls</li>
+  <li>MITRE Navigator export</li>
+</ul>
+
+<p>CAMPAIGN MANAGEMENT (Ctrl+K)</p>
+<ul>
+  <li>Create/switch campaigns</li>
+  <li>Configure client context</li>
+  <li>Set Rules of Engagement</li>
+  <li>Manage campaign objectives</li>
+  <li>Define sensitive assets</li>
+</ul>
+
+<p>COMMAND EXECUTION LOG (Ctrl+E)</p>
+<ul>
+  <li>View executed commands</li>
+  <li>Track command output &amp; timing</li>
+  <li>Associate with MITRE techniques</li>
+  <li>Filter by operator/asset</li>
+</ul>
+
+<p>ACTIVE SESSIONS (Ctrl+J)</p>
+<ul>
+  <li>Monitor active shells/callbacks</li>
+  <li>Track C2 connections</li>
+  <li>Session metadata (PID, user, host)</li>
+  <li>Session termination</li>
+</ul>
+
+<p>DETECTIONS OBSERVED (Ctrl+D)</p>
+<ul>
+  <li>Log defender detections</li>
+  <li>Track alerts &amp; responses</li>
+  <li>Timeline of defensive actions</li>
+  <li>Detection correlation</li>
+</ul>
+
+<p>OBJECTIVE PROGRESS (Ctrl+O)</p>
+<ul>
+  <li>Track campaign goals</li>
+  <li>Measure progress toward objective</li>
+  <li>Mark objectives complete</li>
+  <li>Update objective status</li>
+</ul>
+
+<p>PERSISTENCE MECHANISMS (Ctrl+P)</p>
+<ul>
+  <li>Inventory backdoors/persistence</li>
+  <li>Track persistence mechanisms</li>
+  <li>Scheduled tasks, registry keys, etc.</li>
+  <li>Persistence removal tracking</li>
+</ul>
+
+<p>============================================================================
+ANALYTICS VIEWS TABS
+============================================================================</p>
+
+<p>┌──────────────────────────────────────────────────────┐
+│ Dashboard │ Analysis │ Intel │ Remediation │ …    │
+└──────────────────────────────────────────────────────┘</p>
+
+<p>SITUATIONAL AWARENESS DASHBOARD (Ctrl+1)</p>
+<ul>
+  <li>Real-time campaign metrics</li>
+  <li>Risk heat map</li>
+  <li>Detection pressure gauge</li>
+  <li>Objective distance meter</li>
+  <li>Recommended next actions</li>
+</ul>
+
+<p>POST-ENGAGEMENT ANALYSIS (Ctrl+2)</p>
+<ul>
+  <li>TTP analysis</li>
+  <li>Attack pattern identification</li>
+  <li>Technique effectiveness rates</li>
+  <li>Campaign timeline</li>
+  <li>Operator performance metrics</li>
+</ul>
+
+<p>THREAT INTELLIGENCE (LEGACY) (Ctrl+3)</p>
+<ul>
+  <li>Legacy threat feeds</li>
+  <li>IoC management (Phase 5)</li>
+  <li>Threat actor profiles</li>
+  <li>Risk scoring (Phase 5)</li>
+</ul>
+
+<p>REMEDIATION TRACKING (Ctrl+4)</p>
+<ul>
+  <li>Recommended remediation actions</li>
+  <li>Client remediation status</li>
+  <li>Tracking verification</li>
+  <li>Remediation metrics</li>
+</ul>
+
+<p>CAPABILITY ASSESSMENT (Ctrl+5)</p>
+<ul>
+  <li>Team capability matrix</li>
+  <li>Operator skill assessment</li>
+  <li>Tool/technique proficiency</li>
+  <li>Team performance scoring</li>
+</ul>
+
+<p>============================================================================
+ADVANCED VIEWS TABS
+============================================================================</p>
+
+<p>┌───────────────────────────────────────────────────────┐
+│ Collab │ Tasks │ Analytics │ Integration │ …       │
+└───────────────────────────────────────────────────────┘</p>
+
+<p>COLLABORATION ENGINE (Alt+1)</p>
+<ul>
+  <li>Multi-operator session management</li>
+  <li>Operator presence/status</li>
+  <li>Real-time communication</li>
+  <li>Shared campaign context</li>
+</ul>
+
+<p>TASK ORCHESTRATION (Alt+2)</p>
+<ul>
+  <li>Background task scheduler</li>
+  <li>Webhook delivery management</li>
+  <li>Task execution history</li>
+  <li>Scheduled task queue</li>
+</ul>
+
+<p>BEHAVIORAL ANOMALY DETECTION (Alt+3)</p>
+<ul>
+  <li>Operator behavior patterns</li>
+  <li>Anomaly detection alerts</li>
+  <li>Behavioral learning</li>
+  <li>Timeline analysis</li>
+</ul>
+
+<p>INTEGRATION GATEWAY (Alt+4)</p>
+<ul>
+  <li>Webhook endpoint management</li>
+  <li>External system integration</li>
+  <li>API connectivity</li>
+  <li>Integration testing</li>
+</ul>
+
+<p>COMPLIANCE ATTESTATION (Alt+5)</p>
+<ul>
+  <li>Compliance report generation</li>
+  <li>Framework mapping (PCI, HIPAA, etc.)</li>
+  <li>Audit trail verification</li>
+  <li>Evidence validation</li>
+</ul>
+
+<p>SECURITY HARDENING (Alt+6)</p>
+<ul>
+  <li>TLP color labeling</li>
+  <li>Audit log review</li>
+  <li>Retention policy enforcement</li>
+  <li>Access control verification</li>
+</ul>
+
+<p>============================================================================
+PHASE 3-5 SPECIALIZED VIEWS TABS
+============================================================================</p>
+
+<p>┌────────────────────────────────────────────┐
+│ Reporting │ Teams │ Threat Intel │ …    │
+└────────────────────────────────────────────┘</p>
+
+<p>REPORTING &amp; EXPORT (Ctrl+R)</p>
+<ul>
+  <li>PDF/HTML report generation</li>
+  <li>Evidence manifest creation</li>
+  <li>Compliance report export</li>
+  <li>MITRE Navigator export</li>
+</ul>
+
+<p>TEAM MANAGEMENT (Ctrl+T)</p>
+<ul>
+  <li>Create/manage teams</li>
+  <li>Role assignment</li>
+  <li>Operator performance tracking</li>
+  <li>Team approval workflows</li>
+</ul>
+
+<p>THREAT INTELLIGENCE ANALYSIS (Ctrl+Shift+I)</p>
+<ul>
+  <li>Feed ingestion (VirusTotal, Shodan, OTX)</li>
+  <li>IoC management (IPs, domains, hashes)</li>
+  <li>Threat actor profiling</li>
+  <li>Risk scoring &amp; correlation</li>
+  <li>Attack timeline visualization</li>
+</ul>
+
+<p>============================================================================
+PHASE 5.5 COGNITION TABS
+============================================================================</p>
+
+<p>COGNITION LAYER = Deterministic decision-support with 10 modules</p>
+
+<p>┌──────────────────────────────────────────────────────────────┐
+│ Opp │ Paths │ State │ Pressure │ Confidence │ Knowledge │ .. │
+└──────────────────────────────────────────────────────────────┘</p>
+
+<p>OPPORTUNITIES ANALYSIS (Ctrl+Shift+1)
+  Module: Recommendation Engine</p>
+<ul>
+  <li>Top-scored actions ranked by risk/value</li>
+  <li>Alternative safer actions</li>
+  <li>OPSEC simulation for each action</li>
+  <li>Confidence scoring</li>
+</ul>
+
+<p>ATTACK PATHS &amp; PATHFINDING (Ctrl+Shift+2)
+  Module: Attack Graph Engine</p>
+<ul>
+  <li>Dijkstra’s shortest path to objective</li>
+  <li>Alternative paths enumeration</li>
+  <li>Path confidence scoring</li>
+  <li>Privilege escalation chains</li>
+</ul>
+
+<p>CAMPAIGN STATE (Ctrl+Shift+3)
+  Module: Campaign State Engine</p>
+<ul>
+  <li>Environment map overview</li>
+  <li>Asset compromise relationships</li>
+  <li>Credential effectiveness</li>
+  <li>Operational progress tracking</li>
+</ul>
+
+<p>DETECTION PRESSURE (Ctrl+Shift+4)
+  Module: Detection Pressure Engine</p>
+<ul>
+  <li>Real-time pressure score (0-100)</li>
+  <li>Pressure state (QUIET → HUNTING → COMPROMISED)</li>
+  <li>Recent alert timeline</li>
+  <li>Trending indicators (↑ ↓ →)</li>
+</ul>
+
+<p>CONFIDENCE ANALYSIS (Ctrl+Shift+5)
+  Module: Confidence Engine</p>
+<ul>
+  <li>Overall decision confidence (0.0-1.0)</li>
+  <li>Data completeness %</li>
+  <li>Observation count</li>
+  <li>Path stability metrics</li>
+  <li>Known unknowns</li>
+</ul>
+
+<p>KNOWLEDGE COMPLETENESS (Ctrl+Shift+6)
+  Module: Knowledge Engine</p>
+<ul>
+  <li>Environment mapping progress</li>
+  <li>Asset discovery coverage</li>
+  <li>Credential harvesting ratio</li>
+  <li>Detection data completeness</li>
+  <li>Intelligence gaps</li>
+</ul>
+
+<p>TECHNIQUE EFFECTIVENESS (Ctrl+Shift+7)
+  Module: Technique Memory Engine</p>
+<ul>
+  <li>Success rates by asset type</li>
+  <li>Failed techniques to avoid</li>
+  <li>Average time-to-compromise</li>
+  <li>Operator effectiveness history</li>
+</ul>
+
+<p>VALIDATION QUEUE (Ctrl+Shift+8)
+  Module: Validation Engine</p>
+<ul>
+  <li>Pending finding approvals</li>
+  <li>Finding quality assessment</li>
+  <li>Evidence chain verification</li>
+  <li>Approval workflows</li>
+</ul>
+
+<p>EXPLAINABILITY (Ctrl+Shift+9)
+  Module: Explainability Engine</p>
+<ul>
+  <li>Explain any recommendation</li>
+  <li>Show reasoning chain</li>
+  <li>Justify risk assessments</li>
+  <li>Transparency for all decisions</li>
+</ul>
+
+<p>COGNITION DASHBOARD (Ctrl+Shift+0)</p>
+<ul>
+  <li>Unified view of all 10 modules</li>
+  <li>Recommended next action (top-scored)</li>
+  <li>Campaign health overview</li>
+  <li>Detection pressure gauge</li>
+  <li>Objective progress meter</li>
+  <li>Confidence indicator</li>
+</ul>
+
+<p>============================================================================
+HOW TO USE TABS
+============================================================================</p>
+
+<p>METHOD 1: KEYBINDINGS (FASTEST)
+  Ctrl+K             → Switch to Campaign view
+  Ctrl+E             → Switch to Command Log
+  Ctrl+Shift+1       → Switch to Opportunities (Cognition)
+  Space              → File Manager</p>
+
+<p>METHOD 2: MOUSE CLICKS</p>
+<ol>
+  <li>Look at tab bar at top of screen</li>
+  <li>Click on the tab name (e.g., “Campaign”)</li>
+  <li>View switches immediately</li>
+</ol>
+
+<p>METHOD 3: ARROW KEYS (Keyboard Navigation)
+  ← / →    → Move between tabs in current group
+  ↑ / ↓    → Move to next/previous tab group
+  Enter    → Select tab and switch view</p>
+
+<p>METHOD 4: TAB GROUP SWITCHING</p>
+<ul>
+  <li>Tab bar groups related views together</li>
+  <li>“Core UI Navigation”: Campaign, Cmd Log, Sessions, etc.</li>
+  <li>“Analytics Views”: Dashboard, Analysis, etc.</li>
+  <li>“Advanced Views”: Collaboration, Tasks, Security, etc.</li>
+  <li>“Phase 3-5 Views”: Reporting, Teams, Threat Intel, etc.</li>
+  <li>“Phase 5.5 Cognition”: All 10 cognition modules</li>
+</ul>
+
+<p>============================================================================
+TAB BAR INDICATORS
+============================================================================</p>
+
+<p>Tab Appearance:
+┌─────────────────────┐
+│ Campaign [Ctrl+K]   │  ← Tab Name + Keybinding
+└─────────────────────┘</p>
+
+<p>Tab Colors:</p>
+<ul>
+  <li>GREEN (#39FF14)     = Active/selected tab</li>
+  <li>PURPLE (#BD00FF)    = Hover state</li>
+  <li>GRAY (#404040)      = Inactive tab</li>
+  <li>RED (#FF0000)       = Alert/critical tabs</li>
+</ul>
+
+<p>Tab Status Indicators:
+  [*] = Unsaved changes in this view
+  [!] = Alert/notification in this view
+  [✓] = Data verified/approved
+  [⟳] = Auto-refreshing
+  [≡] = Expanded/detailed view</p>
+
+<p>============================================================================
+NAVIGATION TIPS
+============================================================================</p>
+
+<p>TIP 1: Quick View Switching</p>
+<ul>
+  <li>Keybindings are fastest (Ctrl+K, Space, Ctrl+Shift+1)</li>
+  <li>Mouse clicks useful for discovery</li>
+  <li>Use arrow keys for sequential tabs</li>
+</ul>
+
+<p>TIP 2: Campaign Operations Flow
+  Typical workflow uses these tabs in order:</p>
+<ol>
+  <li>Campaign (Ctrl+K) - Select active campaign</li>
+  <li>Cmd Log (Ctrl+E) - Log commands</li>
+  <li>Sessions (Ctrl+J) - Manage sessions</li>
+  <li>Detections (Ctrl+D) - Log detections</li>
+  <li>Dashboard (Ctrl+1) - Review metrics</li>
+  <li>Cognition tabs (Ctrl+Shift+1-9) - Plan next action</li>
+</ol>
+
+<p>TIP 3: Intelligence-Driven Ops</p>
+<ol>
+  <li>Threat Intel (Ctrl+Shift+I) - Ingest IoCs/actors</li>
+  <li>Opportunities (Ctrl+Shift+1) - Get recommendations</li>
+  <li>Paths (Ctrl+Shift+2) - See attack graph</li>
+  <li>Pressure (Ctrl+Shift+4) - Check detection state</li>
+  <li>Confidence (Ctrl+Shift+5) - Assess decision confidence</li>
+</ol>
+
+<p>TIP 4: Reporting &amp; Evidence</p>
+<ol>
+  <li>Reporting (Ctrl+R) - Generate reports</li>
+  <li>Teams (Ctrl+T) - Coordination &amp; approval</li>
+  <li>Compliance (Alt+5) - Verify compliance</li>
+</ol>
+
+<p>============================================================================
+ACCESSIBILITY &amp; CUSTOMIZATION
+============================================================================</p>
+
+<p>Tab Display Options:</p>
+<ol>
+  <li>Compact Bar (default) - Shows most important views</li>
+  <li>Full Panel (expandable) - Shows all tabs grouped</li>
+  <li>Keyboard-only - Use arrow keys + Enter</li>
+</ol>
+
+<p>Keybinding Customization:</p>
+<ul>
+  <li>Edit vv.py BINDINGS list to reassign keybindings</li>
+  <li>Restart app to apply changes</li>
+</ul>
+
+<p>Color Customization:</p>
+<ul>
+  <li>Edit vv_theme.py CyberColors class</li>
+  <li>Tab colors follow Phosphor Cyberpunk palette</li>
+  <li>Restart app to apply changes</li>
+</ul>
+
+<p>Accessibility Features:</p>
+<ul>
+  <li>Tab bar shows keybinding for every tab</li>
+  <li>All views accessible via keyboard</li>
+  <li>Status messages confirm view changes</li>
+  <li>Error messages for missing prerequisites (auth, campaign)</li>
+</ul>
+
+<p>============================================================================
+TROUBLESHOOTING
+============================================================================</p>
+
+<p>Issue: Tab doesn’t respond to click
+  → Check status bar for error message
+  → May require authentication (login first)
+  → May require campaign selection (Ctrl+K)</p>
+
+<p>Issue: Can’t find a view
+  → Expand full tab panel (look for expand button)
+  → Or use keyboard: arrow keys to navigate
+  → Check documentation for correct keybinding</p>
+
+<p>Issue: Tab bar disappeared
+  → Toggle with dedicated keybinding (check config)
+  → Or use keyboard (Alt+` to show/hide)</p>
+
+<p>Issue: Keybinding conflicts
+  → Check for conflicting OS/terminal keybindings
+  → Edit vv.py BINDINGS to change VectorVue keybinding
+  → Restart app to apply</p>
+
+<p>============================================================================</p>
+
+<p>For more information, see:</p>
+<ul>
+  <li>docs/manuals/OPERATOR_MANUAL.md (Phase 5.5 section)</li>
+  <li>docs/manuals/ARCHITECTURE_SPEC.md (Tab Navigation system)</li>
+  <li>vv_tab_navigation.py (Source code)
+“””</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>phase-2-sprint-2.1-queue-layer | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 id="phase-2-sprint-21---queue-layer-architecture">Phase 2 Sprint 2.1 - Queue Layer Architecture</h1>
+
+<h2 id="summary">Summary</h2>
+<p>Telemetry gateway now publishes accepted messages to an internal NATS subject and routes malformed payloads to a dedicated dead-letter subject.</p>
+
+<h2 id="threat-model">Threat Model</h2>
+<ul>
+  <li>Queue ingress must remain internal-only.</li>
+  <li>Queue payload integrity must be verifiable.</li>
+</ul>
+
+<h2 id="attack-vectors-considered">Attack Vectors Considered</h2>
+<ul>
+  <li>Queue endpoint exposure.</li>
+  <li>Malformed payload poisoning.</li>
+  <li>Payload mutation between producer and consumer.</li>
+</ul>
+
+<h2 id="mitigations-implemented">Mitigations Implemented</h2>
+<ul>
+  <li>Added <code class="language-plaintext highlighter-rouge">nats</code> service without host port exposure.</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">telemetry_private</code> internal network path for gateway-to-queue.</li>
+  <li>Added dead-letter routing for invalid JSON/schema payloads.</li>
+  <li>Added SHA-256 integrity hash field in queued envelopes.</li>
+</ul>
+
+<h2 id="residual-risk">Residual Risk</h2>
+<ul>
+  <li>Downstream verification of integrity hash is deferred.</li>
+</ul>
+
+<h2 id="future-improvements">Future Improvements</h2>
+<ul>
+  <li>Queue authn/authz and subject-level policy enforcement.</li>
+  <li>Consumer acknowledgements with integrity attestations.</li>
+</ul>
+
+<h2 id="architecture-diagram">Architecture Diagram</h2>
+<pre><code class="language-mermaid">flowchart LR
+  SS[SpectraStrike]
+  TG[Telemetry Gateway]
+  NATS[(NATS Internal Queue)]
+  DLQ[(NATS DLQ Subject)]
+  PE[Processing Engine - Phase 3]
+
+  SS --&gt; TG
+  TG --&gt;|valid + hashed envelope| NATS
+  TG --&gt;|malformed + error envelope| DLQ
+  NATS --&gt; PE
+</code></pre>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

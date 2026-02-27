@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EULA | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+BSL 1.1 License Header
+-->
+
+<h1 id="end-user-license-agreement-eula">End User License Agreement (EULA)</h1>
+
+<p>This End User License Agreement governs the use of VectorVue.</p>
+
+<h2 id="1-license-grant">1. License Grant</h2>
+
+<p>Under BSL 1.1, you are granted a limited, non-exclusive, non-transferable license to:</p>
+
+<ul>
+  <li>Study the source code</li>
+  <li>Modify the software</li>
+  <li>Use it for internal security testing</li>
+</ul>
+
+<p>Commercial service offerings are prohibited until the Change Date (2033-02-17).</p>
+
+<h2 id="2-restrictions">2. Restrictions</h2>
+
+<p>You may NOT:</p>
+
+<ul>
+  <li>Offer VectorVue as a commercial SaaS</li>
+  <li>Sell derived competing products</li>
+  <li>Remove license notices</li>
+  <li>Bypass licensing enforcement mechanisms</li>
+</ul>
+
+<h2 id="3-compliance-requirement">3. Compliance Requirement</h2>
+
+<p>Use of VectorVue requires:</p>
+
+<ul>
+  <li>Explicit authorization for target systems</li>
+  <li>Signed Rules of Engagement</li>
+  <li>Legal compliance in your jurisdiction</li>
+</ul>
+
+<h2 id="4-audit-rights-optional-future-clause-for-saas">4. Audit Rights (Optional Future Clause for SaaS)</h2>
+
+<p>NyxeraLabs reserves the right to audit compliance in commercial licensing scenarios.</p>
+
+<h2 id="5-termination">5. Termination</h2>
+
+<p>This license terminates automatically if you violate its terms.</p>
+
+<h2 id="6-governing-law">6. Governing Law</h2>
+
+<p>Governing law shall be defined by the deployment context or future SaaS Terms of Service.</p>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

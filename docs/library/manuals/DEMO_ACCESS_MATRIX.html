@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DEMO ACCESS MATRIX | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-demo-access-matrix">VectorVue Demo Access Matrix</h1>
+
+<p>This guide provides demo identities, tenant URLs, and a reliable walkthrough sequence for sales and delivery demonstrations.</p>
+
+<h2 id="1-demo-seed-output">1. Demo Seed Output</h2>
+
+<p>Command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make seed-clients
+</code></pre></div></div>
+
+<p>Default seed includes:</p>
+
+<ul>
+  <li>two tenant portals</li>
+  <li>two client users per tenant</li>
+  <li>red-team operator accounts</li>
+  <li>two campaigns per tenant with populated findings, reports, remediation, analytics, and compliance-ready activity</li>
+</ul>
+
+<h2 id="2-default-accounts">2. Default Accounts</h2>
+
+<h3 id="21-global-operator-accounts">2.1 Global Operator Accounts</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">redteam_admin</code> / <code class="language-plaintext highlighter-rouge">RedTeamAdm1n!</code> (<code class="language-plaintext highlighter-rouge">ADMIN</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">rt_lead</code> / <code class="language-plaintext highlighter-rouge">LeadOperat0r!</code> (<code class="language-plaintext highlighter-rouge">LEAD</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">rt_operator</code> / <code class="language-plaintext highlighter-rouge">CoreOperat0r!</code> (<code class="language-plaintext highlighter-rouge">OPERATOR</code>)</li>
+</ul>
+
+<h3 id="22-tenant-a">2.2 Tenant A</h3>
+
+<ul>
+  <li>Tenant: <code class="language-plaintext highlighter-rouge">ACME Industries</code></li>
+  <li>Tenant ID: <code class="language-plaintext highlighter-rouge">10000000-0000-0000-0000-000000000001</code></li>
+  <li>Portal: <code class="language-plaintext highlighter-rouge">https://acme.vectorvue.local/login</code></li>
+  <li><code class="language-plaintext highlighter-rouge">acme_viewer</code> / <code class="language-plaintext highlighter-rouge">AcmeView3r!</code> (<code class="language-plaintext highlighter-rouge">viewer</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">acme_operator</code> / <code class="language-plaintext highlighter-rouge">AcmeOperat0r!</code> (<code class="language-plaintext highlighter-rouge">operator</code>)</li>
+</ul>
+
+<h3 id="23-tenant-b">2.3 Tenant B</h3>
+
+<ul>
+  <li>Tenant: <code class="language-plaintext highlighter-rouge">Globex Corporation</code></li>
+  <li>Tenant ID: <code class="language-plaintext highlighter-rouge">20000000-0000-0000-0000-000000000002</code></li>
+  <li>Portal: <code class="language-plaintext highlighter-rouge">https://globex.vectorvue.local/login</code></li>
+  <li><code class="language-plaintext highlighter-rouge">globex_viewer</code> / <code class="language-plaintext highlighter-rouge">GlobexView3r!</code> (<code class="language-plaintext highlighter-rouge">viewer</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">globex_operator</code> / <code class="language-plaintext highlighter-rouge">GlobexOperat0r!</code> (<code class="language-plaintext highlighter-rouge">operator</code>)</li>
+</ul>
+
+<h2 id="3-recommended-10-minute-demo-script">3. Recommended 10-Minute Demo Script</h2>
+
+<ol>
+  <li>Run <code class="language-plaintext highlighter-rouge">make deploy</code> and <code class="language-plaintext highlighter-rouge">make seed-clients</code>.</li>
+  <li>Login as <code class="language-plaintext highlighter-rouge">acme_viewer</code>.</li>
+  <li>Show Overview -&gt; Analytics -&gt; Findings -&gt; Remediation -&gt; Reports -&gt; Risk.</li>
+  <li>Download one report and one findings export.</li>
+  <li>Switch to <code class="language-plaintext highlighter-rouge">globex_viewer</code> and repeat key pages to demonstrate tenant isolation.</li>
+  <li>Optionally show one compliance endpoint response envelope from API.</li>
+</ol>
+
+<h2 id="4-variable-overrides">4. Variable Overrides</h2>
+
+<p>Use Make variables to customize accounts and tenant identities for customer demos.</p>
+
+<p>Example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make seed-clients <span class="se">\</span>
+  <span class="nv">PANEL1_TENANT_NAME</span><span class="o">=</span><span class="s2">"Northwind Health"</span> <span class="se">\</span>
+  <span class="nv">PANEL1_CLIENT_USER_1</span><span class="o">=</span><span class="s2">"northwind_viewer"</span> <span class="se">\</span>
+  <span class="nv">PANEL1_CLIENT_PASS_1</span><span class="o">=</span><span class="s2">"StrongPass123!"</span>
+</code></pre></div></div>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

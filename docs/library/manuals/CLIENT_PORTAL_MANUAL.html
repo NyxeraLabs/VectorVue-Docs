@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CLIENT PORTAL MANUAL | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-client-portal-manual">VectorVue Client Portal Manual</h1>
+
+<p>This guide is written for client stakeholders using the portal for security transparency, remediation follow-up, and executive reporting.</p>
+
+<h2 id="1-login-and-access">1. Login and Access</h2>
+
+<ol>
+  <li>Open your tenant URL:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">https://acme.vectorvue.local/login</code></li>
+      <li><code class="language-plaintext highlighter-rouge">https://globex.vectorvue.local/login</code></li>
+    </ul>
+  </li>
+  <li>Confirm tenant label on screen.</li>
+  <li>Enter credentials.</li>
+  <li>Verify redirect to <code class="language-plaintext highlighter-rouge">Overview</code>.</li>
+</ol>
+
+<p>If login fails, see <a href="/VectorVue-Docs/docs/library/manuals/TROUBLESHOOTING_GUIDE.html">Troubleshooting Guide</a>.</p>
+
+<h2 id="2-portal-navigation">2. Portal Navigation</h2>
+
+<p>Recommended order for routine review:</p>
+
+<ol>
+  <li>Overview</li>
+  <li>Analytics</li>
+  <li>Findings</li>
+  <li>Remediation</li>
+  <li>Reports</li>
+  <li>Risk</li>
+</ol>
+
+<h2 id="3-page-by-page-workflows">3. Page-by-Page Workflows</h2>
+
+<h3 id="31-overview">3.1 Overview</h3>
+
+<p>Use for quick posture review.</p>
+
+<p>Check:</p>
+
+<ul>
+  <li>total findings</li>
+  <li>high-risk findings</li>
+  <li>active remediation count</li>
+  <li>current risk trend</li>
+</ul>
+
+<h3 id="32-analytics">3.2 Analytics</h3>
+
+<p>Use for explainable security intelligence.</p>
+
+<p>Check:</p>
+
+<ul>
+  <li>security score</li>
+  <li>residual risk</li>
+  <li>detection coverage</li>
+  <li>anomaly indicator</li>
+  <li>model version and generation timestamp</li>
+</ul>
+
+<h3 id="33-findings">3.3 Findings</h3>
+
+<p>Use for technical review and prioritization.</p>
+
+<p>Actions:</p>
+
+<ul>
+  <li>filter by severity</li>
+  <li>open finding detail and evidence</li>
+  <li>export JSON/CSV when required</li>
+</ul>
+
+<h3 id="34-remediation">3.4 Remediation</h3>
+
+<p>Use for closure tracking.</p>
+
+<p>Check each task for:</p>
+
+<ul>
+  <li>owner</li>
+  <li>due date</li>
+  <li>status</li>
+  <li>verification state</li>
+</ul>
+
+<h3 id="35-reports">3.5 Reports</h3>
+
+<p>Use for formal deliverables.</p>
+
+<p>Actions:</p>
+
+<ul>
+  <li>download PDF for executive circulation</li>
+  <li>download HTML for technical review</li>
+</ul>
+
+<h3 id="36-risk">3.6 Risk</h3>
+
+<p>Use for strategic communication.</p>
+
+<p>Check:</p>
+
+<ul>
+  <li>current posture score</li>
+  <li>severity distribution</li>
+  <li>trend direction</li>
+</ul>
+
+<h2 id="4-compliance-and-assurance-view">4. Compliance and Assurance View</h2>
+
+<p>Client portal workflows support compliance evidence generation by recording security workflow behavior such as:</p>
+
+<ul>
+  <li>finding views and acknowledgements</li>
+  <li>remediation open/completion actions</li>
+  <li>report downloads</li>
+  <li>dashboard consultations</li>
+</ul>
+
+<p>This telemetry is security-focused and excludes marketing tracking behavior.</p>
+
+<h2 id="5-export-and-sharing-best-practices">5. Export and Sharing Best Practices</h2>
+
+<ul>
+  <li>Use report exports for formal stakeholder updates.</li>
+  <li>Use findings CSV for remediation planning sessions.</li>
+  <li>Share risk trend and analytics scores with board-level summaries.</li>
+</ul>
+
+<h2 id="6-privacy-and-security-notes">6. Privacy and Security Notes</h2>
+
+<ul>
+  <li>Session auth is tenant-scoped.</li>
+  <li>Portal access is read-only for client users.</li>
+  <li>No cross-tenant data exposure is allowed.</li>
+</ul>
+
+<h2 id="7-quick-troubleshooting">7. Quick Troubleshooting</h2>
+
+<ul>
+  <li>Stale UI data: hard refresh browser</li>
+  <li>Login issues: revalidate credentials and tenant URL</li>
+  <li>Missing reports: verify report publication status with delivery team</li>
+  <li>API/portal outage: contact platform operator</li>
+</ul>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

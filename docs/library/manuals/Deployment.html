@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Deployment | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-deployment-guide">VectorVue Deployment Guide</h1>
+
+<p>This runbook deploys VectorVue for production-style environments.</p>
+
+<h2 id="1-prerequisites">1. Prerequisites</h2>
+
+<ul>
+  <li>Docker Engine and Docker Compose</li>
+  <li>OpenSSL</li>
+  <li>Linux host recommended for operations</li>
+  <li>DNS/hosts mapping for tenant domains</li>
+</ul>
+
+<h2 id="2-deploy-full-stack">2. Deploy Full Stack</h2>
+
+<p>Recommended guided flow:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make wizard
+</code></pre></div></div>
+
+<p>Select option <code class="language-plaintext highlighter-rouge">1</code>.</p>
+
+<p>Direct command path:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make deploy
+</code></pre></div></div>
+
+<p>Expected services:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_app</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_runtime</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_ml_worker</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_compliance_observation_worker</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_compliance_daily_worker</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_portal</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_nginx</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_postgres</code></li>
+  <li><code class="language-plaintext highlighter-rouge">vectorvue_redis</code></li>
+</ul>
+
+<h2 id="3-seed-demo-or-acceptance-data">3. Seed Demo or Acceptance Data</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make seed-clients
+</code></pre></div></div>
+
+<p>Guided path: <code class="language-plaintext highlighter-rouge">make wizard</code> and select option <code class="language-plaintext highlighter-rouge">4</code>.</p>
+
+<h2 id="4-validation">4. Validation</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make api-smoke
+docker compose ps
+</code></pre></div></div>
+
+<p>Confirm API health, OpenAPI availability, and worker uptime.</p>
+
+<h2 id="5-tls-certificate-assets">5. TLS Certificate Assets</h2>
+
+<p>Generate local cert assets when needed:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./deploy/scripts/generate_tls_certs.sh
+</code></pre></div></div>
+
+<h2 id="6-tenant-isolated-deployment-pattern">6. Tenant-Isolated Deployment Pattern</h2>
+
+<p>To run a separate customer namespace:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make customer-deploy-isolated <span class="se">\</span>
+  <span class="nv">CUSTOMER</span><span class="o">=</span>acme <span class="se">\</span>
+  <span class="nv">TENANT_NAME</span><span class="o">=</span><span class="s2">"ACME Industries"</span> <span class="se">\</span>
+  <span class="nv">HTTP_HOST_PORT</span><span class="o">=</span>8081 <span class="se">\</span>
+  <span class="nv">HTTPS_HOST_PORT</span><span class="o">=</span>8444 <span class="se">\</span>
+  <span class="nv">POSTGRES_HOST_PORT</span><span class="o">=</span>5544
+</code></pre></div></div>
+
+<p>Default local docker host mapping for PostgreSQL is <code class="language-plaintext highlighter-rouge">55433</code> (override with
+<code class="language-plaintext highlighter-rouge">POSTGRES_HOST_PORT</code> when needed).</p>
+
+<p>For full isolated portal onboarding in one flow:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make wizard
+</code></pre></div></div>
+
+<p>Select option <code class="language-plaintext highlighter-rouge">2</code>.</p>
+
+<h2 id="7-upgrade-and-migration-sequence">7. Upgrade and Migration Sequence</h2>
+
+<p>Use this order:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">make deploy</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make pg-schema-bootstrap</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make phase65-migrate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make phase7e-migrate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make phase8-migrate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make phase9-migrate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make seed-clients</code> (if demo/non-production)</li>
+</ol>
+
+<h2 id="8-operational-notes">8. Operational Notes</h2>
+
+<ul>
+  <li>Do not expose PostgreSQL directly unless required for admin workflows.</li>
+  <li>Keep compliance signing keys and JWT secrets managed securely per environment.</li>
+  <li>Monitor worker logs for queue failures and migration drift.</li>
+</ul>
+
+<h2 id="9-commercial-tenant-commands">9. Commercial Tenant Commands</h2>
+
+<ul>
+  <li>Demo-ready seeding:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">make seed-clients</code></li>
+    </ul>
+  </li>
+  <li>Real tenant onboarding (no dummy campaigns):
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">make tenant-bootstrap-real ...</code></li>
+    </ul>
+  </li>
+  <li>Phase 7-9 no-dummy validation:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">make phase79-real-smoke ...</code></li>
+    </ul>
+  </li>
+  <li>One-command isolated client portal stack:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">make customer-deploy-portal-isolated ...</code></li>
+    </ul>
+  </li>
+  <li>Guided command menu:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">make wizard</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="10-tui-admin-onboarding-wizard">10. TUI Admin Onboarding Wizard</h2>
+
+<p>Use this flow to onboard tenant + portal metadata from the app UI.</p>
+
+<ol>
+  <li>Start TUI:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">make run-tui</code></li>
+    </ul>
+  </li>
+  <li>Login with admin role.</li>
+  <li>Open wizard:
+    <ul>
+      <li>hotkey <code class="language-plaintext highlighter-rouge">Ctrl+Shift+W</code></li>
+      <li>or sidebar <code class="language-plaintext highlighter-rouge">ONBOARD WIZARD</code></li>
+    </ul>
+  </li>
+  <li>Fill tenant metadata, company branding, and credentials.</li>
+  <li>Run <code class="language-plaintext highlighter-rouge">CREATE TENANT + USERS</code>.</li>
+</ol>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

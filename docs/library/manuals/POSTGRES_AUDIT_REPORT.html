@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>POSTGRES AUDIT REPORT | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="postgresql-migration-audit-report">PostgreSQL Migration Audit Report</h1>
+
+<p>This document records static analysis and migration-audit context for PostgreSQL transition quality checks.</p>
+
+<h2 id="scope">Scope</h2>
+
+<ul>
+  <li>verify method-level SQL touchpoints</li>
+  <li>identify multi-table mutation candidates</li>
+  <li>support regression and release sign-off workflows</li>
+</ul>
+
+<h2 id="status">Status</h2>
+
+<p>The detailed method classification table is generated from codebase analysis and should be treated as audit evidence for migration review cycles.</p>
+
+<p>For active release validation, use:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">docs/manuals/POSTGRES_REGRESSION_CHECKLIST.md</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs/manuals/POSTGRES_MIGRATION_GUIDE.md</code></li>
+  <li><code class="language-plaintext highlighter-rouge">make api-smoke</code></li>
+</ul>
+
+<h2 id="method-classification-reference">Method Classification Reference</h2>
+
+<p>Generated from static analysis of <code class="language-plaintext highlighter-rouge">vv_core.py</code> database methods.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Categories</th>
+      <th>Multi-table Mutation Candidate</th>
+      <th>SQL Fragments</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__init__</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_run_postgres_migrations</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_run_migrations</code></td>
+      <td>create, delete, join, update, upsert</td>
+      <td>Yes</td>
+      <td>82</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">transaction</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">verify_or_set_canary</code></td>
+      <td>create, read</td>
+      <td>No</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">has_users</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">register_user</code></td>
+      <td>create, read, update</td>
+      <td>Yes</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">authenticate_user</code></td>
+      <td>create, read, update</td>
+      <td>Yes</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_persist_session</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">resume_session</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">logout</code></td>
+      <td>delete</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">list_users</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">set_user_role</code></td>
+      <td>create, read, update, upsert</td>
+      <td>Yes</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">list_user_access</code></td>
+      <td>join, read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">set_user_capability_profile</code></td>
+      <td>create, read, update, upsert</td>
+      <td>Yes</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">list_groups</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">create_group</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">list_projects</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">create_project</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">archive_project</code></td>
+      <td>update</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">create_campaign</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">list_campaigns</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_campaign_by_name</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_campaign_by_id</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">add_asset</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">list_assets</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">add_credential</code></td>
+      <td>create, delete</td>
+      <td>Yes</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">list_credentials</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">log_action</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">list_actions</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">add_relation</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">verify_campaign_integrity</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">calculate_detection_coverage</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">build_attack_path</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">generate_campaign_report</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_visible_filter</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_findings</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_rows_to_findings</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">add_finding</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">update_finding</code></td>
+      <td>read, update</td>
+      <td>Yes</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">delete_finding</code></td>
+      <td>delete</td>
+      <td>Yes</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">approve_finding</code></td>
+      <td>read, update</td>
+      <td>No</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">reject_finding</code></td>
+      <td>delete, read, update</td>
+      <td>Yes</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">log_audit_event</code></td>
+      <td>create, delete, upsert</td>
+      <td>Yes</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_audit</code></td>
+      <td>create, upsert</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_audit_log</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_require_role</code></td>
+      <td>none</td>
+      <td>No</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">_check_write_permission</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">enter_phase</code></td>
+      <td>create, update</td>
+      <td>Yes</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_current_phase</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_phase_history</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">add_relationship</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_attack_path</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">build_compromise_chain</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mark_credential_valid</code></td>
+      <td>create, read, update</td>
+      <td>Yes</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mark_credential_invalid</code></td>
+      <td>create, read, update</td>
+      <td>Yes</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mark_credential_burned</code></td>
+      <td>create, read, update</td>
+      <td>Yes</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_credential_state</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">add_opsec_rule</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">calculate_action_risk</code></td>
+      <td>create, read</td>
+      <td>No</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">acquire_target_lock</code></td>
+      <td>create, read</td>
+      <td>No</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">release_target_lock</code></td>
+      <td>delete, read</td>
+      <td>No</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">review_lock_diff</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">log_command_execution</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">get_command_history</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">analyze_command_detection_risk</code></td>
+      <td>read</td>
+      <td>No</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">open_session</code></td>
+      <td>create</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">close_session</code></td>
+      <td>update</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mark_session_detected</code></td>
+      <td>update</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">revive_session</code></td>
+      <td>update</td>
+      <td>No</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

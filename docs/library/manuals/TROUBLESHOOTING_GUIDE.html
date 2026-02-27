@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TROUBLESHOOTING GUIDE | VectorVue Documentation</title>
+  <meta name="description" content="Static VectorVue documentation and whitepapers by NyxeraLabs." />
+  <link rel="stylesheet" href="/VectorVue-Docs/assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.mermaid) return;
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+        const pre = codeEl.closest('pre');
+        if (!pre) return;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid';
+        wrapper.textContent = codeEl.textContent || '';
+        pre.replaceWith(wrapper);
+      });
+      mermaid.run({ querySelector: '.mermaid' });
+    });
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="/VectorVue-Docs/assets/img/nyxera-logo.png" alt="NyxeraLabs logo" class="brand-logo" />
+      <img src="/VectorVue-Docs/assets/img/product-logo.png" alt="VectorVue logo" class="product-logo" />
+      <div>
+        <h1>VectorVue Documentation</h1>
+        <p>Enterprise-grade technical documentation and whitepapers</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="/VectorVue-Docs/">Home</a>
+      <a href="/VectorVue-Docs/docs/end-user/">End User</a>
+      <a href="/VectorVue-Docs/docs/sdk/">SDK</a>
+      <a href="/VectorVue-Docs/docs/integration/">Integration</a>
+      <a href="/VectorVue-Docs/docs/architecture/">Architecture</a>
+      <a href="/VectorVue-Docs/docs/whitepaper/">Whitepaper</a>
+      <a href="/VectorVue-Docs/docs/library/">Full Library</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <!--
+Copyright (c) 2026 NyxeraLabs
+Author: José María Micoli
+Licensed under BSL 1.1
+Change Date: 2033-02-17 → Apache-2.0
+
+You may:
+✔ Study
+✔ Modify
+✔ Use for internal security testing
+
+You may NOT:
+✘ Offer as a commercial service
+✘ Sell derived competing products
+-->
+
+<h1 id="vectorvue-troubleshooting-guide">VectorVue Troubleshooting Guide</h1>
+
+<p>This guide covers high-frequency operational issues in production and demo environments.</p>
+
+<h2 id="1-deployment-fails-make-deploy">1. Deployment Fails (<code class="language-plaintext highlighter-rouge">make deploy</code>)</h2>
+
+<p>Checks:</p>
+
+<ol>
+  <li>Verify Docker daemon is running.</li>
+  <li>Verify Compose can start postgres/redis.</li>
+  <li>Check container logs:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose logs <span class="nt">--tail</span><span class="o">=</span>120 vectorvue_app
+docker compose logs <span class="nt">--tail</span><span class="o">=</span>120 vectorvue_postgres
+</code></pre></div></div>
+
+<h2 id="2-migration-errors">2. Migration Errors</h2>
+
+<p>If schema errors appear during migration:</p>
+
+<ol>
+  <li>Verify migration order:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make pg-schema-bootstrap
+make phase65-migrate
+make phase7e-migrate
+make phase8-migrate
+make phase9-migrate
+</code></pre></div></div>
+
+<ol>
+  <li>Recheck PostgreSQL health and rerun failing step.</li>
+</ol>
+
+<h2 id="3-portal-login-fails">3. Portal Login Fails</h2>
+
+<ol>
+  <li>Confirm tenant URL is correct.</li>
+  <li>Confirm seeded credentials are current.</li>
+  <li>Rerun demo seed in non-production:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make seed-clients
+</code></pre></div></div>
+
+<ol>
+  <li>If onboarding used <code class="language-plaintext highlighter-rouge">make wizard</code> option <code class="language-plaintext highlighter-rouge">2</code>, confirm tenant host map is set in <code class="language-plaintext highlighter-rouge">.env</code>:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rg <span class="s1">'^VV_TENANT_HOST_MAP='</span> .env
+</code></pre></div></div>
+
+<h2 id="4-worker-restart-loops">4. Worker Restart Loops</h2>
+
+<ol>
+  <li>Inspect worker logs:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose logs <span class="nt">--tail</span><span class="o">=</span>120 vectorvue_ml_worker
+docker compose logs <span class="nt">--tail</span><span class="o">=</span>120 vectorvue_compliance_observation_worker
+docker compose logs <span class="nt">--tail</span><span class="o">=</span>120 vectorvue_compliance_daily_worker
+</code></pre></div></div>
+
+<ol>
+  <li>Rebuild and recreate relevant services:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose build vectorvue_app
+docker compose up <span class="nt">-d</span> <span class="nt">--force-recreate</span> vectorvue_app vectorvue_ml_worker vectorvue_compliance_observation_worker vectorvue_compliance_daily_worker
+</code></pre></div></div>
+
+<h2 id="5-compliance-endpoint-errors">5. Compliance Endpoint Errors</h2>
+
+<ol>
+  <li>Verify compliance migration applied: <code class="language-plaintext highlighter-rouge">make phase9-migrate</code>.</li>
+  <li>Verify tenant-authenticated token and role.</li>
+  <li>Verify compliance workers are running.</li>
+</ol>
+
+<h2 id="6-data-scope-or-tenant-mismatch">6. Data Scope or Tenant Mismatch</h2>
+
+<ol>
+  <li>Stop integration workflow immediately.</li>
+  <li>Capture request/tenant identifiers.</li>
+  <li>Escalate to platform admin for scope verification.</li>
+</ol>
+
+<h2 id="7-slow-responses">7. Slow Responses</h2>
+
+<ol>
+  <li>Check postgres and redis health.</li>
+  <li>Check worker backlog and queue processing.</li>
+  <li>Review app logs for timeouts and heavy queries.</li>
+</ol>
+
+<h2 id="8-support-handoff-template">8. Support Handoff Template</h2>
+
+<p>Include:</p>
+
+<ul>
+  <li>command run</li>
+  <li>timestamp</li>
+  <li>service logs snippet</li>
+  <li>tenant/environment impacted</li>
+  <li>expected vs actual behavior</li>
+</ul>
+
+<h2 id="9-tui-onboarding-wizard-fails">9. TUI Onboarding Wizard Fails</h2>
+
+<ol>
+  <li>Confirm you are logged in as <code class="language-plaintext highlighter-rouge">admin</code> role.</li>
+  <li>Confirm PostgreSQL is reachable from app container.</li>
+  <li>Confirm base migrations and tenant theme migration are applied:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make pg-schema-bootstrap
+make phase65-migrate
+make phase7d-migrate
+</code></pre></div></div>
+
+<ol>
+  <li>Retry onboarding in TUI with <code class="language-plaintext highlighter-rouge">Ctrl+Shift+W</code>.</li>
+  <li>If failure persists, collect app logs:</li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose logs <span class="nt">--tail</span><span class="o">=</span>120 vectorvue_app
+</code></pre></div></div>
+
+  </main>
+
+  <footer class="footer">
+    <span>VectorVue by NyxeraLabs — All Rights Reserved © <span id="year"></span></span>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
