@@ -6,4 +6,7 @@ permalink: /compliance/
 
 # Compliance
 
-Compliance mappings include SOC 2, ISO 27001, and NIST-aligned evidence lifecycle outputs.
+- [Compliance API Spec]({{ '/docs/library/COMPLIANCE_API_SPEC' | relative_url }})
+- [Privacy Policy]({{ '/docs/library/PRIVACY_POLICY' | relative_url }})
+- [User Policy]({{ '/docs/library/USER_POLICY' | relative_url }})
+- [Auditor Guide]({{ '/docs/library/AUDITOR_GUIDE' | relative_url }})
