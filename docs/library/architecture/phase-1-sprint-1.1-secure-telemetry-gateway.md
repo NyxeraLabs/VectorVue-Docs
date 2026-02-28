@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 1 sprint 1.1 secure telemetry gateway
+---
+
 # Phase 1 Sprint 1.1 - Telemetry Gateway Architecture
 
 ## Summary

@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 8 sprint 8.1 ci cd enforcement
+---
+
 # Phase 8 Sprint 8.1 - Security CI/CD Enforcement
 
 ## Threat Model

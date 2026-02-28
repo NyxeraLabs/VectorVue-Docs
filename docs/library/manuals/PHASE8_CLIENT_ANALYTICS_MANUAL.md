@@ -1,3 +1,8 @@
+---
+layout: default
+title: PHASE8 CLIENT ANALYTICS MANUAL
+---
+
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

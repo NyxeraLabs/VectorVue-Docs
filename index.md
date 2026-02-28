@@ -36,5 +36,5 @@ GraphModel --> Dashboard
 ## Cross Product Links
 
 - [SpectraStrike Docs](https://docs.spectrastrike.nyxera.cloud)
-- [Nyxera Nexus Docs](https://nyxera-nexus.nyxera.cloud)
+- [Nyxera Nexus Docs](https://docs.nexus.nyxera.cloud)
 - [Nyxera Cloud](https://nyxera.cloud)

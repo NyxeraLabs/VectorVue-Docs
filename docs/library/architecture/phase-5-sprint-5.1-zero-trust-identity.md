@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 5 sprint 5.1 zero trust identity
+---
+
 # Phase 5 Sprint 5.1 - Zero Trust Service Identity Architecture
 
 ## Summary

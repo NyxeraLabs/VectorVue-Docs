@@ -1,3 +1,8 @@
+---
+layout: default
+title: ARCHITECTURE SPEC
+---
+
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli
