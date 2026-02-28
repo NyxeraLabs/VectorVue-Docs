@@ -1,3 +1,8 @@
+---
+layout: default
+title: POSTGRES REGRESSION CHECKLIST
+---
+
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

@@ -6,4 +6,6 @@ permalink: /developers/
 
 # Developers
 
-Developer references include extension schemas, ingestion contracts, and telemetry validation workflows.
+- [SDK Developer Guide]({{ '/docs/library/SDK_DEVELOPER_GUIDE' | relative_url }})
+- [Client API Manual]({{ '/docs/library/manuals/CLIENT_API_MANUAL' | relative_url }})
+- [Documentation Policy]({{ '/docs/library/manuals/DOCUMENTATION_POLICY' | relative_url }})

@@ -6,6 +6,6 @@ permalink: /security/
 
 # Security
 
-- Signed payload verification and schema enforcement.
-- Tenant isolation and transport assurance boundaries.
-- Immutable event lineage for evidence defensibility.
+- [Security Policy]({{ '/docs/library/SECURITY_POLICY' | relative_url }})
+- [Security Architecture Phases]({{ '/docs/library/security/' | relative_url }})
+- [Tamper-Evident Logging Phase]({{ '/docs/library/security/phase-6-sprint-6.1-tamper-evident-logging' | relative_url }})

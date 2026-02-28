@@ -6,6 +6,6 @@ permalink: /getting-started/
 
 # Getting Started
 
-1. Configure tenant, identity, and ingestion endpoints.
-2. Validate telemetry schema contracts.
-3. Enable federation ingestion from SpectraStrike when required.
+- [Getting Started Manual]({{ '/docs/library/manuals/GETTING_STARTED' | relative_url }})
+- [VectorVue User Guide]({{ '/docs/library/manuals/VECTORVUE_USER_GUIDE' | relative_url }})
+- [Deployment Manual]({{ '/docs/library/manuals/Deployment' | relative_url }})
