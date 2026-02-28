@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-3-sprint-3.1
----
-
 # Phase 3 Sprint 3.1 - Schema Enforcement
 
 ## Objective

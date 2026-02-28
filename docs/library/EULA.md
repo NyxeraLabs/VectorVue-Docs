@@ -1,8 +1,3 @@
----
-layout: default
-title: EULA
----
-
 <!--
 BSL 1.1 License Header
 -->

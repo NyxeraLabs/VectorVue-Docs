@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-6-sprint-6.1-immutable-logging
----
-
 # Phase 6 Sprint 6.1 - Immutable Logging Architecture
 
 ## Summary

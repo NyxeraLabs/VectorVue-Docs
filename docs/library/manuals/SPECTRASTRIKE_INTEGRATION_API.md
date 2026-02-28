@@ -1,8 +1,3 @@
----
-layout: default
-title: SPECTRASTRIKE INTEGRATION API
----
-
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

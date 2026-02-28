@@ -1,8 +1,3 @@
----
-layout: default
-title: GETTING STARTED
----
-
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

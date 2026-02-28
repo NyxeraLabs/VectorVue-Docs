@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-7-sprint-7.1-federation-proof-origin
----
-
 # Phase 7 Sprint 7.1 - Federation Proof-of-Origin
 
 ## Threat Model

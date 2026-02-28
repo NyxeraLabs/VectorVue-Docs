@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-7-sprint-7.1-federation-architecture
----
-
 # Phase 7 Sprint 7.1 - Federation Architecture
 
 ## Summary

@@ -1,8 +1,3 @@
----
-layout: default
-title: AUDITOR GUIDE
----
-
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

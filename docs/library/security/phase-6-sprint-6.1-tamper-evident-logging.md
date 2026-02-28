@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-6-sprint-6.1-tamper-evident-logging
----
-
 # Phase 6 Sprint 6.1 - Tamper-Evident Logging
 
 ## Threat Model

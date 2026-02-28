@@ -1,8 +1,3 @@
----
-layout: default
-title: Expansion Appendix
----
-
 # VectorVue Security Expansion Appendix
 ## Military-Grade Hardening & Secure Federation Roadmap
 Author: José María Micoli
