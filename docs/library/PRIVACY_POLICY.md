@@ -1,3 +1,8 @@
+---
+layout: default
+title: PRIVACY POLICY
+---
+
 # Privacy Policy (Future SaaS Version)
 
 ## 1. Data Collection

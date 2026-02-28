@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 8 sprint 8.1 security pipeline
+---
+
 # Phase 8 Sprint 8.1 - Security Pipeline Architecture
 
 ## Summary

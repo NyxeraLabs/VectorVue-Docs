@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 9 sprint 9.1 redteam validation
+---
+
 # Phase 9 Sprint 9.1 - Full System Red Team Validation
 
 ## Threat Model

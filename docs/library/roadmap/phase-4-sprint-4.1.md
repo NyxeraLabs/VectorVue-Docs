@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 4 sprint 4.1
+---
+
 # Phase 4 Sprint 4.1 - Field-Level Encryption and HSM Integration
 
 ## Objective

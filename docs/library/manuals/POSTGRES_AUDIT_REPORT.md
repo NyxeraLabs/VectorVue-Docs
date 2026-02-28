@@ -1,3 +1,8 @@
+---
+layout: default
+title: POSTGRES AUDIT REPORT
+---
+
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli
