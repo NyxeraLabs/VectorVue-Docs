@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-0-sprint-0.1-telemetry-capability-removal
----
-
 # Phase 0 Sprint 0.1 - Telemetry Capability Removal
 
 ## Scope

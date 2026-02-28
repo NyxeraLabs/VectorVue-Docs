@@ -1,8 +1,3 @@
----
-layout: default
-title: OPERATOR MANUAL
----
-
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

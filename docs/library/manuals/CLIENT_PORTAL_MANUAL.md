@@ -1,8 +1,3 @@
----
-layout: default
-title: CLIENT PORTAL MANUAL
----
-
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli
