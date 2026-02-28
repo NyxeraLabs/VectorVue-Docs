@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 2 sprint 2.1 queue layer
+---
+
 # Phase 2 Sprint 2.1 - Queue Layer Architecture
 
 ## Summary

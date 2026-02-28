@@ -1,3 +1,8 @@
+---
+layout: default
+title: POSTGRES MIGRATION GUIDE
+---
+
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

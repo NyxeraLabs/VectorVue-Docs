@@ -1,3 +1,8 @@
+---
+layout: default
+title: COMPLIANCE API SPEC
+---
+
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

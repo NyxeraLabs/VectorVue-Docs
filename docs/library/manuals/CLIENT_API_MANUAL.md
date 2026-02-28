@@ -1,3 +1,8 @@
+---
+layout: default
+title: CLIENT API MANUAL
+---
+
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

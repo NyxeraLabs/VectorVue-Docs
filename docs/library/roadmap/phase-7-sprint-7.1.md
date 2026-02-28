@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 7 sprint 7.1
+---
+
 # Phase 7 Sprint 7.1 - Federation Spec Definition
 
 ## Objective

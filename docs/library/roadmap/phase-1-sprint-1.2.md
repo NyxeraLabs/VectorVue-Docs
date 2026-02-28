@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 1 sprint 1.2
+---
+
 # Phase 1 Sprint 1.2 - Payload Security Layer
 
 ## Objective

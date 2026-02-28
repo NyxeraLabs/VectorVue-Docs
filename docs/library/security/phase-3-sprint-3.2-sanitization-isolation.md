@@ -1,3 +1,8 @@
+---
+layout: default
+title: phase 3 sprint 3.2 sanitization isolation
+---
+
 # Phase 3 Sprint 3.2 - Sanitization and Isolation
 
 ## Threat Model
