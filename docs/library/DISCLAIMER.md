@@ -1,8 +1,3 @@
----
-layout: default
-title: DISCLAIMER
----
-
 <!--
 BSL 1.1 License Header
 -->

@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-9-sprint-9.1
----
-
 # Phase 9 Sprint 9.1 - Attack Simulation Against System
 
 ## Objective

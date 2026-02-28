@@ -1,8 +1,3 @@
----
-layout: default
-title: spectrastrike-vectorvue
----
-
 # SpectraStrike ↔ VectorVue Secure Integration Manual
 
 Document Version: 1.0  
