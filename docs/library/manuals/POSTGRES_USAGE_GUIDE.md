@@ -1,8 +1,3 @@
----
-layout: default
-title: POSTGRES USAGE GUIDE
----
-
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-1-sprint-1.1
----
-
 # Phase 1 Sprint 1.1 - Service Bootstrapping
 
 ## Objective

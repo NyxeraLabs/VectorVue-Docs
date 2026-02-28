@@ -1,8 +1,3 @@
----
-layout: default
-title: SPECTRASTRIKE PAYLOAD EXAMPLES
----
-
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli

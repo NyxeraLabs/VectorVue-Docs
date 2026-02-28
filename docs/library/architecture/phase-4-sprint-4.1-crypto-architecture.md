@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-4-sprint-4.1-crypto-architecture
----
-
 # Phase 4 Sprint 4.1 - Cryptographic Architecture
 
 ## Summary

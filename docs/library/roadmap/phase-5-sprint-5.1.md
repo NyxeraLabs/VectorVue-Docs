@@ -1,8 +1,3 @@
----
-layout: default
-title: phase-5-sprint-5.1
----
-
 # Phase 5 Sprint 5.1 - Service Identity
 
 ## Objective

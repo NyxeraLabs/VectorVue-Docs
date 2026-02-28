@@ -1,8 +1,3 @@
----
-layout: default
-title: Deployment
----
-
 <!--
 Copyright (c) 2026 NyxeraLabs
 Author: José María Micoli
